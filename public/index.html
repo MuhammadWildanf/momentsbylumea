@@ -1,0 +1,2148 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUMEA</title>
+    <!-- INSTANT THEME RESTORER (Pencegah Style Flash / FOUC saat Refresh) -->
+    <script>
+        try {
+            const cached = localStorage.getItem('vb_config');
+            if (cached) {
+                const data = JSON.parse(cached);
+                const root = document.documentElement;
+                if (data.bgImageUrl) {
+                    document.write('<style>body { background-image: url("' + data.bgImageUrl + '") !important; background-size: cover !important; }</style>');
+                }
+                if (data.frameImageUrl) {
+                    root.style.setProperty('--frame-image', 'url("' + data.frameImageUrl + '")');
+                }
+                if (data.accentColor) root.style.setProperty('--accent', data.accentColor);
+                if (data.titleColor) root.style.setProperty('--title-color', data.titleColor);
+                if (data.descColor) root.style.setProperty('--desc-color', data.descColor);
+                if (data.frameColor) root.style.setProperty('--frame', data.frameColor);
+                if (data.bgColor1) root.style.setProperty('--bg-1', data.bgColor1);
+                if (data.bgColor2) root.style.setProperty('--bg-2', data.bgColor2);
+                if (data.fontFamily) root.style.setProperty('--body-font-dyn', data.fontFamily);
+
+                if (data.fontUrl && data.fontFamily) {
+                    document.write('<style>@import url("' + data.fontUrl + '"); :root { --body-font-dyn: ' + data.fontFamily + '; } body, input, button, textarea, .subtitle-premium, .desc-premium, .panel-footer, .ui-state h2, .delivery-tab { font-family: ' + data.fontFamily + ' !important; }</style>');
+                }
+                if (data.titleFontFamily) {
+                    root.style.setProperty('--title-font-dyn', data.titleFontFamily);
+                }
+                if (data.showLeftPanel === false) {
+                    document.write('<style>body.state-idle #panel-left, body.state-form #panel-left { display: none !important; }</style>');
+                }
+                if (data.showRightPanel === false) {
+                    document.write('<style>body.state-idle #panel-right, body.state-form #panel-right { display: none !important; }</style>');
+                }
+                if (data.idleHeadMode === 'logo' && data.logoUrl) {
+                    document.write('<style>#main-title { display: none !important; } #branding-logo { display: block !important; }</style>');
+                } else if (data.title) {
+                    document.write('<style>#main-title { visibility: hidden; }</style>');
+                }
+            }
+        } catch (e) { console.error("FOUC restore error:", e); }
+    </script>
+    <!-- MediaPipe Script -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+    <style>
+        .hidden {
+            display: none !important;
+        }
+
+        @font-face {
+            font-family: 'Luxurious Script';
+            src: url('/fonts/LuxuriousScript-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Aref Ruqaa';
+            src: url('/fonts/ArefRuqaa-Regular.ttf') format('truetype');
+            font-weight: 400;
+        }
+
+        @font-face {
+            font-family: 'Aref Ruqaa';
+            src: url('/fonts/ArefRuqaa-Bold.ttf') format('truetype');
+            font-weight: 700;
+        }
+
+        :root {
+            --accent: #c5a059;
+            --gold-gradient: linear-gradient(135deg, #c5a059 0%, #d4af37 50%, #b38b4d 100%);
+            --frame: rgba(22, 18, 15, 0.4);
+            --bg-dark: #1a120b;
+            --text-main: #f8fafc;
+            --text-gold: #c5a059;
+        }
+
+        /* PREMIUM BUTTONS (LUMEA STYLE) */
+        .btn-primary,
+        .btn-start {
+            position: relative;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 12px 40px !important;
+            background: #e7e5d8 !important;
+            color: #1a0f0a !important;
+            border: none !important;
+            border-radius: 50px !important;
+            font-weight: 700 !important;
+            font-size: min(2.5vh, 20px) !important;
+            text-transform: uppercase !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            text-decoration: none !important;
+            font-family: 'Aref Ruqaa', serif !important;
+            letter-spacing: 1px !important;
+        }
+
+        .btn-primary::after,
+        .btn-start::after,
+        .btn-outline::after,
+        .btn-record-circle::after {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: -6px;
+            right: -6px;
+            bottom: -6px;
+            border: 1px solid #e7e5d8;
+            border-radius: 60px;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover::after,
+        .btn-start:hover::after,
+        .btn-outline:hover::after,
+        .btn-record-circle:hover::after {
+            transform: scale(1.02);
+            border-color: #F0E5C7;
+        }
+
+        .btn-primary:hover,
+        .btn-start:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 5px 15px rgba(231, 229, 216, 0.2) !important;
+        }
+
+        .btn-outline {
+            position: relative;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 10px !important;
+            padding: 12px 32px !important;
+            background: transparent !important;
+            color: #e7e5d8 !important;
+            border: 1px solid #e7e5d8 !important;
+            border-radius: 50px !important;
+            font-weight: 700 !important;
+            font-size: min(2.5vh, 20px) !important;
+            cursor: pointer !important;
+            transition: all 0.2s !important;
+            text-transform: uppercase !important;
+            font-family: 'Aref Ruqaa', serif !important;
+            letter-spacing: 1px !important;
+        }
+
+        .btn-outline:hover {
+            background: rgba(231, 229, 216, 0.1) !important;
+            transform: translateY(-2px) !important;
+        }
+
+        /* CIRCLE RECORD BUTTON */
+        .btn-record-circle {
+            position: relative;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: min(10vh, 80px) !important;
+            height: min(10vh, 80px) !important;
+            background: #e7e5d8 !important;
+            border: none !important;
+            border-radius: 50% !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .btn-record-circle::after {
+            border-radius: 50%;
+        }
+
+        .btn-record-circle:hover {
+            transform: scale(1.05) !important;
+            box-shadow: 0 0 15px rgba(231, 229, 216, 0.5) !important;
+        }
+
+        /* IOS KEYBOARD */
+        .keyboard-wrapper {
+            position: fixed !important;
+            bottom: 30px !important;
+            left: 50% !important;
+            transform: translateX(-50%) translateY(120%) !important;
+            width: 95% !important;
+            max-width: 900px !important;
+            background: rgba(26, 18, 11, 0.75) !important;
+            backdrop-filter: blur(30px) !important;
+            border: 1px solid rgba(197, 160, 89, 0.4) !important;
+            padding: 15px !important;
+            border-radius: 30px !important;
+            z-index: 9999 !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        .keyboard-wrapper.show {
+            transform: translateX(-50%) translateY(0) !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        /* Shift ONLY the state-form up when keyboard is active to keep the header logo 100% stationary */
+        .center-panel.keyboard-active #state-form {
+            transform: translateY(-13vh);
+        }
+
+        #state-form {
+            transition: transform 0.5s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            --title-color: #F0E5C7;
+            font-family: 'Aref Ruqaa', serif;
+            background-color: #1a0f0a;
+            /* Dark base matching the wedding theme */
+            color: var(--text-main);
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background-attachment: scroll;
+            /* Scroll is usually safer for 'full' feel on all browsers */
+        }
+
+        .main-wrapper {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+            background: transparent;
+            padding: 30px;
+            gap: 30px;
+            align-items: stretch;
+            transition: 0.5s ease;
+            overflow: hidden;
+        }
+
+        .side-panel {
+            height: 85vh;
+            aspect-ratio: 9 / 16;
+            background: rgba(0, 0, 0, 0.05);
+            padding: 0;
+            border: none;
+            border-radius: 1.72vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .side-panel::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: var(--frame-image, url('/frame_gold.png'));
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .side-panel.hidden-panel {
+            flex: 0;
+            padding: 0;
+            margin: 0;
+            opacity: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .side-panel .video-container {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            border-radius: 1.72vh;
+            overflow: hidden;
+            border: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .side-panel .panel-footer {
+            position: absolute;
+            bottom: 2.5vh;
+            width: 100%;
+            text-align: center;
+            margin: 0 !important;
+            font-weight: 400;
+            font-size: min(1.8vh, 18px) !important;
+            color: #fff;
+            letter-spacing: 0.5px;
+            font-family: 'Aref Ruqaa', serif;
+            z-index: 10;
+        }
+
+        .center-panel {
+            flex: 1;
+            background: transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2vh 20px;
+            text-align: center;
+            transition: 0.5s ease;
+            overflow: hidden;
+            min-height: 0;
+            box-shadow: none;
+        }
+
+        /* TYPOGRAPHY */
+        .wedding-logo {
+            max-width: 250px;
+            margin-bottom: 25px;
+        }
+
+        #idle-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            transition: transform 0.5s ease;
+        }
+
+        .scribble-title {
+            font-family: var(--title-font, 'Luxurious Script', cursive);
+            font-size: min(10vh, 120px);
+            font-weight: 400;
+            color: var(--title-color, white);
+            margin-bottom: 2vh;
+            margin-top: 1vh;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            /* Gap handles ornaments distance */
+        }
+
+        .idle-branding-logo {
+            max-width: 500px;
+            max-height: 300px;
+            object-fit: contain;
+            margin-bottom: 3vh;
+            margin-top: 4vh;
+            display: none;
+            filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.6));
+        }
+
+        .names-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            margin: -10px 0;
+            /* Tighten space around ornaments */
+        }
+
+        .title-ornament {
+            height: min(6vh, 60px);
+            /* Specific height for better control */
+            width: auto;
+            object-fit: contain;
+            margin: 1vh 0;
+        }
+
+        .title-ornament:first-child {
+            height: min(8vh, 80px);
+            /* Top ornament is usually larger in these designs */
+            margin-bottom: 0.5vh;
+        }
+
+        .title-ornament:last-child {
+            height: min(4vh, 40px);
+            /* Bottom divider is thinner */
+            margin-top: 0.5vh;
+        }
+
+        .title-amp {
+            font-size: 0.7em;
+            /* Smaller ampersand */
+            opacity: 0.9;
+        }
+
+        .gold-ornament {
+            width: 180px;
+            margin-bottom: 15px;
+        }
+
+        .subtitle-premium {
+            font-family: 'Aref Ruqaa', serif;
+            color: #F0E5C7;
+            font-size: min(3vh, 32px);
+            color: var(--title-color, #F0E5C7);
+            max-width: 600px;
+            margin-bottom: 0.5vh;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .desc-premium {
+            font-family: 'Aref Ruqaa', serif;
+            font-size: min(1.8vh, 14px);
+            color: var(--desc-color, #CDCDCD);
+            max-width: 400px;
+            margin-bottom: 2vh;
+            line-height: 1.6;
+            letter-spacing: 0.3px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        /* INPUTS & FORM */
+        .form-container {
+            width: 100%;
+            max-width: 440px;
+        }
+
+        .input-group {
+            margin-bottom: 1.5vh;
+            text-align: left;
+        }
+
+        .input-group label {
+            font-size: min(1.5vh, 12px);
+            font-weight: 700;
+            color: var(--desc-color, #94a3b8);
+            margin-bottom: 0.5vh;
+            display: block;
+            text-transform: capitalize;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: min(1.5vh, 14px) min(2vh, 18px) min(1.5vh, 14px) 45px;
+            border-radius: 10px;
+            border: 1px solid rgba(197, 160, 89, 0.5);
+            font-size: min(2vh, 15px);
+            outline: none;
+            background: rgba(40, 30, 20, 0.6);
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent);
+            font-size: 18px;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .phone-prefix {
+            display: inline-block;
+            color: #CDCDCD;
+        }
+
+        .phone-input {
+            border-radius: 10px !important;
+            padding-left: 100px !important;
+        }
+
+        .prefix-overlay {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #fff;
+            font-weight: 700;
+            font-size: 14px;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .phone-input {
+            border-radius: 0 12px 12px 0 !important;
+            height: 55px;
+        }
+
+
+        /* KEYBOARD PREMIUM (DARK) */
+
+        .keyboard-row {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .key {
+            flex: 1;
+            height: 54px;
+            max-width: 85px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.95);
+            cursor: pointer;
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+            font-family: 'Aref Ruqaa', serif;
+        }
+
+        .key:active {
+            background: var(--accent) !important;
+            transform: scale(0.92);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(197, 160, 89, 0.5);
+        }
+
+        .key.wide {
+            max-width: 130px;
+            background: rgba(255, 255, 255, 0.15);
+            font-size: 17px;
+        }
+
+        /* Gold Action Keys (Next / Mode) */
+        .key.wide:last-child {
+            background: var(--gold-gradient) !important;
+            border: none;
+            color: white;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(197, 160, 89, 0.3);
+        }
+
+        .key.space {
+            flex: 3;
+            max-width: 450px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* STATES (READY, REVIEW, SUCCESS) */
+        /* DELIVERY SELECTOR */
+        .delivery-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 2vh;
+            width: 100%;
+            max-width: 440px;
+        }
+
+        .delivery-tab {
+            flex: 1;
+            padding: min(1.2vh, 12px);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(197, 160, 89, 0.3);
+            border-radius: 12px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            font-size: min(1.8vh, 14px);
+        }
+
+        .delivery-tab.active {
+            background: var(--gold-gradient);
+            border-color: transparent;
+            font-weight: 700;
+            box-shadow: 0 5px 15px rgba(197, 160, 89, 0.3);
+        }
+
+        .ui-state {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .ui-state.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+        }
+
+        /* RECORD BUTTON (FRAME 4) */
+        .btn-record-circle.recording {
+            animation: pulse-ring 1.5s infinite;
+            background: #e11d48 !important;
+        }
+
+        .btn-record-circle.recording::after {
+            border-color: #e11d48 !important;
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                box-shadow: 0 0 0 0px rgba(225, 29, 72, 0.5);
+            }
+
+            70% {
+                box-shadow: 0 0 0 15px rgba(225, 29, 72, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0px rgba(225, 29, 72, 0);
+            }
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+            margin-top: 40px;
+            justify-content: center;
+        }
+
+        .btn-action {
+            flex: 1;
+            padding: 22px;
+            border-radius: 15px;
+            font-weight: 800;
+            border: none;
+            cursor: pointer;
+            font-size: 22px;
+            transition: 0.3s;
+        }
+
+        .btn-retake {
+            background: #fff;
+            color: #ef4444;
+            border: 2px solid #fee2e2;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-retake:hover {
+            background: #fef2f2;
+            border-color: #fca5a5;
+        }
+
+        .btn-upload {
+            background: linear-gradient(135deg, #c5a059 0%, #d4af37 100%);
+            color: white;
+            box-shadow: 0 10px 25px rgba(197, 160, 89, 0.4);
+        }
+
+        .btn-upload:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(197, 160, 89, 0.5);
+        }
+
+        video,
+        canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        /* Webcam: object-fit contain agar tampil sesuai OBS preview (letterbox jika landscape) */
+        #webcam {
+            background: #000;
+            width: 100% !important;
+            height: 100% !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            object-fit: cover !important;
+            z-index: 20 !important;
+        }
+
+        #preview {
+            background: #000;
+        }
+
+        #drawing_canvas {
+            pointer-events: none;
+            /* No mirror for normal view */
+            z-index: 10;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .countdown-text {
+            margin-top: 15px;
+            font-weight: 700;
+            color: #475569;
+            font-size: 24px;
+        }
+
+        /* PROGRESS BORDER ANIMATION (GOLD GLOW) */
+        .timer-progress-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .progress-rect {
+            fill: none;
+            stroke: var(--accent, #c5a059);
+            stroke-width: 4;
+            stroke-linecap: round;
+            filter: drop-shadow(0 0 8px rgba(197, 160, 89, 0.8));
+            transition: none;
+        }
+
+        /* FLASH EFFECT */
+        #flash-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 10000;
+            transition: opacity 0.1s ease-out;
+        }
+
+        #flash-overlay.active {
+            opacity: 1;
+            transition: none;
+        }
+
+        /* RESPONSIVE DESIGN FOR SMALLER SCREENS */
+        @media (max-width: 1400px) {
+            .side-panel {
+                height: 75vh;
+                max-width: 30vw;
+            }
+
+            .scribble-title {
+                font-size: min(8vh, 90px);
+            }
+
+            .btn-action {
+                padding: 15px;
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .main-wrapper {
+                padding: 15px;
+                gap: 15px;
+            }
+
+            .side-panel {
+                height: 70vh;
+                max-width: 32vw;
+                padding: 40px 20px 30px 20px;
+            }
+
+            .scribble-title {
+                font-size: min(6vh, 60px);
+            }
+
+            .subtitle-premium {
+                font-size: 16px;
+            }
+
+            .keyboard-wrapper {
+                width: 100% !important;
+                border-radius: 20px !important;
+            }
+
+            .key {
+                height: 45px;
+                font-size: 16px;
+            }
+
+            .btn-primary,
+            .btn-start {
+                padding: 12px 24px !important;
+                font-size: 16px !important;
+            }
+
+            .side-panel .panel-footer {
+                font-size: 14px;
+            }
+
+            .wedding-logo {
+                max-width: 150px;
+            }
+
+            #idle-header {
+                margin-top: 5vh;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-wrapper {
+                padding: 10px;
+                gap: 10px;
+            }
+
+            .side-panel {
+                height: 65vh;
+                max-width: 33vw;
+                padding: 20px 10px 15px 10px;
+            }
+
+            .scribble-title {
+                font-size: min(5vh, 40px);
+            }
+
+            .desc-premium {
+                font-size: 40px;
+            }
+
+            .key {
+                height: 35px;
+                max-width: 50px;
+                font-size: 12px;
+            }
+
+            .keyboard-row {
+                gap: 4px;
+            }
+
+            .keyboard-wrapper {
+                padding: 10px !important;
+            }
+
+            .side-panel .panel-footer {
+                font-size: 10px;
+                margin-top: 5px;
+            }
+
+            #countdown-area {
+                font-size: 14px;
+            }
+
+            .btn-action {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            #ready-text,
+            #review-video-text,
+            #success-text {
+                font-size: 20px !important;
+            }
+
+            #ready-text span,
+            #review-video-text span,
+            #success-text span {
+                font-size: 14px !important;
+            }
+        }
+
+        /* ========================
+           STATE SPECIFIC STYLES
+           ======================== */
+        .state-form-active .side-panel {
+            opacity: 0;
+            pointer-events: none;
+            flex: 0;
+            width: 0;
+            padding: 0;
+            margin: 0;
+        }
+
+        .state-form-active .center-panel {
+            justify-content: center;
+        }
+
+        .state-form-active #idle-header {
+            margin-top: 4vh;
+        }
+
+        body.logo-top-left #idle-header .logo,
+        body.logo-top-left #idle-header .idle-branding-logo {
+            position: fixed;
+            top: 45px;
+            left: 30px;
+            transform: scale(0.6);
+            transform-origin: top left;
+            margin: 0 !important;
+            z-index: 100;
+        }
+
+        /* PERSISTENT BRANDING LOGO (Logo Lumea)
+           Ditampilkan secara persisten di pojok kiri bawah di semua halaman */
+        #bottom-left-logo {
+            display: block;
+            position: fixed;
+            bottom: 45px;
+            left: 45px;
+            width: min(15vh, 180px);
+            z-index: 100;
+            object-fit: contain;
+            pointer-events: none;
+            /* Menghindari menghalangi klik */
+        }
+
+        /* RESPONSIVE FINAL REVIEW PAGE */
+        .final-preview-container {
+            display: flex;
+            gap: min(2vw, 15px);
+            width: 95%;
+            max-width: 500px;
+            margin-bottom: 2vh;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .final-preview-box {
+            flex: 1;
+            aspect-ratio: 9 / 16;
+            background: #000;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            max-height: 42vh;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(197, 160, 89, 0.3);
+        }
+
+        .final-btn-row {
+            margin-top: 2vh !important;
+            gap: 15px !important;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .final-btn-row button {
+            font-size: min(2vh, 16px) !important;
+            padding: 10px 24px !important;
+        }
+
+        /* VERTICAL RESPONSIVENESS (HEIGHT-BASED MEDIA QUERIES) */
+        @media (max-height: 850px) {
+            .center-panel.keyboard-active #state-form {
+                transform: translateY(-18vh);
+            }
+            .center-panel.keyboard-active #state-form #idle-sub,
+            .center-panel.keyboard-active #state-form #desc-premium {
+                display: none !important;
+            }
+            .keyboard-wrapper {
+                bottom: 15px !important;
+                padding: 10px !important;
+                border-radius: 20px !important;
+            }
+            .key {
+                height: 40px !important;
+                font-size: 15px !important;
+            }
+            .key.wide {
+                font-size: 13px !important;
+            }
+            .center-panel.keyboard-active #state-form .input-wrapper input {
+                padding: 10px 15px 10px 45px !important;
+                font-size: 14px !important;
+            }
+            .center-panel.keyboard-active #state-form .input-wrapper input.phone-input {
+                height: 48px !important;
+                padding-left: 95px !important;
+            }
+            .center-panel.keyboard-active #state-form .btn-start {
+                margin-top: 2vh !important;
+            }
+            .final-preview-box {
+                max-height: 38vh !important;
+            }
+        }
+
+        @media (max-height: 680px) {
+            .center-panel.keyboard-active #state-form {
+                transform: translateY(-22vh);
+            }
+            .keyboard-wrapper {
+                bottom: 8px !important;
+                padding: 6px !important;
+                border-radius: 15px !important;
+            }
+            .key {
+                height: 32px !important;
+                font-size: 13px !important;
+                border-radius: 8px !important;
+            }
+            .key.wide {
+                font-size: 11px !important;
+            }
+            .center-panel.keyboard-active #state-form .input-wrapper input {
+                padding: 8px 12px 8px 45px !important;
+                font-size: 13px !important;
+            }
+            .center-panel.keyboard-active #state-form .input-wrapper input.phone-input {
+                height: 40px !important;
+                padding-left: 90px !important;
+            }
+            .center-panel.keyboard-active #state-form .btn-start {
+                margin-top: 1.5vh !important;
+                padding: 8px 24px !important;
+                font-size: 14px !important;
+            }
+            .final-preview-box {
+                max-height: 32vh !important;
+                border-radius: 10px !important;
+            }
+            .final-btn-row button {
+                padding: 8px 16px !important;
+                font-size: min(2vh, 13px) !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="state-idle">
+    <div id="flash-overlay"></div>
+
+    <div class="main-wrapper">
+
+        <!-- LEFT PANEL -->
+        <div class="side-panel" id="panel-left">
+            <div class="video-container" style="background: #000;">
+                <video id="loop-preview" autoplay muted playsinline loop
+                    style="width:100%; height:100%; object-fit:cover; z-index: 10; position: relative; opacity: 0; transition: opacity 0.5s;"
+                    onplaying="this.style.opacity=1; document.getElementById('label-left-overlay').classList.add('hidden')"
+                    onerror="console.error('Video Error (Result):', this.error)"></video>
+                <div id="label-left-overlay"
+                    style="color:rgba(255,255,255,0.3); font-weight:700; font-size:24px; position:absolute; z-index: 5;">
+                    Loading Preview...</div>
+            </div>
+            <div class="panel-footer" style="margin-top: auto; margin-bottom: 25px; font-size: 20px;">Preview Your
+                Moment</div>
+        </div>
+
+        <!-- CENTER PANEL -->
+        <div class="center-panel">
+            <div id="idle-header">
+                <div class="scribble-title logo" id="main-title" style="margin-bottom: 20px;">
+                    <img src="/before.png" alt="" class="title-ornament">
+                    <div class="names-row">
+                        <span>Audric</span>
+                        <span class="title-amp">&</span>
+                        <span>Catherine</span>
+                    </div>
+                    <img src="/after.png" alt="" class="title-ornament">
+                </div>
+                <script>
+                    (function () {
+                        try {
+                            const cached = localStorage.getItem('vb_config');
+                            if (cached) {
+                                const data = JSON.parse(cached);
+                                if (data.title) {
+                                    const titleRow = document.querySelector('.names-row');
+                                    if (titleRow) {
+                                        let formattedTitle = '';
+                                        if (data.title.includes('&')) {
+                                            const parts = data.title.split('&');
+                                            formattedTitle = '<span>' + parts[0].trim() + '</span> <span class="title-amp">&amp;</span> <span>' + parts.slice(1).join('&').trim() + '</span>';
+                                        } else {
+                                            formattedTitle = '<span>' + data.title + '</span>';
+                                        }
+                                        titleRow.innerHTML = formattedTitle;
+                                    }
+                                }
+                                if (data.idleHeadMode === 'logo' && data.logoUrl) {
+                                    document.write('<style>#main-title { display: none !important; } #branding-logo { display: block !important; }</style>');
+                                } else {
+                                    const mainTitleEl = document.getElementById('main-title');
+                                    if (mainTitleEl) mainTitleEl.style.visibility = 'visible';
+                                }
+                            }
+                        } catch (e) { }
+                    })();
+                </script>
+                <img id="branding-logo" src="" alt="Logo" class="idle-branding-logo">
+            </div>
+
+            <!-- STATE IDLE (FRAME 3) -> NOW JUST START BUTTON -->
+            <div id="state-idle" class="ui-state active">
+                <div class="welcome-container" style="display: flex; flex-direction: column; align-items: center;">
+                    <button class="btn-start" onclick="changeState('form')" style="margin-top: 2vh;">
+                        <span>START HERE</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- STATE FORM (NEW) -->
+            <div id="state-form" class="ui-state">
+                <div class="form-container"
+                    style="width: 100%; max-width: 800px; padding: 20px; display: flex; flex-direction: column; align-items: center;">
+
+                    <div class="subtitle-premium" id="idle-sub" style="margin-bottom: 10px;">A special moment awaits
+                        you!</div>
+                    <div class="desc-premium" id="desc-premium" style="text-align: center; margin-bottom: 15px;">Enter
+                        your details to unveil a personalized wedding experience.</div>
+                    <div class="input-group" style="width: 100%;">
+                        <label>Name</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="name" placeholder="Please input your name" inputmode="none"
+                                autocomplete="off" spellcheck="false" style="padding-left: 20px;">
+                        </div>
+                    </div>
+
+
+
+                    <div style="display: flex; justify-content: center;">
+                        <button class="btn-start" onclick="startCameraFlow()" style="margin-top: 4vh;">
+                            <span>SUBMIT</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STATE READY (FRAME 4) -->
+            <div id="state-ready" class="ui-state">
+                <div style="margin-bottom: 40px; text-align: center;">
+                    <h1
+                        style="font-size: min(5vh, 48px); color: #F0E5C7; font-weight: 700; margin-bottom: 10px; font-family: var(--body-font-dyn) !important;">
+                        Ready To Play Words?</h1>
+                    <p
+                        style="font-size: min(3vh, 28px); color: #F0E5C7; font-family: var(--body-font-dyn) !important; font-style: italic;">
+                        Write a simple letter to the Bride and Groom</p>
+                </div>
+                <h2 id="ready-text"
+                    style="font-size:34px; color:#F0E5C7; line-height:1.4; font-weight:700; margin-bottom:50px;">Get
+                    your pen and look at mirror. <br> <span style="color:#F0E5C7; font-size:24px; font-weight:400;">Hit
+                        the record button when you are ready.</span></h2>
+                <button class="btn-record-circle" id="btn-record" onclick="startRecording()"></button>
+                <div class="countdown-text"
+                    style="margin-top: 15px; font-weight: 700; color: #CDCDCD; font-size: 24px;">
+                    <span id="countdown-area">Start Recording</span>
+                </div>
+                <br>
+                <button class="btn-outline" onclick="changeState('idle')" style="margin-top: 20px;">
+                    BACK
+                </button>
+
+            </div>
+
+            <!-- STATE REVIEW VIDEO (NEW) -->
+            <div id="state-review-video" class="ui-state">
+                <h2 id="review-video-text"
+                    style="font-size:34px; color:#F0E5C7; line-height:1.4; font-weight:700; margin-bottom:10px;">Please
+                    review your video, <br> <span style="color:#CDCDCD; font-size:24px; font-weight:400;">you can RETAKE
+                        or NEXT.</span></h2>
+                <div class="btn-row" style="gap: 20px;">
+                    <button class="btn-outline" onclick="retakeVideo()">RETAKE</button>
+                    <button class="btn-primary" onclick="preparePhotoSession()">TAKE A PHOTO</button>
+                </div>
+            </div>
+
+            <!-- STATE READY PHOTO (NEW) -->
+            <div id="state-ready-photo" class="ui-state">
+                <div style="margin-bottom: 40px; text-align: center;">
+                    <h1
+                        style="font-size: min(5vh, 48px); color: #F0E5C7; font-weight: 700; margin-bottom: 10px; font-family: var(--body-font-dyn) !important;">
+                        Ready for Photo Session?</h1>
+                    <p
+                        style="font-size: min(3vh, 28px); color: #F0E5C7; font-family: var(--body-font-dyn) !important; font-style: italic;">
+                        Strike a beautiful pose for the camera</p>
+                </div>
+                <h2 id="ready-photo-text"
+                    style="font-size:34px; color:#F0E5C7; line-height:1.4; font-weight:700; margin-bottom:50px;">Look at
+                    the camera and smile. <br> <span style="color:#F0E5C7; font-size:24px; font-weight:400;">Hit the
+                        shutter button when you are ready.</span></h2>
+                <button class="btn-record-circle" id="btn-photo-shutter" onclick="startPhotoCountdown()"></button>
+                <div class="countdown-text"
+                    style="margin-top: 15px; font-weight: 700; color: #CDCDCD; font-size: 24px;">
+                    <span id="countdown-area-photo">Take a Photo</span>
+                </div>
+                <br>
+                <button class="btn-outline" onclick="changeState('review-video')" style="margin-top: 20px;">
+                    BACK
+                </button>
+            </div>
+
+            <!-- STATE REVIEW FINAL (NEW) -->
+            <div id="state-review-final" class="ui-state">
+                <h2 style="font-size: min(4vh, 28px); color:#F0E5C7; font-weight:700; margin-bottom: 2vh;">Review your session.</h2>
+                <div class="final-preview-container">
+                    <div class="final-preview-box">
+                        <video id="final-video-preview" autoplay muted loop
+                            style="width:100%; height:100%; object-fit:cover;"></video>
+                        <span
+                            style="position:absolute; bottom:10px; left:10px; background:rgba(0,0,0,0.5); color:#fff; padding:2px 8px; border-radius:5px; font-size:10px;">VIDEO</span>
+                    </div>
+                    <div class="final-preview-box">
+                        <img id="final-photo-preview" style="width:100%; height:100%; object-fit:cover;">
+                        <span
+                            style="position:absolute; bottom:10px; left:10px; background:rgba(0,0,0,0.5); color:#fff; padding:2px 8px; border-radius:5px; font-size:10px;">PHOTO</span>
+                    </div>
+                </div>
+                <div class="btn-row final-btn-row">
+                    <button class="btn-outline" onclick="retakeVideo()">RETAKE ALL</button>
+                    <button class="btn-outline" onclick="retakePhotoOnly()">RETAKE PHOTO</button>
+                    <button class="btn-primary" onclick="submitVideo()">UPLOAD BOTH</button>
+                </div>
+            </div>
+
+            <!-- STATE SUCCESS (FRAME 6) -->
+            <div id="state-processing" class="ui-state" style="text-align: center;">
+                <h2 id="success-text" style="font-size:30px; color:#F0E5C7; line-height:1.5; font-weight:600; margin-bottom: 15px;">
+                    Your memories are ready! ✨<br>
+                    <span style="color:#CDCDCD; font-size:18px; font-weight:400;">Scan this QR code to view and download your video and photo.</span>
+                </h2>
+                
+                <!-- QR Code Display -->
+                <div id="qr-container" style="margin: 20px auto; padding: 15px; background: white; border-radius: 16px; width: 230px; height: 230px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                    <img id="qr-image" style="width: 200px; height: 200px; display: block;" src="" alt="QR Code">
+                </div>
+                
+                <h2 style="font-size:20px; color:#CDCDCD; font-weight:400; margin-top: 10px;">
+                    <span style="font-size:32px; font-family:'Luxurious Script', cursive;">Thank you for being part of this moment</span>
+                </h2>
+
+                <div style="margin-top: 25px;">
+                    <button class="btn-primary" onclick="resetApp()" style="padding: 10px 35px; font-size: 16px; border-radius: 50px; min-width: 150px;">Done / Selesai</button>
+                    <div id="auto-reset-countdown" style="margin-top: 12px; font-size: 13px; color: #a3a3a3;">Auto-reset in 45s</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <div class="side-panel" id="panel-right">
+            <div class="video-container" style="background: #000;">
+                <video id="webcam" autoplay muted playsinline class="hidden" style="z-index: 20;"></video>
+                <canvas id="output_canvas" class="hidden"></canvas>
+                <canvas id="drawing_canvas"></canvas>
+                <img id="photo-preview-large" class="hidden"
+                    style="width:100%; height:100%; object-fit:cover; z-index: 15; position: absolute; top:0; left:0;"
+                    alt="Photo Preview Large">
+                <video id="preview" autoplay muted playsinline loop
+                    style="width:100%; height:100%; object-fit:cover; z-index: 10; position: relative; opacity: 0; transition: opacity 0.5s;"
+                    onplaying="this.style.opacity=1; document.getElementById('label-right-overlay').classList.add('hidden')"
+                    onerror="console.error('Video Error (Tutorial):', this.error)"></video>
+                <div id="label-right-overlay"
+                    style="color:rgba(255,255,255,0.3); font-weight:700; font-size:24px; position:absolute; z-index: 5;">
+                    Loading Tutorial...</div>
+                <!-- TIMER SVG (MOVED TO END FOR TOP STACKING) -->
+                <svg class="timer-progress-container hidden" id="svg-timer">
+                    <rect class="progress-rect" id="rect-timer" x="5" y="5" rx="15" ry="15"></rect>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Tempat Logo Lumea (Kiri Bawah) - Ditempatkan secara persisten di luar state-state agar tidak blink/kedip -->
+        <img id="bottom-left-logo" src="/logo-lumea.png" alt="Bottom Logo">
+    </div>
+
+    <!-- KEYBOARD (MOVED TO BEFORE SCRIPT TO AVOID NULL REFERENCES) -->
+    <div class="keyboard-wrapper" id="kbd-container">
+        <div class="keyboard-row" id="kbd-1"></div>
+        <div class="keyboard-row" id="kbd-2"></div>
+        <div class="keyboard-row" id="kbd-3"></div>
+        <div class="keyboard-row">
+            <div class="key wide" onclick="kMode()">123</div>
+            <div class="key space" onclick="kPress(' ')"></div>
+            <div class="key wide" onclick="kNext()">➔</div>
+        </div>
+    </div>
+
+    <script>
+        // --- KEYBOARD SYSTEM ---
+        let activeInput = null;
+        let caps = true;
+        let num = false;
+        const row1 = "QWERTYUIOP".split(''), row2 = "ASDFGHJKL".split(''), row3 = "ZXCVBNM".split('');
+        const nums = "1234567890-/@:();\"+!?. ,*#&".split('');
+        let deliveryMethod = 'whatsapp'; // Default, but we collect both now
+
+        function drawKbd() {
+            const draw = (id, keys) => {
+                const el = document.getElementById(id); el.innerHTML = '';
+                if (id === 'kbd-3') el.innerHTML += `<div class="key wide" onclick="kCaps()">⬆️</div>`;
+                keys.forEach(k => { el.innerHTML += `<div class="key" onclick="kPress('${k}')">${caps ? k : k.toLowerCase()}</div>`; });
+                if (id === 'kbd-3') el.innerHTML += `<div class="key wide" onclick="kBks()">⌫</div>`;
+            };
+
+            let r1 = num ? nums.slice(0, 10) : row1;
+            let r2 = num ? nums.slice(10, 19) : row2;
+            let r3 = num ? nums.slice(19, 26) : row3;
+
+
+
+            draw('kbd-1', r1);
+            draw('kbd-2', r2);
+            draw('kbd-3', r3);
+        }
+        drawKbd();
+
+        document.getElementById('name').addEventListener('click', () => {
+            activeInput = document.getElementById('name');
+            num = false;
+            drawKbd();
+            document.getElementById('kbd-container').classList.add('show');
+            document.querySelector('.center-panel').classList.add('keyboard-active');
+        });
+
+        function kPress(k) { if (activeInput) activeInput.value += k; }
+        function kBks() { if (activeInput) activeInput.value = activeInput.value.slice(0, -1); }
+        function kCaps() { caps = !caps; drawKbd(); }
+        function kMode() { num = !num; drawKbd(); }
+        function kNext() {
+            activeInput = null;
+            document.getElementById('kbd-container').classList.remove('show');
+            document.querySelector('.center-panel').classList.remove('keyboard-active');
+        }
+
+        // Hide keyboard when clicking outside inputs (on center panel)
+        document.querySelector('.center-panel').addEventListener('click', (e) => {
+            if (e.target.tagName !== 'INPUT' && !e.target.closest('.keyboard-wrapper')) {
+                document.getElementById('kbd-container').classList.remove('show');
+                document.querySelector('.center-panel').classList.remove('keyboard-active');
+            }
+        });
+
+        // --- STATE & UI TRANSITION ---
+        function changeState(state) {
+            window.currentState = state;
+
+            // Update state classes on body
+            document.body.classList.remove('state-idle', 'state-form', 'state-ready', 'state-ready-photo', 'state-recording', 'state-review-video', 'state-review-final', 'state-processing');
+            document.body.classList.add('state-' + state);
+
+            document.querySelectorAll('.ui-state').forEach(el => el.classList.remove('active'));
+            document.getElementById('state-' + state).classList.add('active');
+
+            const largeImg = document.getElementById('photo-preview-large');
+            if (largeImg) {
+                if (state === 'review-final') {
+                    largeImg.classList.remove('hidden');
+                } else {
+                    largeImg.classList.add('hidden');
+                }
+            }
+
+            const leftPanel = document.getElementById('panel-left');
+            const rightPanel = document.getElementById('panel-right');
+            const rightLabel = document.getElementById('label-right-overlay');
+            const idleHeader = document.getElementById('idle-header');
+
+            if (state === 'form') {
+                document.body.classList.add('state-form-active');
+            } else {
+                document.body.classList.remove('state-form-active');
+            }
+
+            if (state === 'idle') {
+                document.body.classList.remove('logo-top-left');
+            } else if (state === 'form') {
+                document.body.classList.add('logo-top-left');
+            } else {
+                document.body.classList.add('logo-top-left');
+            }
+
+            // idleHeader is ALWAYS visible now, we just hide its children using CSS
+            if (idleHeader) idleHeader.classList.remove('hidden');
+
+            const webcamEl = document.getElementById('webcam');
+
+            if (state === 'idle' || state === 'form') {
+                if (state === 'idle') {
+                    if (window.showLeftPanel !== false) {
+                        leftPanel.classList.remove('hidden-panel');
+                    } else {
+                        leftPanel.classList.add('hidden-panel');
+                    }
+
+                    if (window.showRightPanel !== false) {
+                        rightPanel.classList.remove('hidden-panel');
+                    } else {
+                        rightPanel.classList.add('hidden-panel');
+                    }
+                } else {
+                    leftPanel.classList.add('hidden-panel');
+                    rightPanel.classList.add('hidden-panel');
+                }
+
+                rightLabel.classList.remove('hidden');
+
+                // Tampilkan video jika URL-nya ada
+                const previewVid = document.getElementById('preview');
+                const loopVid = document.getElementById('loop-preview');
+
+                if (webcamEl) webcamEl.classList.add('hidden');
+
+                if (previewVid.src) {
+                    previewVid.classList.remove('hidden');
+                    previewVid.play().catch(e => console.log("Tutorial play error:", e));
+                }
+
+                if (loopVid.src) {
+                    loopVid.classList.remove('hidden');
+                    loopVid.play().catch(e => console.log("Result preview play error:", e));
+                }
+            } else {
+                leftPanel.classList.add('hidden-panel');
+                rightPanel.classList.remove('hidden-panel');
+                rightLabel.classList.add('hidden');
+                if (state === 'ready' || state === 'ready-photo') {
+                    if (webcamEl) webcamEl.classList.remove('hidden');
+                    document.getElementById('preview').classList.add('hidden');
+                    if (state === 'ready') {
+                        // Reset Button UI
+                        const btn = document.getElementById('btn-record');
+                        if (btn) {
+                            btn.classList.remove('recording');
+                            btn.style.pointerEvents = 'auto';
+                        }
+                        document.getElementById('countdown-area').innerText = 'Start Recording';
+                    } else {
+                        // Reset Shutter Button UI
+                        const btn = document.getElementById('btn-photo-shutter');
+                        if (btn) {
+                            btn.style.pointerEvents = 'auto';
+                        }
+                        document.getElementById('countdown-area-photo').innerText = 'Take a Photo';
+                    }
+                } else {
+                    if (webcamEl) webcamEl.classList.add('hidden');
+                    if (state === 'review-video') {
+                        document.getElementById('preview').classList.remove('hidden');
+                    } else if (state === 'review-final') {
+                        document.getElementById('preview').classList.add('hidden');
+                    } else {
+                        document.getElementById('preview').classList.remove('hidden');
+                    }
+                }
+            }
+        }
+
+        // --- LOAD CONFIG ---
+        function preloadImage(url) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve(url);
+                img.onerror = () => resolve(url); // Don't block loading if one fails
+                img.src = url;
+            });
+        }
+
+        function applyCachedTheme() {
+            try {
+                const cached = localStorage.getItem('vb_config');
+                if (!cached) return;
+                const data = JSON.parse(cached);
+
+                // Set global state variables
+                window.showLeftPanel = data.showLeftPanel !== false;
+                window.showRightPanel = data.showRightPanel !== false;
+                window.enableGesture = data.enableGesture !== false;
+                window.recordingDuration = data.recordingDuration || 15;
+                window.readyCdText = data.readyCdText || 'Recording Begins in...';
+                window.recordingCdText = data.recordingCdText || 'Recording...';
+                window.photoCdText = data.photoCdText || 'Taking Photo in...';
+
+                // Immediately show/hide Left/Right panels based on cache
+                const leftPanel = document.getElementById('panel-left');
+                const rightPanel = document.getElementById('panel-right');
+
+                if (leftPanel) {
+                    if (window.showLeftPanel) leftPanel.classList.remove('hidden-panel');
+                    else leftPanel.classList.add('hidden-panel');
+                }
+                if (rightPanel) {
+                    if (window.showRightPanel) rightPanel.classList.remove('hidden-panel');
+                    else rightPanel.classList.add('hidden-panel');
+                }
+
+                // Immediately update titles & subtitles
+                const titleRow = document.querySelector('.names-row');
+                if (titleRow && data.title) {
+                    let formattedTitle = '';
+                    if (data.title.includes('&')) {
+                        const parts = data.title.split('&');
+                        formattedTitle = `<span>${parts[0].trim()}</span> <span class="title-amp">&amp;</span> <span>${parts.slice(1).join('&').trim()}</span>`;
+                    } else {
+                        formattedTitle = `<span>${data.title}</span>`;
+                    }
+                    titleRow.innerHTML = formattedTitle;
+                }
+
+                const subEl = document.getElementById('idle-sub');
+                if (subEl && data.subtitle) subEl.innerText = data.subtitle;
+
+                const descEl = document.getElementById('desc-premium');
+                if (descEl && data.descPremium) descEl.innerText = data.descPremium;
+
+                const startBtn = document.getElementById('start-btn-text');
+                if (startBtn && data.startText) startBtn.innerText = data.startText;
+
+                const logoEl = document.getElementById('main-logo');
+                if (logoEl && data.logoUrl) {
+                    logoEl.src = data.logoUrl;
+                }
+
+                const brandingLogoEl = document.getElementById('branding-logo');
+                if (brandingLogoEl && data.logoUrl) {
+                    brandingLogoEl.src = data.logoUrl;
+                }
+            } catch (e) {
+                console.warn("Cached theme apply failed:", e);
+            }
+        }
+
+        async function applyTheme() {
+            try {
+                const res = await fetch('/api/config');
+                const data = await res.json();
+                localStorage.setItem('vb_config', JSON.stringify(data));
+
+                // 1. Preload Critical Images in Parallel
+                const criticalAssets = [];
+                if (data.bgImageUrl) criticalAssets.push(preloadImage(data.bgImageUrl));
+                if (data.frameImageUrl) criticalAssets.push(preloadImage(data.frameImageUrl));
+                if (data.logoUrl) criticalAssets.push(preloadImage(data.logoUrl));
+                try {
+                    await Promise.all(criticalAssets);
+                } catch (e) { console.warn("Asset preload failed:", e); }
+
+                // 2. Update Logo & Title (Only if different)
+                const logoEl = document.getElementById('main-logo');
+                if (logoEl && data.logoUrl) {
+                    const targetLogo = new URL(data.logoUrl, window.location.origin).href;
+                    if (logoEl.src !== targetLogo) logoEl.src = data.logoUrl;
+                }
+
+                const titleRow = document.querySelector('.names-row');
+                if (titleRow && data.title) {
+                    let formattedTitle = '';
+                    if (data.title.includes('&')) {
+                        const parts = data.title.split('&');
+                        formattedTitle = `<span>${parts[0].trim()}</span> <span class="title-amp">&amp;</span> <span>${parts.slice(1).join('&').trim()}</span>`;
+                    } else {
+                        formattedTitle = `<span>${data.title}</span>`;
+                    }
+                    if (titleRow.innerHTML !== formattedTitle) titleRow.innerHTML = formattedTitle;
+                }
+
+                // Toggle Header Mode (Title vs Logo)
+                const mainTitleEl = document.getElementById('main-title');
+                const brandingLogoEl = document.getElementById('branding-logo');
+
+                if (data.idleHeadMode === 'logo' && data.logoUrl) {
+                    if (mainTitleEl && !mainTitleEl.classList.contains('hidden')) mainTitleEl.classList.add('hidden');
+                    if (brandingLogoEl) {
+                        const targetSrc = new URL(data.logoUrl, window.location.origin).href;
+                        if (brandingLogoEl.src !== targetSrc) brandingLogoEl.src = data.logoUrl;
+                        if (brandingLogoEl.style.display !== 'block') brandingLogoEl.style.display = 'block';
+                    }
+                } else {
+                    if (mainTitleEl && mainTitleEl.classList.contains('hidden')) mainTitleEl.classList.remove('hidden');
+                    if (brandingLogoEl && brandingLogoEl.style.display !== 'none') brandingLogoEl.style.display = 'none';
+                }
+
+                const subEl = document.getElementById('idle-sub');
+                if (subEl && data.subtitle && subEl.innerText !== data.subtitle) subEl.innerText = data.subtitle;
+
+                const descEl = document.getElementById('desc-premium');
+                if (descEl && data.descPremium && descEl.innerText !== data.descPremium) descEl.innerText = data.descPremium;
+
+                const startBtn = document.getElementById('start-btn-text');
+                if (startBtn && data.startText && startBtn.innerText !== data.startText) startBtn.innerText = data.startText;
+
+                // Update Instruction Texts (Only if different)
+                const defaults = {
+                    ready: "Get your pen and look at mirror. <br> Hit the record button when you are ready.",
+                    review: "Please review your video, <br> you can RETAKE or UPLOAD.",
+                    success: "Your video is still processing, <br> we will notify on your WhatsApp number when is done. <br><br> Thank You"
+                };
+
+                const readyEl = document.getElementById('ready-text');
+                const targetReady = data.readyText || defaults.ready;
+                if (readyEl && readyEl.innerHTML !== targetReady) readyEl.innerHTML = targetReady;
+
+                const reviewEl = document.getElementById('review-video-text');
+                const targetReview = data.reviewText || defaults.review;
+                if (reviewEl && reviewEl.innerHTML !== targetReview) reviewEl.innerHTML = targetReview;
+
+                const successEl = document.getElementById('success-text');
+                const targetSuccess = data.successText || defaults.success;
+                if (successEl && successEl.innerHTML !== targetSuccess) successEl.innerHTML = targetSuccess;
+
+                // 3. Smart Video Asset Updates (Prevent infinite reload cycle)
+                const tutorialVid = document.getElementById('preview');
+                const resultVid = document.getElementById('loop-preview');
+
+                if (data.tutorialVideoUrl) {
+                    const cleanSrc = tutorialVid.src ? tutorialVid.src.split('?')[0] : '';
+                    const targetUrl = new URL(data.tutorialVideoUrl, window.location.origin).href;
+                    if (cleanSrc !== targetUrl) {
+                        console.log("[THEME] Loading Tutorial:", targetUrl);
+                        tutorialVid.src = targetUrl;
+                        tutorialVid.muted = true;
+                        tutorialVid.load();
+                        tutorialVid.play().catch(e => console.error("Play error:", e));
+                    }
+                }
+                if (data.resultVideoUrl && resultVid) {
+                    const cleanSrc = resultVid.src ? resultVid.src.split('?')[0] : '';
+                    const targetUrl = new URL(data.resultVideoUrl, window.location.origin).href;
+                    if (cleanSrc !== targetUrl) {
+                        console.log("[THEME] Loading Result:", targetUrl);
+                        resultVid.src = targetUrl;
+                        resultVid.muted = true;
+                        resultVid.load();
+                        resultVid.play().catch(e => console.error("Play error:", e));
+                    }
+                }
+
+                // 4. Optimized CSS Variable Updates (Prevent style flashing)
+                const rootStyle = document.documentElement.style;
+                if (data.bgImageUrl) {
+                    const targetBg = `url("${data.bgImageUrl}")`;
+                    if (document.body.style.backgroundImage !== targetBg) {
+                        document.body.style.backgroundImage = targetBg;
+                        document.body.style.backgroundSize = 'cover';
+                    }
+                } else {
+                    const targetGrad = `radial-gradient(circle at center, var(--bg-1) 0%, var(--bg-2) 100%)`;
+                    if (document.body.style.backgroundImage !== targetGrad) {
+                        document.body.style.backgroundImage = targetGrad;
+                    }
+                }
+
+                if (data.frameImageUrl) {
+                    const targetFrame = `url("${data.frameImageUrl}")`;
+                    if (rootStyle.getPropertyValue('--frame-image') !== targetFrame) {
+                        rootStyle.setProperty('--frame-image', targetFrame);
+                    }
+                }
+
+                if (data.accentColor && rootStyle.getPropertyValue('--accent') !== data.accentColor) rootStyle.setProperty('--accent', data.accentColor);
+                if (data.titleColor && rootStyle.getPropertyValue('--title-color') !== data.titleColor) rootStyle.setProperty('--title-color', data.titleColor);
+                if (data.descColor && rootStyle.getPropertyValue('--desc-color') !== data.descColor) rootStyle.setProperty('--desc-color', data.descColor);
+
+                const targetFrameColor = data.frameColor || 'rgba(30, 41, 59, 0.95)';
+                if (rootStyle.getPropertyValue('--frame') !== targetFrameColor) rootStyle.setProperty('--frame', targetFrameColor);
+
+                const bg1 = data.bgColor1 || '#fdfbfb';
+                if (rootStyle.getPropertyValue('--bg-1') !== bg1) rootStyle.setProperty('--bg-1', bg1);
+
+                const bg2 = data.bgColor2 || '#ebedee';
+                if (rootStyle.getPropertyValue('--bg-2') !== bg2) rootStyle.setProperty('--bg-2', bg2);
+
+                const fontFamily = data.fontFamily || "'Aref Ruqaa', serif";
+                if (rootStyle.getPropertyValue('--body-font-dyn') !== fontFamily) rootStyle.setProperty('--body-font-dyn', fontFamily);
+
+                window.enableGesture = data.enableGesture !== false;
+                window.recordingDuration = data.recordingDuration || 15;
+                window.readyCdText = data.readyCdText || 'Recording Begins in...';
+                window.recordingCdText = data.recordingCdText || 'Recording...';
+                window.photoCdText = data.photoCdText || 'Taking Photo in...';
+                window.showLeftPanel = data.showLeftPanel !== false;
+                window.showRightPanel = data.showRightPanel !== false;
+
+                // Re-apply current state if currently idle/form to immediately reflect left/right panel toggle updates
+                if (window.currentState === 'idle') {
+                    changeState('idle');
+                }
+
+                // Update Font if provided
+                if (data.fontUrl) {
+                    let link = document.getElementById('dynamic-font');
+                    if (!link) {
+                        link = document.createElement('link');
+                        link.id = 'dynamic-font';
+                        link.rel = 'stylesheet';
+                        document.head.appendChild(link);
+                    }
+                    if (link.href !== data.fontUrl) link.href = data.fontUrl;
+                }
+                if (data.fontFamily || data.titleFontFamily) {
+                    let styleParams = document.getElementById('dynamic-font-styles');
+                    if (!styleParams) {
+                        styleParams = document.createElement('style');
+                        styleParams.id = 'dynamic-font-styles';
+                        document.head.appendChild(styleParams);
+                    }
+
+                    styleParams.innerHTML = `
+                        :root { 
+                            --title-font-dyn: ${data.titleFontFamily || "'Luxurious Script', cursive"}; 
+                            --body-font-dyn: ${data.fontFamily || "'Aref Ruqaa', serif"};
+                        }
+                        body, input, button, textarea, .subtitle-premium, .desc-premium, .panel-footer, .ui-state h2, .delivery-tab {
+                            font-family: var(--body-font-dyn) !important;
+                        }
+                        .scribble-title, .scribble-title span, .names-row, .names-row span {
+                            font-family: var(--title-font-dyn) !important;
+                        }
+                        #countdown-area, .countdown-text {
+                            font-family: var(--body-font-dyn) !important;
+                            font-style: italic;
+                        }
+                        #countdown-val {
+                            font-family: 'Roboto', sans-serif !important;
+                        }
+                    `;
+                }
+
+                // Set initial state
+                changeState('idle');
+
+            } catch (e) {
+                console.error("Theme apply error:", e);
+            }
+        }
+        applyCachedTheme();
+        applyTheme();
+
+        // --- BOOTH LOGIC ---
+        let stream, mediaRecorder, recordedChunks = [], videoBlob, photoBlob, isProcessing = false;
+        const webcam = document.getElementById('webcam'), preview = document.getElementById('preview');
+        const drawing = document.getElementById('drawing_canvas'), dCtx = drawing.getContext('2d');
+
+        async function startCameraFlow() {
+            const n = document.getElementById('name').value;
+            if (!n) return alert("Please input your name!");
+            try {
+                // Cari OBS Virtual Camera secara eksplisit
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                const obsCamera = devices.find(d =>
+                    d.kind === 'videoinput' && d.label.toLowerCase().includes('obs')
+                );
+
+                // Paksa resolusi 1080x1920 — tanpa ini browser hanya minta 360x634 (default)
+                // yang menyebabkan OBS driver crop frame → terlihat zoom
+                const videoConstraints = obsCamera
+                    ? {
+                        deviceId: { exact: obsCamera.deviceId },
+                        width: { exact: 1080 },
+                        height: { exact: 1920 },
+                        resizeMode: 'none'
+                    }
+                    : { width: { exact: 1080 }, height: { exact: 1920 }, resizeMode: 'none' };
+
+                console.log('Kamera dipilih:', obsCamera ? obsCamera.label : 'Default Camera');
+                stream = await navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true });
+                webcam.srcObject = stream;
+
+                webcam.onloadedmetadata = () => {
+                    const vw = webcam.videoWidth, vh = webcam.videoHeight;
+                    console.log(`[Camera] Resolusi: ${vw}x${vh} | Rasio: ${(vw / vh).toFixed(4)}`);
+                    const track = stream.getVideoTracks()[0];
+                    console.log('[Camera] Track settings:', JSON.stringify(track.getSettings()));
+                };
+
+                changeState('ready');
+                if (window.enableGesture) initHandTracking();
+            } catch (e) { alert("Camera Error: Check permissions."); console.error(e); }
+        }
+
+        let hands = null;
+        function initHandTracking() {
+            hands = new Hands({ locateFile: (f) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${f}` });
+            hands.setOptions({ maxNumHands: 1, modelComplexity: 1, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
+            hands.onResults(onRes);
+            isProcessing = true;
+            webcam.onloadedmetadata = () => {
+                drawing.width = webcam.videoWidth; drawing.height = webcam.videoHeight;
+                loop();
+            };
+        }
+
+        let px = null, py = null;
+        function onRes(res) {
+            if (!isProcessing) return;
+            if (res.multiHandLandmarks?.length > 0) {
+                const lm = res.multiHandLandmarks[0];
+                const tip = lm[8], mcp = lm[5], mid = lm[12];
+
+                // Gesture logic: Index finger up, middle finger down
+                const isDraw = tip.y < mcp.y - 0.04 && mid.y > lm[10].y;
+
+                // Coordinate Smoothing
+                const rawX = tip.x * drawing.width;
+                const rawY = tip.y * drawing.height;
+
+                const cx = px ? px * 0.4 + rawX * 0.6 : rawX;
+                const cy = py ? py * 0.4 + rawY * 0.6 : rawY;
+
+                if (isDraw) {
+                    if (px) {
+                        dCtx.beginPath();
+                        dCtx.moveTo(px, py);
+                        dCtx.lineTo(cx, cy);
+
+                        // Premium Glow Effect
+                        const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+                        dCtx.strokeStyle = accent || "#c5a059";
+                        dCtx.lineWidth = 14;
+                        dCtx.lineCap = "round";
+                        dCtx.lineJoin = "round";
+
+                        dCtx.shadowBlur = 10;
+                        dCtx.shadowColor = accent || "#c5a059";
+
+                        dCtx.stroke();
+
+                        // Add an extra inner white line for a "light pen" effect
+                        dCtx.beginPath();
+                        dCtx.moveTo(px, py);
+                        dCtx.lineTo(cx, cy);
+                        dCtx.strokeStyle = "#ffffff";
+                        dCtx.lineWidth = 4;
+                        dCtx.shadowBlur = 0;
+                        dCtx.stroke();
+                    }
+                    px = cx; py = cy;
+                } else { px = null; py = null; }
+            }
+        }
+        async function loop() { if (isProcessing) await hands.send({ image: webcam }); requestAnimationFrame(loop); }
+
+        function startRecording() {
+            // Fase 1: Persiapan 3, 2, 1
+            let preTime = 3;
+            document.getElementById('btn-record').style.pointerEvents = 'none'; // Disable double click
+            document.getElementById('countdown-area').innerHTML = `${window.readyCdText} <span id="countdown-val">${preTime}</span>`;
+
+            const preTimer = setInterval(() => {
+                preTime--;
+                document.getElementById('countdown-val').innerText = preTime;
+                if (preTime <= 0) {
+                    clearInterval(preTimer);
+                    // Fase 2: Mulai Rekam 15 Detik
+                    actuallyStartRecording();
+                }
+            }, 1000);
+        }
+
+        function actuallyStartRecording() {
+            recordedChunks = [];
+            document.getElementById('btn-record').classList.add('recording');
+            const duration = window.recordingDuration || 15;
+            document.getElementById('countdown-area').innerHTML = `${window.recordingCdText} <span id="countdown-val">${duration}</span>`;
+
+            // Tampilkan & Reset Timer Bar (Dinamis)
+            const svgTimer = document.getElementById('svg-timer');
+            const rectTimer = document.getElementById('rect-timer');
+            svgTimer.classList.remove('hidden');
+
+            setTimeout(() => {
+                const parent = svgTimer.parentElement;
+                const offset = 10; // Padding agar glow tidak terpotong
+                const w = parent.clientWidth - offset;
+                const h = parent.clientHeight - offset;
+
+                rectTimer.setAttribute('width', w);
+                rectTimer.setAttribute('height', h);
+                rectTimer.setAttribute('x', offset / 2);
+                rectTimer.setAttribute('y', offset / 2);
+
+                const perimeter = 2 * (w + h);
+                rectTimer.style.strokeDasharray = perimeter;
+                rectTimer.style.strokeDashoffset = 0;
+                rectTimer.style.transition = 'none'; // Reset transition
+                rectTimer.offsetHeight; // Force reflow
+                rectTimer.style.transition = `stroke-dashoffset ${duration}s linear`;
+                rectTimer.style.strokeDashoffset = perimeter;
+            }, 50);
+
+            const rc = document.createElement('canvas'); const rctx = rc.getContext('2d');
+            let isRec = true;
+            const rloop = () => {
+                if (!isRec) return;
+                rc.width = webcam.videoWidth; rc.height = webcam.videoHeight;
+                rctx.save();
+                // Removed mirror logic for 'Normal' recording
+                rctx.drawImage(webcam, 0, 0);
+                if (window.enableGesture) rctx.drawImage(drawing, 0, 0);
+                rctx.restore();
+                requestAnimationFrame(rloop);
+            };
+            rloop();
+
+            const cs = rc.captureStream(30);
+            const at = stream.getAudioTracks()[0]; if (at) cs.addTrack(at);
+            mediaRecorder = new MediaRecorder(cs, {
+                mimeType: 'video/webm;codecs=h264',
+                videoBitsPerSecond: 8000000 // 8 Mbps untuk kualitas jernih kristal
+            });
+            mediaRecorder.ondataavailable = (e) => recordedChunks.push(e.data);
+            mediaRecorder.onstop = () => {
+                isRec = false;
+                videoBlob = new Blob(recordedChunks, { type: 'video/webm' });
+                preview.src = URL.createObjectURL(videoBlob);
+                document.getElementById('final-video-preview').src = preview.src;
+                svgTimer.classList.add('hidden');
+                changeState('review-video');
+            };
+            mediaRecorder.start();
+
+            let t = duration;
+            const timer = setInterval(() => {
+                t--;
+                document.getElementById('countdown-val').innerText = t;
+                if (t <= 0) {
+                    clearInterval(timer);
+                    mediaRecorder.stop();
+                    document.getElementById('btn-record').classList.remove('recording');
+                    document.getElementById('btn-record').style.pointerEvents = 'auto';
+                }
+            }, 1000);
+        }
+
+        function retakeVideo() {
+            dCtx.clearRect(0, 0, 10000, 10000);
+            videoBlob = null;
+            photoBlob = null;
+            changeState('ready');
+        }
+
+        function retakePhotoOnly() {
+            photoBlob = null;
+            preparePhotoSession();
+        }
+
+        function preparePhotoSession() {
+            changeState('ready-photo');
+            document.getElementById('webcam').classList.remove('hidden');
+            document.getElementById('preview').classList.add('hidden');
+            const btn = document.getElementById('btn-photo-shutter');
+            if (btn) btn.style.pointerEvents = 'auto';
+            const area = document.getElementById('countdown-area-photo');
+            if (area) area.innerText = 'Take a Photo';
+        }
+
+        function startPhotoCountdown() {
+            let t = 3;
+            const area = document.getElementById('countdown-area-photo');
+            if (area) area.innerHTML = `${window.photoCdText} <span id="countdown-val-photo">${t}</span>`;
+            const btn = document.getElementById('btn-photo-shutter');
+            if (btn) btn.style.pointerEvents = 'none';
+
+            const timer = setInterval(() => {
+                t--;
+                const valEl = document.getElementById('countdown-val-photo');
+                if (valEl) valEl.innerText = t;
+                if (t <= 0) {
+                    clearInterval(timer);
+                    takePhoto();
+                }
+            }, 1000);
+        }
+
+        function takePhoto() {
+            // Flash Effect
+            const flash = document.getElementById('flash-overlay');
+            flash.classList.add('active');
+            setTimeout(() => flash.classList.remove('active'), 100);
+
+            // Capture from rc canvas (already used in recording loop)
+            const rc = document.createElement('canvas');
+            rc.width = webcam.videoWidth;
+            rc.height = webcam.videoHeight;
+            const rctx = rc.getContext('2d');
+            rctx.drawImage(webcam, 0, 0);
+            if (window.enableGesture) rctx.drawImage(drawing, 0, 0);
+
+            rc.toBlob((blob) => {
+                photoBlob = blob;
+                const url = URL.createObjectURL(blob);
+                document.getElementById('final-photo-preview').src = url;
+                document.getElementById('photo-preview-large').src = url;
+                changeState('review-final');
+                document.getElementById('btn-record').style.pointerEvents = 'auto';
+            }, 'image/jpeg', 0.95);
+        }
+
+        let autoResetTimer = null;
+
+        function resetApp() {
+            // Clear auto reset timer if active
+            if (autoResetTimer) {
+                clearInterval(autoResetTimer);
+                autoResetTimer = null;
+            }
+
+            // Reset input values
+            const nameEl = document.getElementById('name');
+            if (nameEl) nameEl.value = '';
+
+            // Clear drawing canvas
+            if (typeof dCtx !== 'undefined' && dCtx) {
+                dCtx.clearRect(0, 0, 10000, 10000);
+            }
+
+            // Clear recorded blobs and preview source
+            videoBlob = null;
+            photoBlob = null;
+            recordedChunks = [];
+
+            const previewVid = document.getElementById('preview');
+            if (previewVid) {
+                previewVid.src = '';
+                previewVid.load();
+            }
+
+            const finalVid = document.getElementById('final-video-preview');
+            if (finalVid) {
+                finalVid.src = '';
+                finalVid.load();
+            }
+
+            const finalPhoto = document.getElementById('final-photo-preview');
+            if (finalPhoto) {
+                finalPhoto.src = '';
+            }
+
+            const largePhoto = document.getElementById('photo-preview-large');
+            if (largePhoto) {
+                largePhoto.src = '';
+            }
+
+            // Reset QR code image
+            const qrImg = document.getElementById('qr-image');
+            if (qrImg) qrImg.src = '';
+
+            // Hide virtual keyboard
+            const kbd = document.getElementById('kbd-container');
+            if (kbd) kbd.classList.remove('show');
+            const centerPanel = document.querySelector('.center-panel');
+            if (centerPanel) centerPanel.classList.remove('keyboard-active');
+            activeInput = null;
+
+            // Return to idle state smoothly!
+            changeState('idle');
+        }
+
+        async function submitVideo() {
+            changeState('processing');
+            
+            // Clear auto reset timer if active
+            if (autoResetTimer) {
+                clearInterval(autoResetTimer);
+                autoResetTimer = null;
+            }
+
+            const countdownEl = document.getElementById('auto-reset-countdown');
+            if (countdownEl) countdownEl.innerText = '';
+
+            const fd = new FormData();
+            fd.append('video', videoBlob, 'recording.mp4');
+            if (photoBlob) fd.append('photo', photoBlob, 'photo.jpg');
+            
+            const nameValue = document.getElementById('name').value;
+            fd.append('name', nameValue || 'Guest');
+
+            try {
+                const r = await fetch('/api/videobooth/submit', { method: 'POST', body: fd });
+                if (r.ok) {
+                    const resJson = await r.json();
+                    if (resJson.status === 'success' && resJson.data && resJson.data.resultUrl) {
+                        const resultUrl = resJson.data.resultUrl;
+                        
+                        // Set QR Code image
+                        const qrImg = document.getElementById('qr-image');
+                        if (qrImg) {
+                            qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(resultUrl)}`;
+                        }
+
+                        // Start auto-reset countdown
+                        let timeLeft = 45;
+                        if (countdownEl) {
+                            countdownEl.innerText = `Auto-reset in ${timeLeft}s`;
+                            autoResetTimer = setInterval(() => {
+                                timeLeft--;
+                                if (countdownEl) countdownEl.innerText = `Auto-reset in ${timeLeft}s`;
+                                if (timeLeft <= 0) {
+                                    clearInterval(autoResetTimer);
+                                    autoResetTimer = null;
+                                    resetApp();
+                                }
+                            }, 1000);
+                        }
+                    } else {
+                        // Fallback reset if resultUrl is missing
+                        setTimeout(resetApp, 10000);
+                    }
+                }
+                else changeState('review-final');
+            } catch (e) {
+                console.error("Submit error:", e);
+                changeState('review-final');
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,7 @@
+/node_modules
+.env
+/uploads
+gcp-key.json
+/data/sessions/
+/public/uploads_assets/
+/public/uploads_logo/
