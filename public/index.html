@@ -1857,7 +1857,7 @@
                     : { width: { exact: 1080 }, height: { exact: 1920 }, resizeMode: 'none' };
 
                 console.log('Kamera dipilih:', obsCamera ? obsCamera.label : 'Default Camera');
-                stream = await navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true });
+                stream = await navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: false });
                 webcam.srcObject = stream;
 
                 webcam.onloadedmetadata = () => {
@@ -1997,7 +1997,6 @@
             rloop();
 
             const cs = rc.captureStream(30);
-            const at = stream.getAudioTracks()[0]; if (at) cs.addTrack(at);
             mediaRecorder = new MediaRecorder(cs, {
                 mimeType: 'video/webm;codecs=h264',
                 videoBitsPerSecond: 8000000 // 8 Mbps untuk kualitas jernih kristal
