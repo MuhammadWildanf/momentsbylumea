@@ -1000,33 +1000,41 @@
             .center-panel.keyboard-active #state-form {
                 transform: translateY(-18vh);
             }
+
             .center-panel.keyboard-active #state-form #idle-sub,
             .center-panel.keyboard-active #state-form #desc-premium {
                 display: none !important;
             }
+
             .keyboard-wrapper {
                 bottom: 15px !important;
                 padding: 10px !important;
                 border-radius: 20px !important;
             }
+
             .key {
                 height: 40px !important;
                 font-size: 15px !important;
             }
+
             .key.wide {
                 font-size: 13px !important;
             }
+
             .center-panel.keyboard-active #state-form .input-wrapper input {
                 padding: 10px 15px 10px 45px !important;
                 font-size: 14px !important;
             }
+
             .center-panel.keyboard-active #state-form .input-wrapper input.phone-input {
                 height: 48px !important;
                 padding-left: 95px !important;
             }
+
             .center-panel.keyboard-active #state-form .btn-start {
                 margin-top: 2vh !important;
             }
+
             .final-preview-box {
                 max-height: 38vh !important;
             }
@@ -1036,36 +1044,44 @@
             .center-panel.keyboard-active #state-form {
                 transform: translateY(-22vh);
             }
+
             .keyboard-wrapper {
                 bottom: 8px !important;
                 padding: 6px !important;
                 border-radius: 15px !important;
             }
+
             .key {
                 height: 32px !important;
                 font-size: 13px !important;
                 border-radius: 8px !important;
             }
+
             .key.wide {
                 font-size: 11px !important;
             }
+
             .center-panel.keyboard-active #state-form .input-wrapper input {
                 padding: 8px 12px 8px 45px !important;
                 font-size: 13px !important;
             }
+
             .center-panel.keyboard-active #state-form .input-wrapper input.phone-input {
                 height: 40px !important;
                 padding-left: 90px !important;
             }
+
             .center-panel.keyboard-active #state-form .btn-start {
                 margin-top: 1.5vh !important;
                 padding: 8px 24px !important;
                 font-size: 14px !important;
             }
+
             .final-preview-box {
                 max-height: 32vh !important;
                 border-radius: 10px !important;
             }
+
             .final-btn-row button {
                 padding: 8px 16px !important;
                 font-size: min(2vh, 13px) !important;
@@ -1239,7 +1255,8 @@
 
             <!-- STATE REVIEW FINAL (NEW) -->
             <div id="state-review-final" class="ui-state">
-                <h2 style="font-size: min(4vh, 28px); color:#F0E5C7; font-weight:700; margin-bottom: 2vh;">Review your session.</h2>
+                <h2 style="font-size: min(4vh, 28px); color:#F0E5C7; font-weight:700; margin-bottom: 2vh;">Review your
+                    session.</h2>
                 <div class="final-preview-container">
                     <div class="final-preview-box">
                         <video id="final-video-preview" autoplay muted loop
@@ -1262,23 +1279,29 @@
 
             <!-- STATE SUCCESS (FRAME 6) -->
             <div id="state-processing" class="ui-state" style="text-align: center;">
-                <h2 id="success-text" style="font-size:30px; color:#F0E5C7; line-height:1.5; font-weight:600; margin-bottom: 15px;">
+                <h2 id="success-text"
+                    style="font-size:30px; color:#F0E5C7; line-height:1.5; font-weight:600; margin-bottom: 15px;">
                     Your memories are ready! ✨<br>
-                    <span style="color:#CDCDCD; font-size:18px; font-weight:400;">Scan this QR code to view and download your video and photo.</span>
+                    <span style="color:#CDCDCD; font-size:18px; font-weight:400;">Scan this QR code to view and download
+                        your video and photo.</span>
                 </h2>
-                
+
                 <!-- QR Code Display -->
-                <div id="qr-container" style="margin: 20px auto; padding: 15px; background: white; border-radius: 16px; width: 230px; height: 230px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                <div id="qr-container"
+                    style="margin: 20px auto; padding: 15px; background: white; border-radius: 16px; width: 230px; height: 230px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
                     <img id="qr-image" style="width: 200px; height: 200px; display: block;" src="" alt="QR Code">
                 </div>
-                
+
                 <h2 style="font-size:20px; color:#CDCDCD; font-weight:400; margin-top: 10px;">
-                    <span style="font-size:32px; font-family:'Luxurious Script', cursive;">Thank you for being part of this moment</span>
+                    <span style="font-size:32px; font-family:'Luxurious Script', cursive;">Thank you for being part of
+                        this moment</span>
                 </h2>
 
                 <div style="margin-top: 25px;">
-                    <button class="btn-primary" onclick="resetApp()" style="padding: 10px 35px; font-size: 16px; border-radius: 50px; min-width: 150px;">Done / Selesai</button>
-                    <div id="auto-reset-countdown" style="margin-top: 12px; font-size: 13px; color: #a3a3a3;">Auto-reset in 45s</div>
+                    <button class="btn-primary" onclick="resetApp()"
+                        style="padding: 10px 35px; font-size: 16px; border-radius: 50px; min-width: 150px;">Done</button>
+                    <div id="auto-reset-countdown" style="margin-top: 12px; font-size: 13px; color: #a3a3a3;">Auto-reset
+                        in 45s</div>
                 </div>
             </div>
         </div>
@@ -2129,7 +2152,7 @@
 
         async function submitVideo() {
             changeState('processing');
-            
+
             // Clear auto reset timer if active
             if (autoResetTimer) {
                 clearInterval(autoResetTimer);
@@ -2142,7 +2165,7 @@
             const fd = new FormData();
             fd.append('video', videoBlob, 'recording.mp4');
             if (photoBlob) fd.append('photo', photoBlob, 'photo.jpg');
-            
+
             const nameValue = document.getElementById('name').value;
             fd.append('name', nameValue || 'Guest');
 
@@ -2152,7 +2175,7 @@
                     const resJson = await r.json();
                     if (resJson.status === 'success' && resJson.data && resJson.data.resultUrl) {
                         const resultUrl = resJson.data.resultUrl;
-                        
+
                         // Set QR Code image
                         const qrImg = document.getElementById('qr-image');
                         if (qrImg) {
