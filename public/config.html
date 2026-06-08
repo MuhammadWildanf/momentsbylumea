@@ -1123,6 +1123,7 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             }).then(() => {
+                localStorage.setItem('vb_config', JSON.stringify(payload));
                 btn.disabled = false;
                 btn.innerHTML = "<span>💾</span> SIMPAN SEMUA PENGATURAN";
                 const msg = document.getElementById('successMsg');

@@ -287,11 +287,18 @@
 
         .side-panel.hidden-panel {
             flex: 0;
+            width: 0 !important;
+            max-width: 0;
             padding: 0;
             margin: 0;
             opacity: 0;
             overflow: hidden;
             pointer-events: none;
+            visibility: hidden;
+        }
+
+        .no-transition {
+            transition: none !important;
         }
 
         .side-panel .video-container {
@@ -1073,7 +1080,7 @@
     <div class="main-wrapper">
 
         <!-- LEFT PANEL -->
-        <div class="side-panel" id="panel-left">
+        <div class="side-panel hidden-panel no-transition" id="panel-left">
             <div class="video-container" style="background: #000;">
                 <video id="loop-preview" autoplay muted playsinline loop
                     style="width:100%; height:100%; object-fit:cover; z-index: 10; position: relative; opacity: 0; transition: opacity 0.5s;"
@@ -1277,7 +1284,7 @@
         </div>
 
         <!-- RIGHT PANEL -->
-        <div class="side-panel" id="panel-right">
+        <div class="side-panel hidden-panel no-transition" id="panel-right">
             <div class="video-container" style="background: #000;">
                 <video id="webcam" autoplay muted playsinline class="hidden" style="z-index: 20;"></video>
                 <canvas id="output_canvas" class="hidden"></canvas>
@@ -1554,6 +1561,41 @@
                 if (brandingLogoEl && data.logoUrl) {
                     brandingLogoEl.src = data.logoUrl;
                 }
+
+                // Immediately apply cached background, frame and colors to prevent style flashing
+                const rootStyle = document.documentElement.style;
+                if (data.bgImageUrl) {
+                    const targetBg = `url("${data.bgImageUrl}")`;
+                    if (document.body.style.backgroundImage !== targetBg) {
+                        document.body.style.backgroundImage = targetBg;
+                        document.body.style.backgroundSize = 'cover';
+                    }
+                } else {
+                    const targetGrad = `radial-gradient(circle at center, var(--bg-1) 0%, var(--bg-2) 100%)`;
+                    if (document.body.style.backgroundImage !== targetGrad) {
+                        document.body.style.backgroundImage = targetGrad;
+                    }
+                }
+
+                if (data.frameImageUrl) {
+                    const targetFrame = `url("${data.frameImageUrl}")`;
+                    if (rootStyle.getPropertyValue('--frame-image') !== targetFrame) {
+                        rootStyle.setProperty('--frame-image', targetFrame);
+                    }
+                }
+
+                if (data.accentColor && rootStyle.getPropertyValue('--accent') !== data.accentColor) rootStyle.setProperty('--accent', data.accentColor);
+                if (data.titleColor && rootStyle.getPropertyValue('--title-color') !== data.titleColor) rootStyle.setProperty('--title-color', data.titleColor);
+                if (data.descColor && rootStyle.getPropertyValue('--desc-color') !== data.descColor) rootStyle.setProperty('--desc-color', data.descColor);
+
+                const targetFrameColor = data.frameColor || 'rgba(30, 41, 59, 0.95)';
+                if (rootStyle.getPropertyValue('--frame') !== targetFrameColor) rootStyle.setProperty('--frame', targetFrameColor);
+
+                const bg1 = data.bgColor1 || '#fdfbfb';
+                if (rootStyle.getPropertyValue('--bg-1') !== bg1) rootStyle.setProperty('--bg-1', bg1);
+
+                const bg2 = data.bgColor2 || '#ebedee';
+                if (rootStyle.getPropertyValue('--bg-2') !== bg2) rootStyle.setProperty('--bg-2', bg2);
             } catch (e) {
                 console.warn("Cached theme apply failed:", e);
             }
@@ -2142,6 +2184,15 @@
                 changeState('review-final');
             }
         }
+
+        // Clean up no-transition class after load to allow animations later
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelectorAll('.no-transition').forEach(el => {
+                    el.classList.remove('no-transition');
+                });
+            }, 500);
+        });
     </script>
 </body>
 

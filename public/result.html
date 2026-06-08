@@ -240,6 +240,18 @@
             const urlParams = new URLSearchParams(window.location.search);
             const sessionId = urlParams.get('id');
 
+            // Load theme configuration immediately in parallel
+            let themePromise = fetch('/api/config')
+                .then(res => res.json())
+                .then(configData => {
+                    if (configData.bgImageUrl) {
+                        document.body.style.backgroundImage = `url('${configData.bgImageUrl}')`;
+                    }
+                    if (configData.accentColor) {
+                        document.documentElement.style.setProperty('--accent', configData.accentColor);
+                    }
+                }).catch(e => console.warn("Failed to load theme:", e));
+
             const loadingEl = document.getElementById('loading');
             const errorEl = document.getElementById('error');
             const contentEl = document.getElementById('content');
@@ -305,19 +317,6 @@
             }
 
             checkResult();
-
-            // Dynamic theme loader (optional, to sync fonts/colors if needed)
-            try {
-                const configRes = await fetch('/api/config');
-                const configData = await configRes.json();
-
-                if (configData.bgImageUrl) {
-                    document.body.style.backgroundImage = `url('${configData.bgImageUrl}')`;
-                }
-                if (configData.accentColor) {
-                    document.documentElement.style.setProperty('--accent', configData.accentColor);
-                }
-            } catch (e) { }
         });
     </script>
 </body>
