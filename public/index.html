@@ -17,7 +17,10 @@
             }
             return '<span>' + title + '</span>';
         };
-        window.applyThemeColors = function(data, rootStyle) {
+        window.applyThemeColors = function(data, target) {
+            if (!target) return;
+            const styleObj = target.style || target;
+            if (typeof styleObj.setProperty !== 'function') return;
             const mappings = {
                 accentColor: '--accent',
                 titleColor: '--title-color',
@@ -49,8 +52,13 @@
             for (const key in mappings) {
                 if (data[key]) {
                     const variableName = mappings[key];
-                    if (rootStyle.getPropertyValue(variableName) !== data[key]) {
-                        rootStyle.setProperty(variableName, data[key]);
+                    const val = data[key];
+                    if (typeof styleObj.getPropertyValue === 'function') {
+                        if (styleObj.getPropertyValue(variableName) !== val) {
+                            styleObj.setProperty(variableName, val);
+                        }
+                    } else {
+                        styleObj.setProperty(variableName, val);
                     }
                 }
             }
