@@ -809,6 +809,297 @@
             </div>
 
             <div class="card">
+                <label>Kustomisasi Teks & Warna Layar Lainnya</label>
+                
+                <!-- State Form -->
+                <div style="margin-top: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+                    <h3 style="font-size: 14px; color: var(--accent); margin-bottom: 10px;">Halaman Form Registrasi</h3>
+                    
+                    <div class="grid-2">
+                        <div class="input-group">
+                            <label>Label Nama & Warna</label>
+                            <div class="input-with-color">
+                                <div class="text-control">
+                                    <input type="text" id="formLabelName" placeholder="Name">
+                                </div>
+                                <div class="color-control">
+                                    <div class="color-row" style="padding: 6px 10px;">
+                                        <input type="color" id="formLabelNameColor">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Placeholder Kolom Nama</label>
+                            <input type="text" id="formPlaceholderName" placeholder="Please input your name">
+                        </div>
+                    </div>
+                    
+                    <div class="input-group" style="margin-top: 10px;">
+                        <label>Tombol Submit & Warna</label>
+                        <div class="input-with-color">
+                            <div class="text-control">
+                                <input type="text" id="formSubmitText" placeholder="SUBMIT">
+                            </div>
+                            <div class="color-control">
+                                <div class="color-row" style="padding: 6px 10px;">
+                                    <input type="color" id="formSubmitTextColor">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- State Ready -->
+                <div style="margin-top: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+                    <h3 style="font-size: 14px; color: var(--accent); margin-bottom: 10px;">Halaman Bersiap Video</h3>
+                    
+                    <div class="input-group">
+                        <label>Judul Layar & Warna</label>
+                        <div class="input-with-color">
+                            <div class="text-control">
+                                <input type="text" id="readyHeaderTitle" placeholder="Ready To Play Words?">
+                            </div>
+                            <div class="color-control">
+                                <div class="color-row" style="padding: 6px 10px;">
+                                    <input type="color" id="readyHeaderTitleColor">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid-2" style="margin-top: 10px;">
+                        <div class="input-group">
+                            <label>Subjudul Layar & Warna</label>
+                            <div class="input-with-color">
+                                <div class="text-control">
+                                    <input type="text" id="readyHeaderSubtitle" placeholder="Write a simple letter...">
+                                </div>
+                                <div class="color-control">
+                                    <div class="color-row" style="padding: 6px 10px;">
+                                        <input type="color" id="readyHeaderSubtitleColor">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Tombol Kembali (Back) & Warna</label>
+                            <div class="input-with-color">
+                                <div class="text-control">
+                                    <input type="text" id="readyBackText" placeholder="BACK">
+                                </div>
+                                <div class="color-control">
+                                    <div class="color-row" style="padding: 6px 10px;">
+                                        <input type="color" id="readyBackTextColor">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- State Review Video -->
+                <div style="margin-top: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+                    <h3 style="font-size: 14px; color: var(--accent); margin-bottom: 10px;">Halaman Review Video</h3>
+                    
+                    <div class="grid-2">
+                        <div class="input-group">
+                            <label>Tombol Retake & Warna</label>
+                            <div class="input-with-color">
+                                <div class="text-control">
+                                    <input type="text" id="reviewRetakeText" placeholder="RETAKE">
+                                </div>
+                                <div class="color-control">
+                                    <div class="color-row" style="padding: 6px 10px;">
+                                        <input type="color" id="reviewRetakeTextColor">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Tombol Lanjut Foto & Warna</label>
+                            <div class="input-with-color">
+                                <div class="text-control">
+                                    <input type="text" id="reviewPhotoText" placeholder="TAKE A PHOTO">
+                                </div>
+                                <div class="color-control">
+                                    <div class="color-row" style="padding: 6px 10px;">
+                                        <input type="color" id="reviewPhotoTextColor">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- State Ready Photo -->
+                <div style="margin-top: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+                    <h3 style="font-size: 14px; color: var(--accent); margin-bottom: 10px;">Halaman Bersiap Foto</h3>
+                    
+                    <div class="input-group">
+                        <label>Judul Layar & Warna</label>
+                        <div class="input-with-color">
+                            <div class="text-control">
+                                <input type="text" id="photoHeaderTitle" placeholder="Ready for Photo Session?">
+                            </div>
+                            <div class="color-control">
+                                <div class="color-row" style="padding: 6px 10px;">
+                                    <input type="color" id="photoHeaderTitleColor">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group" style="margin-top: 10px;">
+                        <label>Subjudul Layar & Warna</label>
+                        <div class="input-with-color">
+                            <div class="text-control">
+                                <input type="text" id="photoHeaderSubtitle" placeholder="Strike a pose for the camera">
+                            </div>
+                            <div class="color-control">
+                                <div class="color-row" style="padding: 6px 10px;">
+                                    <input type="color" id="photoHeaderSubtitleColor">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid-2" style="margin-top: 10px;">
+                        <div class="input-group">
+                            <label>Instruksi Foto & Warna</label>
+                            <div class="input-with-color">
+                                <div class="text-control">
+                                    <textarea id="photoInstructionText" rows="2" placeholder="Look at the camera and smile..."></textarea>
+                                </div>
+                                <div class="color-control">
+                                    <div class="color-row" style="padding: 6px 10px;">
+                                        <input type="color" id="photoInstructionTextColor">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Tombol Kembali (Back) & Warna</label>
+                            <div class="input-with-color">
+                                <div class="text-control">
+                                    <input type="text" id="photoBackText" placeholder="BACK">
+                                </div>
+                                <div class="color-control">
+                                    <div class="color-row" style="padding: 6px 10px;">
+                                        <input type="color" id="photoBackTextColor">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- State Review Final -->
+                <div style="margin-top: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+                    <h3 style="font-size: 14px; color: var(--accent); margin-bottom: 10px;">Halaman Review Akhir</h3>
+                    
+                    <div class="input-group">
+                        <label>Judul Layar & Warna</label>
+                        <div class="input-with-color">
+                            <div class="text-control">
+                                <input type="text" id="finalHeaderTitle" placeholder="Review your session.">
+                            </div>
+                            <div class="color-control">
+                                <div class="color-row" style="padding: 6px 10px;">
+                                    <input type="color" id="finalHeaderTitleColor">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid-2" style="margin-top: 10px;">
+                        <div class="input-group">
+                            <label>Label Video</label>
+                            <input type="text" id="finalVideoLabel" placeholder="VIDEO">
+                        </div>
+                        <div class="input-group">
+                            <label>Label Foto</label>
+                            <input type="text" id="finalPhotoLabel" placeholder="PHOTO">
+                        </div>
+                    </div>
+
+                    <div class="grid-3" style="margin-top: 10px;">
+                        <div class="input-group">
+                            <label>Tombol Retake All & Warna</label>
+                            <div class="input-with-color">
+                                <div class="text-control">
+                                    <input type="text" id="finalRetakeAllText" placeholder="RETAKE ALL">
+                                </div>
+                                <div class="color-control">
+                                    <div class="color-row" style="padding: 6px 10px;">
+                                        <input type="color" id="finalRetakeAllTextColor">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Tombol Retake Foto & Warna</label>
+                            <div class="input-with-color">
+                                <div class="text-control">
+                                    <input type="text" id="finalRetakePhotoText" placeholder="RETAKE PHOTO">
+                                </div>
+                                <div class="color-control">
+                                    <div class="color-row" style="padding: 6px 10px;">
+                                        <input type="color" id="finalRetakePhotoTextColor">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Tombol Upload & Warna</label>
+                            <div class="input-with-color">
+                                <div class="text-control">
+                                    <input type="text" id="finalUploadText" placeholder="UPLOAD BOTH">
+                                </div>
+                                <div class="color-control">
+                                    <div class="color-row" style="padding: 6px 10px;">
+                                        <input type="color" id="finalUploadTextColor">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- State Success / Done -->
+                <div style="margin-top: 15px;">
+                    <h3 style="font-size: 14px; color: var(--accent); margin-bottom: 10px;">Halaman Sukses & Selesai</h3>
+                    
+                    <div class="grid-2">
+                        <div class="input-group">
+                            <label>Pesan Terima Kasih & Warna</label>
+                            <div class="input-with-color">
+                                <div class="text-control">
+                                    <input type="text" id="successFooterText" placeholder="Thank you for being part of this moment">
+                                </div>
+                                <div class="color-control">
+                                    <div class="color-row" style="padding: 6px 10px;">
+                                        <input type="color" id="successFooterTextColor">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Tombol Selesai (Done) & Warna</label>
+                            <div class="input-with-color">
+                                <div class="text-control">
+                                    <input type="text" id="successDoneText" placeholder="Done">
+                                </div>
+                                <div class="color-control">
+                                    <div class="color-row" style="padding: 6px 10px;">
+                                        <input type="color" id="successDoneTextColor">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <div class="card">
                 <label>Teks Hitung Mundur & Status</label>
                 <div class="grid-3">
                     <div class="input-group">
@@ -1039,6 +1330,45 @@
                 document.getElementById('readyTextColor').value = data.readyTextColor || '#f0e5c7';
                 document.getElementById('reviewTextColor').value = data.reviewTextColor || '#f0e5c7';
                 document.getElementById('successTextColor').value = data.successTextColor || '#f0e5c7';
+                
+                // Load dynamic screen texts & colors
+                document.getElementById('formLabelName').value = data.formLabelName || 'Name';
+                document.getElementById('formLabelNameColor').value = data.formLabelNameColor || '#f0e5c7';
+                document.getElementById('formPlaceholderName').value = data.formPlaceholderName || 'Please input your name';
+                document.getElementById('formSubmitText').value = data.formSubmitText || 'SUBMIT';
+                document.getElementById('formSubmitTextColor').value = data.formSubmitTextColor || '#1a0f0a';
+                document.getElementById('readyHeaderTitle').value = data.readyHeaderTitle || 'Ready To Play Words?';
+                document.getElementById('readyHeaderTitleColor').value = data.readyHeaderTitleColor || '#f0e5c7';
+                document.getElementById('readyHeaderSubtitle').value = data.readyHeaderSubtitle || 'Write a simple letter to the Bride and Groom';
+                document.getElementById('readyHeaderSubtitleColor').value = data.readyHeaderSubtitleColor || '#f0e5c7';
+                document.getElementById('readyBackText').value = data.readyBackText || 'BACK';
+                document.getElementById('readyBackTextColor').value = data.readyBackTextColor || '#e7e5d8';
+                document.getElementById('reviewRetakeText').value = data.reviewRetakeText || 'RETAKE';
+                document.getElementById('reviewRetakeTextColor').value = data.reviewRetakeTextColor || '#e7e5d8';
+                document.getElementById('reviewPhotoText').value = data.reviewPhotoText || 'TAKE A PHOTO';
+                document.getElementById('reviewPhotoTextColor').value = data.reviewPhotoTextColor || '#1a0f0a';
+                document.getElementById('photoHeaderTitle').value = data.photoHeaderTitle || 'Ready for Photo Session?';
+                document.getElementById('photoHeaderTitleColor').value = data.photoHeaderTitleColor || '#f0e5c7';
+                document.getElementById('photoHeaderSubtitle').value = data.photoHeaderSubtitle || 'Strike a beautiful pose for the camera';
+                document.getElementById('photoHeaderSubtitleColor').value = data.photoHeaderSubtitleColor || '#f0e5c7';
+                document.getElementById('photoInstructionText').value = data.photoInstructionText || 'Look at the camera and smile. <br> Hit the shutter button when you are ready.';
+                document.getElementById('photoInstructionTextColor').value = data.photoInstructionTextColor || '#f0e5c7';
+                document.getElementById('photoBackText').value = data.photoBackText || 'BACK';
+                document.getElementById('photoBackTextColor').value = data.photoBackTextColor || '#e7e5d8';
+                document.getElementById('finalHeaderTitle').value = data.finalHeaderTitle || 'Review your session.';
+                document.getElementById('finalHeaderTitleColor').value = data.finalHeaderTitleColor || '#f0e5c7';
+                document.getElementById('finalVideoLabel').value = data.finalVideoLabel || 'VIDEO';
+                document.getElementById('finalPhotoLabel').value = data.finalPhotoLabel || 'PHOTO';
+                document.getElementById('finalRetakeAllText').value = data.finalRetakeAllText || 'RETAKE ALL';
+                document.getElementById('finalRetakeAllTextColor').value = data.finalRetakeAllTextColor || '#e7e5d8';
+                document.getElementById('finalRetakePhotoText').value = data.finalRetakePhotoText || 'RETAKE PHOTO';
+                document.getElementById('finalRetakePhotoTextColor').value = data.finalRetakePhotoTextColor || '#e7e5d8';
+                document.getElementById('finalUploadText').value = data.finalUploadText || 'UPLOAD BOTH';
+                document.getElementById('finalUploadTextColor').value = data.finalUploadTextColor || '#1a0f0a';
+                document.getElementById('successFooterText').value = data.successFooterText || 'Thank you for being part of this moment';
+                document.getElementById('successFooterTextColor').value = data.successFooterTextColor || '#cdcdcd';
+                document.getElementById('successDoneText').value = data.successDoneText || 'Done';
+                document.getElementById('successDoneTextColor').value = data.successDoneTextColor || '#1a0f0a';
                 document.getElementById('fontUrl').value = data.fontUrl || '';
                 document.getElementById('fontFamily').value = data.fontFamily || '';
                 document.getElementById('titleFontFamily').value = data.titleFontFamily || '';
@@ -1112,6 +1442,23 @@
             document.getElementById('readyTextColor').value = p.title;
             document.getElementById('reviewTextColor').value = p.title;
             document.getElementById('successTextColor').value = p.title;
+            document.getElementById('formLabelNameColor').value = p.title;
+            document.getElementById('formSubmitTextColor').value = (t === 'monochrome' ? '#000000' : '#1a0f0a');
+            document.getElementById('readyHeaderTitleColor').value = p.title;
+            document.getElementById('readyHeaderSubtitleColor').value = p.title;
+            document.getElementById('readyBackTextColor').value = p.accent;
+            document.getElementById('reviewRetakeTextColor').value = p.accent;
+            document.getElementById('reviewPhotoTextColor').value = (t === 'monochrome' ? '#000000' : '#1a0f0a');
+            document.getElementById('photoHeaderTitleColor').value = p.title;
+            document.getElementById('photoHeaderSubtitleColor').value = p.title;
+            document.getElementById('photoInstructionTextColor').value = p.title;
+            document.getElementById('photoBackTextColor').value = p.accent;
+            document.getElementById('finalHeaderTitleColor').value = p.title;
+            document.getElementById('finalRetakeAllTextColor').value = p.accent;
+            document.getElementById('finalRetakePhotoTextColor').value = p.accent;
+            document.getElementById('finalUploadTextColor').value = (t === 'monochrome' ? '#000000' : '#1a0f0a');
+            document.getElementById('successFooterTextColor').value = p.desc;
+            document.getElementById('successDoneTextColor').value = (t === 'monochrome' ? '#000000' : '#1a0f0a');
             document.getElementById('frameColor').value = p.frame;
             document.getElementById('fontSelector').value = p.font;
             updateFontHidden();
@@ -1180,6 +1527,43 @@
                 readyTextColor: document.getElementById('readyTextColor').value,
                 reviewTextColor: document.getElementById('reviewTextColor').value,
                 successTextColor: document.getElementById('successTextColor').value,
+                formLabelName: document.getElementById('formLabelName').value,
+                formLabelNameColor: document.getElementById('formLabelNameColor').value,
+                formPlaceholderName: document.getElementById('formPlaceholderName').value,
+                formSubmitText: document.getElementById('formSubmitText').value,
+                formSubmitTextColor: document.getElementById('formSubmitTextColor').value,
+                readyHeaderTitle: document.getElementById('readyHeaderTitle').value,
+                readyHeaderTitleColor: document.getElementById('readyHeaderTitleColor').value,
+                readyHeaderSubtitle: document.getElementById('readyHeaderSubtitle').value,
+                readyHeaderSubtitleColor: document.getElementById('readyHeaderSubtitleColor').value,
+                readyBackText: document.getElementById('readyBackText').value,
+                readyBackTextColor: document.getElementById('readyBackTextColor').value,
+                reviewRetakeText: document.getElementById('reviewRetakeText').value,
+                reviewRetakeTextColor: document.getElementById('reviewRetakeTextColor').value,
+                reviewPhotoText: document.getElementById('reviewPhotoText').value,
+                reviewPhotoTextColor: document.getElementById('reviewPhotoTextColor').value,
+                photoHeaderTitle: document.getElementById('photoHeaderTitle').value,
+                photoHeaderTitleColor: document.getElementById('photoHeaderTitleColor').value,
+                photoHeaderSubtitle: document.getElementById('photoHeaderSubtitle').value,
+                photoHeaderSubtitleColor: document.getElementById('photoHeaderSubtitleColor').value,
+                photoInstructionText: document.getElementById('photoInstructionText').value,
+                photoInstructionTextColor: document.getElementById('photoInstructionTextColor').value,
+                photoBackText: document.getElementById('photoBackText').value,
+                photoBackTextColor: document.getElementById('photoBackTextColor').value,
+                finalHeaderTitle: document.getElementById('finalHeaderTitle').value,
+                finalHeaderTitleColor: document.getElementById('finalHeaderTitleColor').value,
+                finalVideoLabel: document.getElementById('finalVideoLabel').value,
+                finalPhotoLabel: document.getElementById('finalPhotoLabel').value,
+                finalRetakeAllText: document.getElementById('finalRetakeAllText').value,
+                finalRetakeAllTextColor: document.getElementById('finalRetakeAllTextColor').value,
+                finalRetakePhotoText: document.getElementById('finalRetakePhotoText').value,
+                finalRetakePhotoTextColor: document.getElementById('finalRetakePhotoTextColor').value,
+                finalUploadText: document.getElementById('finalUploadText').value,
+                finalUploadTextColor: document.getElementById('finalUploadTextColor').value,
+                successFooterText: document.getElementById('successFooterText').value,
+                successFooterTextColor: document.getElementById('successFooterTextColor').value,
+                successDoneText: document.getElementById('successDoneText').value,
+                successDoneTextColor: document.getElementById('successDoneTextColor').value,
                 fontSelector: document.getElementById('fontSelector').value,
                 fontUrl: document.getElementById('fontUrl').value,
                 fontFamily: document.getElementById('fontFamily').value,

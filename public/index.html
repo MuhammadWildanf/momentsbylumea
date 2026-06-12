@@ -17,6 +17,118 @@
             }
             return '<span>' + title + '</span>';
         };
+        window.applyThemeColors = function(data, rootStyle) {
+            const mappings = {
+                accentColor: '--accent',
+                titleColor: '--title-color',
+                subtitleColor: '--subtitle-color',
+                connectorColor: '--connector-color',
+                descColor: '--desc-color',
+                startTextColor: '--start-text-color',
+                readyTextColor: '--ready-text-color',
+                reviewTextColor: '--review-text-color',
+                successTextColor: '--success-text-color',
+                formLabelNameColor: '--form-label-color',
+                formSubmitTextColor: '--form-submit-color',
+                readyHeaderTitleColor: '--ready-header-title-color',
+                readyHeaderSubtitleColor: '--ready-header-subtitle-color',
+                readyBackTextColor: '--ready-back-color',
+                reviewRetakeTextColor: '--review-retake-color',
+                reviewPhotoTextColor: '--review-photo-color',
+                photoHeaderTitleColor: '--photo-header-title-color',
+                photoHeaderSubtitleColor: '--photo-header-subtitle-color',
+                photoInstructionTextColor: '--photo-instruction-color',
+                photoBackTextColor: '--photo-back-color',
+                finalHeaderTitleColor: '--final-header-title-color',
+                finalRetakeAllTextColor: '--final-retake-all-color',
+                finalRetakePhotoTextColor: '--final-retake-photo-color',
+                finalUploadTextColor: '--final-upload-color',
+                successFooterTextColor: '--success-footer-color',
+                successDoneTextColor: '--success-done-color'
+            };
+            for (const key in mappings) {
+                if (data[key]) {
+                    const variableName = mappings[key];
+                    if (rootStyle.getPropertyValue(variableName) !== data[key]) {
+                        rootStyle.setProperty(variableName, data[key]);
+                    }
+                }
+            }
+        };
+
+        window.updateConfigurableTexts = function(data) {
+            if (!data) return;
+
+            // Form State
+            const formLabel = document.getElementById('form-label-name');
+            if (formLabel && data.formLabelName) formLabel.innerText = data.formLabelName;
+
+            const nameInput = document.getElementById('name');
+            if (nameInput && data.formPlaceholderName) nameInput.placeholder = data.formPlaceholderName;
+
+            const formSubmit = document.getElementById('form-submit-text');
+            if (formSubmit && data.formSubmitText) formSubmit.innerText = data.formSubmitText;
+
+            // Ready State
+            const readyTitle = document.getElementById('ready-header-title');
+            if (readyTitle && data.readyHeaderTitle) readyTitle.innerText = data.readyHeaderTitle;
+
+            const readySubtitle = document.getElementById('ready-header-subtitle');
+            if (readySubtitle && data.readyHeaderSubtitle) readySubtitle.innerText = data.readyHeaderSubtitle;
+
+            const readyBack = document.getElementById('ready-back-text');
+            if (readyBack && data.readyBackText) readyBack.innerText = data.readyBackText;
+
+            // Review Video State
+            const reviewRetake = document.getElementById('review-retake-text');
+            if (reviewRetake && data.reviewRetakeText) reviewRetake.innerText = data.reviewRetakeText;
+
+            const reviewPhoto = document.getElementById('review-photo-text');
+            if (reviewPhoto && data.reviewPhotoText) reviewPhoto.innerText = data.reviewPhotoText;
+
+            // Ready Photo State
+            const photoTitle = document.getElementById('photo-header-title');
+            if (photoTitle && data.photoHeaderTitle) photoTitle.innerText = data.photoHeaderTitle;
+
+            const photoSubtitle = document.getElementById('photo-header-subtitle');
+            if (photoSubtitle && data.photoHeaderSubtitle) photoSubtitle.innerText = data.photoHeaderSubtitle;
+
+            const photoInstruction = document.getElementById('ready-photo-text');
+            if (photoInstruction && data.photoInstructionText) {
+                const targetPhotoText = data.photoInstructionText.replace(/\n/g, '<br>');
+                if (photoInstruction.innerHTML !== targetPhotoText) photoInstruction.innerHTML = targetPhotoText;
+            }
+
+            const photoBack = document.getElementById('photo-back-text');
+            if (photoBack && data.photoBackText) photoBack.innerText = data.photoBackText;
+
+            // Review Final State
+            const finalTitle = document.getElementById('final-header-title');
+            if (finalTitle && data.finalHeaderTitle) finalTitle.innerText = data.finalHeaderTitle;
+
+            const videoLabel = document.getElementById('final-video-label');
+            if (videoLabel && data.finalVideoLabel) videoLabel.innerText = data.finalVideoLabel;
+
+            const photoLabel = document.getElementById('final-photo-label');
+            if (photoLabel && data.finalPhotoLabel) photoLabel.innerText = data.finalPhotoLabel;
+
+            const finalRetakeAll = document.getElementById('final-retake-all-text');
+            if (finalRetakeAll && data.finalRetakeAllText) finalRetakeAll.innerText = data.finalRetakeAllText;
+
+            const finalRetakePhoto = document.getElementById('final-retake-photo-text');
+            if (finalRetakePhoto && data.finalRetakePhotoText) finalRetakePhoto.innerText = data.finalRetakePhotoText;
+
+            const finalUpload = document.getElementById('final-upload-text');
+            if (finalUpload && data.finalUploadText) finalUpload.innerText = data.finalUploadText;
+
+            // Success State
+            const successFooter = document.getElementById('success-footer-text');
+            if (successFooter && data.successFooterText) successFooter.innerText = data.successFooterText;
+
+            const successDone = document.getElementById('success-done-text');
+            if (successDone && data.successDoneText) successDone.innerText = data.successDoneText;
+        };
+
         try {
             const cached = localStorage.getItem('vb_config');
             if (cached) {
@@ -28,15 +140,7 @@
                 if (data.frameImageUrl) {
                     root.style.setProperty('--frame-image', 'url("' + data.frameImageUrl + '")');
                 }
-                if (data.accentColor) root.style.setProperty('--accent', data.accentColor);
-                if (data.titleColor) root.style.setProperty('--title-color', data.titleColor);
-                if (data.subtitleColor) root.style.setProperty('--subtitle-color', data.subtitleColor);
-                if (data.connectorColor) root.style.setProperty('--connector-color', data.connectorColor);
-                if (data.descColor) root.style.setProperty('--desc-color', data.descColor);
-                if (data.startTextColor) root.style.setProperty('--start-text-color', data.startTextColor);
-                if (data.readyTextColor) root.style.setProperty('--ready-text-color', data.readyTextColor);
-                if (data.reviewTextColor) root.style.setProperty('--review-text-color', data.reviewTextColor);
-                if (data.successTextColor) root.style.setProperty('--success-text-color', data.successTextColor);
+                window.applyThemeColors(data, root);
                 if (data.frameColor) root.style.setProperty('--frame', data.frameColor);
                 if (data.bgColor1) root.style.setProperty('--bg-1', data.bgColor1);
                 if (data.bgColor2) root.style.setProperty('--bg-2', data.bgColor2);
@@ -487,6 +591,61 @@
         }
         .btn-start {
             color: var(--start-text-color, #1a0f0a) !important;
+        }
+
+        #form-label-name {
+            color: var(--form-label-color, #F0E5C7) !important;
+        }
+        #form-submit-text {
+            color: var(--form-submit-color, #1a0f0a) !important;
+        }
+        #ready-header-title {
+            color: var(--ready-header-title-color, #F0E5C7) !important;
+        }
+        #ready-header-subtitle {
+            color: var(--ready-header-subtitle-color, #F0E5C7) !important;
+        }
+        #ready-back-text {
+            color: var(--ready-back-color, #e7e5d8) !important;
+        }
+        #review-retake-text {
+            color: var(--review-retake-color, #e7e5d8) !important;
+        }
+        #review-photo-text {
+            color: var(--review-photo-color, #1a0f0a) !important;
+        }
+        #photo-header-title {
+            color: var(--photo-header-title-color, #F0E5C7) !important;
+        }
+        #photo-header-subtitle {
+            color: var(--photo-header-subtitle-color, #F0E5C7) !important;
+        }
+        #ready-photo-text {
+            color: var(--photo-instruction-color, #F0E5C7) !important;
+        }
+        #ready-photo-text span {
+            color: var(--photo-instruction-color, #F0E5C7) !important;
+        }
+        #photo-back-text {
+            color: var(--photo-back-color, #e7e5d8) !important;
+        }
+        #final-header-title {
+            color: var(--final-header-title-color, #F0E5C7) !important;
+        }
+        #final-retake-all-text {
+            color: var(--final-retake-all-color, #e7e5d8) !important;
+        }
+        #final-retake-photo-text {
+            color: var(--final-retake-photo-color, #e7e5d8) !important;
+        }
+        #final-upload-text {
+            color: var(--final-upload-color, #1a0f0a) !important;
+        }
+        #success-footer-text {
+            color: var(--success-footer-color, #CDCDCD) !important;
+        }
+        #success-done-text {
+            color: var(--success-done-color, #1a0f0a) !important;
         }
 
         /* INPUTS & FORM */
@@ -1206,18 +1365,16 @@
                     <div class="desc-premium" id="desc-premium" style="text-align: center; margin-bottom: 15px;">Enter
                         your details to unveil a personalized wedding experience.</div>
                     <div class="input-group" style="width: 100%;">
-                        <label>Name</label>
+                        <label id="form-label-name">Name</label>
                         <div class="input-wrapper">
                             <input type="text" id="name" placeholder="Please input your name" inputmode="none"
                                 autocomplete="off" spellcheck="false" style="padding-left: 20px;">
                         </div>
                     </div>
 
-
-
                     <div style="display: flex; justify-content: center;">
                         <button class="btn-start" onclick="startCameraFlow()" style="margin-top: 4vh;">
-                            <span>SUBMIT</span>
+                            <span id="form-submit-text">SUBMIT</span>
                         </button>
                     </div>
                 </div>
@@ -1226,10 +1383,10 @@
             <!-- STATE READY (FRAME 4) -->
             <div id="state-ready" class="ui-state">
                 <div style="margin-bottom: 40px; text-align: center;">
-                    <h1
+                    <h1 id="ready-header-title"
                         style="font-size: min(5vh, 48px); color: #F0E5C7; font-weight: 700; margin-bottom: 10px; font-family: var(--body-font-dyn) !important;">
                         Ready To Play Words?</h1>
-                    <p
+                    <p id="ready-header-subtitle"
                         style="font-size: min(3vh, 28px); color: #F0E5C7; font-family: var(--body-font-dyn) !important; font-style: italic;">
                         Write a simple letter to the Bride and Groom</p>
                 </div>
@@ -1244,7 +1401,7 @@
                 </div>
                 <br>
                 <button class="btn-outline" onclick="changeState('idle')" style="margin-top: 20px;">
-                    BACK
+                    <span id="ready-back-text">BACK</span>
                 </button>
 
             </div>
@@ -1256,18 +1413,18 @@
                     review your video, <br> <span style="color:#CDCDCD; font-size:24px; font-weight:400;">you can RETAKE
                         or NEXT.</span></h2>
                 <div class="btn-row" style="gap: 20px;">
-                    <button class="btn-outline" onclick="retakeVideo()">RETAKE</button>
-                    <button class="btn-primary" onclick="preparePhotoSession()">TAKE A PHOTO</button>
+                    <button class="btn-outline" onclick="retakeVideo()"><span id="review-retake-text">RETAKE</span></button>
+                    <button class="btn-primary" onclick="preparePhotoSession()"><span id="review-photo-text">TAKE A PHOTO</span></button>
                 </div>
             </div>
 
             <!-- STATE READY PHOTO (NEW) -->
             <div id="state-ready-photo" class="ui-state">
                 <div style="margin-bottom: 40px; text-align: center;">
-                    <h1
+                    <h1 id="photo-header-title"
                         style="font-size: min(5vh, 48px); color: #F0E5C7; font-weight: 700; margin-bottom: 10px; font-family: var(--body-font-dyn) !important;">
                         Ready for Photo Session?</h1>
-                    <p
+                    <p id="photo-header-subtitle"
                         style="font-size: min(3vh, 28px); color: #F0E5C7; font-family: var(--body-font-dyn) !important; font-style: italic;">
                         Strike a beautiful pose for the camera</p>
                 </div>
@@ -1282,31 +1439,30 @@
                 </div>
                 <br>
                 <button class="btn-outline" onclick="changeState('review-video')" style="margin-top: 20px;">
-                    BACK
+                    <span id="photo-back-text">BACK</span>
                 </button>
             </div>
 
             <!-- STATE REVIEW FINAL (NEW) -->
             <div id="state-review-final" class="ui-state">
-                <h2 style="font-size: min(4vh, 28px); color:#F0E5C7; font-weight:700; margin-bottom: 2vh;">Review your
-                    session.</h2>
+                <h2 id="final-header-title" style="font-size: min(4vh, 28px); color:#F0E5C7; font-weight:700; margin-bottom: 2vh;">Review your session.</h2>
                 <div class="final-preview-container">
                     <div class="final-preview-box">
                         <video id="final-video-preview" autoplay muted loop
                             style="width:100%; height:100%; object-fit:cover;"></video>
-                        <span
+                        <span id="final-video-label"
                             style="position:absolute; bottom:10px; left:10px; background:rgba(0,0,0,0.5); color:#fff; padding:2px 8px; border-radius:5px; font-size:10px;">VIDEO</span>
                     </div>
                     <div class="final-preview-box">
                         <img id="final-photo-preview" style="width:100%; height:100%; object-fit:cover;">
-                        <span
+                        <span id="final-photo-label"
                             style="position:absolute; bottom:10px; left:10px; background:rgba(0,0,0,0.5); color:#fff; padding:2px 8px; border-radius:5px; font-size:10px;">PHOTO</span>
                     </div>
                 </div>
                 <div class="btn-row final-btn-row">
-                    <button class="btn-outline" onclick="retakeVideo()">RETAKE ALL</button>
-                    <button class="btn-outline" onclick="retakePhotoOnly()">RETAKE PHOTO</button>
-                    <button class="btn-primary" onclick="submitVideo()">UPLOAD BOTH</button>
+                    <button class="btn-outline" onclick="retakeVideo()"><span id="final-retake-all-text">RETAKE ALL</span></button>
+                    <button class="btn-outline" onclick="retakePhotoOnly()"><span id="final-retake-photo-text">RETAKE PHOTO</span></button>
+                    <button class="btn-primary" onclick="submitVideo()"><span id="final-upload-text">UPLOAD BOTH</span></button>
                 </div>
             </div>
 
@@ -1325,14 +1481,14 @@
                     <img id="qr-image" style="width: 200px; height: 200px; display: block;" src="" alt="QR Code">
                 </div>
 
-                <h2 style="font-size:20px; color:#CDCDCD; font-weight:400; margin-top: 10px;">
-                    <span style="font-size:32px; font-family:'Luxurious Script', cursive;">Thank you for being part of
+                <h2 id="success-footer-container" style="font-size:20px; color:#CDCDCD; font-weight:400; margin-top: 10px;">
+                    <span id="success-footer-text" style="font-size:32px; font-family:'Luxurious Script', cursive;">Thank you for being part of
                         this moment</span>
                 </h2>
 
                 <div style="margin-top: 25px;">
                     <button class="btn-primary" onclick="resetApp()"
-                        style="padding: 10px 35px; font-size: 16px; border-radius: 50px; min-width: 150px;">Done</button>
+                        style="padding: 10px 35px; font-size: 16px; border-radius: 50px; min-width: 150px;"><span id="success-done-text">Done</span></button>
                     <div id="auto-reset-countdown" style="margin-top: 12px; font-size: 13px; color: #a3a3a3;"></div>
                 </div>
             </div>
@@ -1601,6 +1757,8 @@
                 const startBtn = document.getElementById('start-btn-text');
                 if (startBtn && data.startText) startBtn.innerText = data.startText;
 
+                window.updateConfigurableTexts(data);
+
                 const logoEl = document.getElementById('main-logo');
                 if (logoEl && data.logoUrl) {
                     logoEl.src = data.logoUrl;
@@ -1633,15 +1791,7 @@
                     }
                 }
 
-                if (data.accentColor && rootStyle.getPropertyValue('--accent') !== data.accentColor) rootStyle.setProperty('--accent', data.accentColor);
-                if (data.titleColor && rootStyle.getPropertyValue('--title-color') !== data.titleColor) rootStyle.setProperty('--title-color', data.titleColor);
-                if (data.subtitleColor && rootStyle.getPropertyValue('--subtitle-color') !== data.subtitleColor) rootStyle.setProperty('--subtitle-color', data.subtitleColor);
-                if (data.connectorColor && rootStyle.getPropertyValue('--connector-color') !== data.connectorColor) rootStyle.setProperty('--connector-color', data.connectorColor);
-                if (data.descColor && rootStyle.getPropertyValue('--desc-color') !== data.descColor) rootStyle.setProperty('--desc-color', data.descColor);
-                if (data.startTextColor && rootStyle.getPropertyValue('--start-text-color') !== data.startTextColor) rootStyle.setProperty('--start-text-color', data.startTextColor);
-                if (data.readyTextColor && rootStyle.getPropertyValue('--ready-text-color') !== data.readyTextColor) rootStyle.setProperty('--ready-text-color', data.readyTextColor);
-                if (data.reviewTextColor && rootStyle.getPropertyValue('--review-text-color') !== data.reviewTextColor) rootStyle.setProperty('--review-text-color', data.reviewTextColor);
-                if (data.successTextColor && rootStyle.getPropertyValue('--success-text-color') !== data.successTextColor) rootStyle.setProperty('--success-text-color', data.successTextColor);
+                window.applyThemeColors(data, document.documentElement);
 
                 const targetFrameColor = data.frameColor || 'rgba(30, 41, 59, 0.95)';
                 if (rootStyle.getPropertyValue('--frame') !== targetFrameColor) rootStyle.setProperty('--frame', targetFrameColor);
@@ -1698,35 +1848,36 @@
                 } else {
                     if (mainTitleEl && mainTitleEl.classList.contains('hidden')) mainTitleEl.classList.remove('hidden');
                     if (brandingLogoEl && brandingLogoEl.style.display !== 'none') brandingLogoEl.style.display = 'none';
+                    const subEl = document.getElementById('idle-sub');
+                    if (subEl && data.subtitle && subEl.innerText !== data.subtitle) subEl.innerText = data.subtitle;
+
+                    const descEl = document.getElementById('desc-premium');
+                    if (descEl && data.descPremium && descEl.innerText !== data.descPremium) descEl.innerText = data.descPremium;
+
+                    const startBtn = document.getElementById('start-btn-text');
+                    if (startBtn && data.startText && startBtn.innerText !== data.startText) startBtn.innerText = data.startText;
+
+                    window.updateConfigurableTexts(data);
+
+                    // Update Instruction Texts (Only if different)
+                    const defaults = {
+                        ready: "Get your pen and look at mirror. <br> Hit the record button when you are ready.",
+                        review: "Please review your video, <br> you can RETAKE or UPLOAD.",
+                        success: "Your memories are ready! ✨<br><span style=\"color:#CDCDCD; font-size:18px; font-weight:400;\">Scan this QR code to view and download your video and photo.</span>"
+                    };
+
+                    const readyEl = document.getElementById('ready-text');
+                    const targetReady = (data.readyText || defaults.ready).replace(/\n/g, '<br>');
+                    if (readyEl && readyEl.innerHTML !== targetReady) readyEl.innerHTML = targetReady;
+
+                    const reviewEl = document.getElementById('review-video-text');
+                    const targetReview = (data.reviewText || defaults.review).replace(/\n/g, '<br>');
+                    if (reviewEl && reviewEl.innerHTML !== targetReview) reviewEl.innerHTML = targetReview;
+
+                    const successEl = document.getElementById('success-text');
+                    const targetSuccess = (data.successText || defaults.success).replace(/\n/g, '<br>');
+                    if (successEl && successEl.innerHTML !== targetSuccess) successEl.innerHTML = targetSuccess;
                 }
-
-                const subEl = document.getElementById('idle-sub');
-                if (subEl && data.subtitle && subEl.innerText !== data.subtitle) subEl.innerText = data.subtitle;
-
-                const descEl = document.getElementById('desc-premium');
-                if (descEl && data.descPremium && descEl.innerText !== data.descPremium) descEl.innerText = data.descPremium;
-
-                const startBtn = document.getElementById('start-btn-text');
-                if (startBtn && data.startText && startBtn.innerText !== data.startText) startBtn.innerText = data.startText;
-
-                // Update Instruction Texts (Only if different)
-                const defaults = {
-                    ready: "Get your pen and look at mirror. <br> Hit the record button when you are ready.",
-                    review: "Please review your video, <br> you can RETAKE or UPLOAD.",
-                    success: "Your memories are ready! ✨<br><span style=\"color:#CDCDCD; font-size:18px; font-weight:400;\">Scan this QR code to view and download your video and photo.</span>"
-                };
-
-                const readyEl = document.getElementById('ready-text');
-                const targetReady = (data.readyText || defaults.ready).replace(/\n/g, '<br>');
-                if (readyEl && readyEl.innerHTML !== targetReady) readyEl.innerHTML = targetReady;
-
-                const reviewEl = document.getElementById('review-video-text');
-                const targetReview = (data.reviewText || defaults.review).replace(/\n/g, '<br>');
-                if (reviewEl && reviewEl.innerHTML !== targetReview) reviewEl.innerHTML = targetReview;
-
-                const successEl = document.getElementById('success-text');
-                const targetSuccess = (data.successText || defaults.success).replace(/\n/g, '<br>');
-                if (successEl && successEl.innerHTML !== targetSuccess) successEl.innerHTML = targetSuccess;
 
                 // 3. Smart Video Asset Updates (Prevent infinite reload cycle)
                 const tutorialVid = document.getElementById('preview');
@@ -1738,21 +1889,20 @@
                     if (cleanSrc !== targetUrl) {
                         console.log("[THEME] Loading Tutorial:", targetUrl);
                         tutorialVid.src = targetUrl;
-                        tutorialVid.muted = true;
-                        tutorialVid.load();
-                        tutorialVid.play().catch(e => console.error("Play error:", e));
                     }
+                } else {
+                    if (tutorialVid.src !== '') tutorialVid.src = '';
                 }
+
                 if (data.resultVideoUrl && resultVid) {
                     const cleanSrc = resultVid.src ? resultVid.src.split('?')[0] : '';
                     const targetUrl = new URL(data.resultVideoUrl, window.location.origin).href;
                     if (cleanSrc !== targetUrl) {
-                        console.log("[THEME] Loading Result:", targetUrl);
+                        console.log("[THEME] Loading Loop:", targetUrl);
                         resultVid.src = targetUrl;
-                        resultVid.muted = true;
-                        resultVid.load();
-                        resultVid.play().catch(e => console.error("Play error:", e));
                     }
+                } else {
+                    if (resultVid.src !== '') resultVid.src = '';
                 }
 
                 // 4. Optimized CSS Variable Updates (Prevent style flashing)
@@ -1777,15 +1927,7 @@
                     }
                 }
 
-                if (data.accentColor && rootStyle.getPropertyValue('--accent') !== data.accentColor) rootStyle.setProperty('--accent', data.accentColor);
-                if (data.titleColor && rootStyle.getPropertyValue('--title-color') !== data.titleColor) rootStyle.setProperty('--title-color', data.titleColor);
-                if (data.subtitleColor && rootStyle.getPropertyValue('--subtitle-color') !== data.subtitleColor) rootStyle.setProperty('--subtitle-color', data.subtitleColor);
-                if (data.connectorColor && rootStyle.getPropertyValue('--connector-color') !== data.connectorColor) rootStyle.setProperty('--connector-color', data.connectorColor);
-                if (data.descColor && rootStyle.getPropertyValue('--desc-color') !== data.descColor) rootStyle.setProperty('--desc-color', data.descColor);
-                if (data.startTextColor && rootStyle.getPropertyValue('--start-text-color') !== data.startTextColor) rootStyle.setProperty('--start-text-color', data.startTextColor);
-                if (data.readyTextColor && rootStyle.getPropertyValue('--ready-text-color') !== data.readyTextColor) rootStyle.setProperty('--ready-text-color', data.readyTextColor);
-                if (data.reviewTextColor && rootStyle.getPropertyValue('--review-text-color') !== data.reviewTextColor) rootStyle.setProperty('--review-text-color', data.reviewTextColor);
-                if (data.successTextColor && rootStyle.getPropertyValue('--success-text-color') !== data.successTextColor) rootStyle.setProperty('--success-text-color', data.successTextColor);
+                window.applyThemeColors(data, document.documentElement);
 
                 const targetFrameColor = data.frameColor || 'rgba(30, 41, 59, 0.95)';
                 if (rootStyle.getPropertyValue('--frame') !== targetFrameColor) rootStyle.setProperty('--frame', targetFrameColor);
