@@ -7,7 +7,13 @@
     <title>LUMEA</title>
     <!-- INSTANT THEME RESTORER (Pencegah Style Flash / FOUC saat Refresh) -->
     <script>
-        window.formatTitleText = function (title) {
+        window.formatTitleText = function (title, data = null) {
+            if (data && (data.titleName1 || data.titleName2)) {
+                const n1 = data.titleName1 || '';
+                const conn = data.titleConnector || '';
+                const n2 = data.titleName2 || '';
+                return '<span>' + n1 + '</span> <span class="title-amp">' + conn + '</span> <span>' + n2 + '</span>';
+            }
             if (!title) return '';
             const match = title.match(/\s+(&|and|dan|bersama)\s+/i);
             if (match) {
@@ -1359,7 +1365,7 @@
                                 if (data.title) {
                                     const titleRow = document.querySelector('.names-row');
                                     if (titleRow) {
-                                        titleRow.innerHTML = window.formatTitleText(data.title);
+                                        titleRow.innerHTML = window.formatTitleText(data.title, data);
                                     }
                                 }
                                 if (data.idleHeadMode === 'logo' && data.logoUrl) {
@@ -1784,7 +1790,7 @@
                 // Immediately update titles & subtitles
                 const titleRow = document.querySelector('.names-row');
                 if (titleRow && data.title) {
-                    titleRow.innerHTML = window.formatTitleText(data.title);
+                    titleRow.innerHTML = window.formatTitleText(data.title, data);
                 }
 
                 const subEl = document.getElementById('idle-sub');
@@ -1869,7 +1875,7 @@
 
                 const titleRow = document.querySelector('.names-row');
                 if (titleRow && data.title) {
-                    const formattedTitle = window.formatTitleText(data.title);
+                    const formattedTitle = window.formatTitleText(data.title, data);
                     if (titleRow.innerHTML !== formattedTitle) titleRow.innerHTML = formattedTitle;
                 }
 

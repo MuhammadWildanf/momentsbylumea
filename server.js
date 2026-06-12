@@ -382,6 +382,9 @@ app.post('/api/videobooth/submit', (req, res, next) => {
 const CONFIG_FILE = path.join(__dirname, 'config.json');
 const DEFAULT_CONFIG = {
     title: 'Audric & Catherine',
+    titleName1: 'Audric',
+    titleConnector: '&',
+    titleName2: 'Catherine',
     subtitle: 'A special moment awaits you.',
     descPremium: 'Enter your details to unveil a personalized wedding experience.',
     startText: 'Begin your experience',

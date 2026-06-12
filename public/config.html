@@ -710,8 +710,11 @@
                 <div class="input-group">
                     <label>Teks Judul Utama & Warna</label>
                     <div class="input-with-color">
-                        <div class="text-control">
-                            <input type="text" id="title" placeholder="Audric & Catherine">
+                        <div class="text-control" style="display: flex; gap: 8px;">
+                            <input type="text" id="titleName1" placeholder="Nama Pertama" style="flex: 2;">
+                            <input type="text" id="titleConnector" placeholder="&" style="flex: 0.8; text-align: center;">
+                            <input type="text" id="titleName2" placeholder="Nama Kedua" style="flex: 2;">
+                            <input type="hidden" id="title">
                         </div>
                         <div class="color-control" style="display: flex; gap: 10px; align-items: center;">
                             <div style="display: flex; flex-direction: column; align-items: center;">
@@ -1314,6 +1317,26 @@
             .then(res => res.json())
             .then(data => {
                 dataBackup = data;
+                
+                let t1 = data.titleName1 || '';
+                let tc = data.titleConnector || '';
+                let t2 = data.titleName2 || '';
+                if (!t1 && !t2 && data.title) {
+                    const match = data.title.match(/\s+(&|and|dan|bersama)\s+/i);
+                    if (match) {
+                        const parts = data.title.split(match[0]);
+                        t1 = parts[0].trim();
+                        tc = match[1];
+                        t2 = parts.slice(1).join(match[0]).trim();
+                    } else {
+                        t1 = data.title;
+                        tc = '&';
+                        t2 = '';
+                    }
+                }
+                document.getElementById('titleName1').value = t1;
+                document.getElementById('titleConnector').value = tc;
+                document.getElementById('titleName2').value = t2;
                 document.getElementById('title').value = data.title || '';
                 document.getElementById('subtitle').value = data.subtitle || '';
                 document.getElementById('descPremium').value = data.descPremium || '';
@@ -1510,8 +1533,14 @@
             const overlayUrl = await uploadHelper(document.getElementById('overlayFile').files[0], 'overlay');
 
             const bgText = document.getElementById('bgStatus').innerText;
+            const titleName1 = document.getElementById('titleName1').value;
+            const titleConnector = document.getElementById('titleConnector').value;
+            const titleName2 = document.getElementById('titleName2').value;
             const payload = {
-                title: document.getElementById('title').value,
+                title: `${titleName1} ${titleConnector} ${titleName2}`.trim(),
+                titleName1: titleName1,
+                titleConnector: titleConnector,
+                titleName2: titleName2,
                 subtitle: document.getElementById('subtitle').value,
                 descPremium: document.getElementById('descPremium').value,
                 startText: document.getElementById('startText').value,
