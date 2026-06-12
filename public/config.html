@@ -584,7 +584,8 @@
         <!-- SECTION: VISUALS -->
         <div id="section-visuals" class="view-section active">
             <h2>Tampilan Visual Layar</h2>
-            <div class="card">
+            <!-- Pilihan Tema Cepat (Presets) - Deactivated/Hidden -->
+            <div class="card" style="display: none;">
                 <label>Pilihan Tema Cepat</label>
                 <small style="color:var(--text-muted); display:block; margin-bottom:15px;">Pilih salah satu tema ini untuk mengubah semua warna secara otomatis.</small>
                 <div class="preset-grid">
@@ -608,7 +609,8 @@
             </div>
 
             <div class="grid-2">
-                <div class="card">
+                <!-- Pengaturan Warna Utama - Deactivated/Hidden -->
+                <div class="card" style="display: none;">
                     <label>Pengaturan Warna Utama</label>
                     <div class="grid-3">
                         <div class="input-group">
@@ -632,7 +634,7 @@
                     </div>
                 </div>
 
-                <div class="card">
+                <div class="card" style="grid-column: span 2;">
                     <label>Gaya Huruf (Tipografi)</label>
                     <div class="input-group">
                         <select id="fontSelector" onchange="updateFontHidden()">
