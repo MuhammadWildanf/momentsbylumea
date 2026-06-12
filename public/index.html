@@ -7,15 +7,9 @@
     <title>LUMEA</title>
     <!-- INSTANT THEME RESTORER (Pencegah Style Flash / FOUC saat Refresh) -->
     <script>
-        window.formatTitleText = function (title, data = null) {
-            if (data && (data.titleName1 || data.titleName2)) {
-                const n1 = data.titleName1 || '';
-                const conn = data.titleConnector || '';
-                const n2 = data.titleName2 || '';
-                return '<span>' + n1 + '</span> <span class="title-amp">' + conn + '</span> <span>' + n2 + '</span>';
-            }
+        window.formatTitleText = function (title) {
             if (!title) return '';
-            const match = title.match(/\s+(&|and|dan|bersama)\s+/i);
+            const match = title.match(/\s+(and|dan|bersama)\s+/i) || title.match(/\s*(&|\+)\s*/);
             if (match) {
                 const connector = match[1];
                 const parts = title.split(match[0]);
@@ -1350,11 +1344,7 @@
         <div class="center-panel">
             <div id="idle-header">
                 <div class="scribble-title logo" id="main-title" style="margin-bottom: 20px;">
-                    <div class="names-row">
-                        <span>Audric</span>
-                        <span class="title-amp">&</span>
-                        <span>Catherine</span>
-                    </div>
+                    <div class="names-row"></div>
                 </div>
                 <script>
                     (function () {
@@ -1365,7 +1355,7 @@
                                 if (data.title) {
                                     const titleRow = document.querySelector('.names-row');
                                     if (titleRow) {
-                                        titleRow.innerHTML = window.formatTitleText(data.title, data);
+                                        titleRow.innerHTML = window.formatTitleText(data.title);
                                     }
                                 }
                                 if (data.idleHeadMode === 'logo' && data.logoUrl) {
@@ -1790,7 +1780,7 @@
                 // Immediately update titles & subtitles
                 const titleRow = document.querySelector('.names-row');
                 if (titleRow && data.title) {
-                    titleRow.innerHTML = window.formatTitleText(data.title, data);
+                    titleRow.innerHTML = window.formatTitleText(data.title);
                 }
 
                 const subEl = document.getElementById('idle-sub');
@@ -1875,7 +1865,7 @@
 
                 const titleRow = document.querySelector('.names-row');
                 if (titleRow && data.title) {
-                    const formattedTitle = window.formatTitleText(data.title, data);
+                    const formattedTitle = window.formatTitleText(data.title);
                     if (titleRow.innerHTML !== formattedTitle) titleRow.innerHTML = formattedTitle;
                 }
 
