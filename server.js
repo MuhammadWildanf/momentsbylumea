@@ -402,6 +402,10 @@ const DEFAULT_CONFIG = {
     subtitleColor: "#f0e5c7",
     connectorColor: "#f0e5c7",
     descColor: "#cdcdcd",
+    startTextColor: "#1a0f0a",
+    readyTextColor: "#f0e5c7",
+    reviewTextColor: "#f0e5c7",
+    successTextColor: "#f0e5c7",
     eventDate: "2026-05-23"
 };
 

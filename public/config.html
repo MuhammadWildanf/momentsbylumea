@@ -755,20 +755,56 @@
                     </div>
                 </div>
                 <div class="input-group">
-                    <label>Teks Tombol Mulai</label>
-                    <input type="text" id="startText" placeholder="Mulai Pengalaman Anda">
+                    <label>Teks Tombol Mulai & Warna</label>
+                    <div class="input-with-color">
+                        <div class="text-control">
+                            <input type="text" id="startText" placeholder="Mulai Pengalaman Anda">
+                        </div>
+                        <div class="color-control">
+                            <div class="color-row" style="padding: 6px 10px;">
+                                <input type="color" id="startTextColor">
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="input-group">
-                    <label>Instruksi Halaman Bersiap</label>
-                    <textarea id="readyText" rows="2" placeholder="Instruksi sebelum rekam..."></textarea>
+                    <label>Instruksi Halaman Bersiap & Warna</label>
+                    <div class="input-with-color">
+                        <div class="text-control">
+                            <textarea id="readyText" rows="2" placeholder="Instruksi sebelum rekam..."></textarea>
+                        </div>
+                        <div class="color-control">
+                            <div class="color-row" style="padding: 6px 10px;">
+                                <input type="color" id="readyTextColor">
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="input-group">
-                    <label>Instruksi Halaman Review</label>
-                    <textarea id="reviewText" rows="2" placeholder="Instruksi setelah rekam..."></textarea>
+                    <label>Instruksi Halaman Review & Warna</label>
+                    <div class="input-with-color">
+                        <div class="text-control">
+                            <textarea id="reviewText" rows="2" placeholder="Instruksi setelah rekam..."></textarea>
+                        </div>
+                        <div class="color-control">
+                            <div class="color-row" style="padding: 6px 10px;">
+                                <input type="color" id="reviewTextColor">
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="input-group">
-                    <label>Pesan Halaman Sukses</label>
-                    <textarea id="successText" rows="2" placeholder="Pesan sukses setelah upload..."></textarea>
+                    <label>Pesan Halaman Sukses & Warna</label>
+                    <div class="input-with-color">
+                        <div class="text-control">
+                            <textarea id="successText" rows="2" placeholder="Pesan sukses setelah upload..."></textarea>
+                        </div>
+                        <div class="color-control">
+                            <div class="color-row" style="padding: 6px 10px;">
+                                <input type="color" id="successTextColor">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -999,6 +1035,10 @@
                 document.getElementById('connectorColor').value = data.connectorColor || data.titleColor || '#D3BB7C';
                 document.getElementById('subtitleColor').value = data.subtitleColor || '#F0E5C7';
                 document.getElementById('descColor').value = data.descColor || '#CDCDCD';
+                document.getElementById('startTextColor').value = data.startTextColor || '#1a0f0a';
+                document.getElementById('readyTextColor').value = data.readyTextColor || '#f0e5c7';
+                document.getElementById('reviewTextColor').value = data.reviewTextColor || '#f0e5c7';
+                document.getElementById('successTextColor').value = data.successTextColor || '#f0e5c7';
                 document.getElementById('fontUrl').value = data.fontUrl || '';
                 document.getElementById('fontFamily').value = data.fontFamily || '';
                 document.getElementById('titleFontFamily').value = data.titleFontFamily || '';
@@ -1068,6 +1108,10 @@
             document.getElementById('connectorColor').value = p.title;
             document.getElementById('subtitleColor').value = p.title;
             document.getElementById('descColor').value = p.desc;
+            document.getElementById('startTextColor').value = (t === 'monochrome' ? '#000000' : '#1a0f0a');
+            document.getElementById('readyTextColor').value = p.title;
+            document.getElementById('reviewTextColor').value = p.title;
+            document.getElementById('successTextColor').value = p.title;
             document.getElementById('frameColor').value = p.frame;
             document.getElementById('fontSelector').value = p.font;
             updateFontHidden();
@@ -1132,6 +1176,10 @@
                 connectorColor: document.getElementById('connectorColor').value,
                 subtitleColor: document.getElementById('subtitleColor').value,
                 descColor: document.getElementById('descColor').value,
+                startTextColor: document.getElementById('startTextColor').value,
+                readyTextColor: document.getElementById('readyTextColor').value,
+                reviewTextColor: document.getElementById('reviewTextColor').value,
+                successTextColor: document.getElementById('successTextColor').value,
                 fontSelector: document.getElementById('fontSelector').value,
                 fontUrl: document.getElementById('fontUrl').value,
                 fontFamily: document.getElementById('fontFamily').value,

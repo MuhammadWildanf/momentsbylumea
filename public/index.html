@@ -33,6 +33,10 @@
                 if (data.subtitleColor) root.style.setProperty('--subtitle-color', data.subtitleColor);
                 if (data.connectorColor) root.style.setProperty('--connector-color', data.connectorColor);
                 if (data.descColor) root.style.setProperty('--desc-color', data.descColor);
+                if (data.startTextColor) root.style.setProperty('--start-text-color', data.startTextColor);
+                if (data.readyTextColor) root.style.setProperty('--ready-text-color', data.readyTextColor);
+                if (data.reviewTextColor) root.style.setProperty('--review-text-color', data.reviewTextColor);
+                if (data.successTextColor) root.style.setProperty('--success-text-color', data.successTextColor);
                 if (data.frameColor) root.style.setProperty('--frame', data.frameColor);
                 if (data.bgColor1) root.style.setProperty('--bg-1', data.bgColor1);
                 if (data.bgColor2) root.style.setProperty('--bg-2', data.bgColor2);
@@ -461,6 +465,28 @@
             line-height: 1.6;
             letter-spacing: 0.3px;
             text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        #ready-text {
+            color: var(--ready-text-color, #F0E5C7) !important;
+        }
+        #ready-text span {
+            color: var(--ready-text-color, #F0E5C7) !important;
+        }
+        #review-video-text {
+            color: var(--review-text-color, #F0E5C7) !important;
+        }
+        #review-video-text span {
+            color: var(--review-text-color, #CDCDCD) !important;
+        }
+        #success-text {
+            color: var(--success-text-color, #F0E5C7) !important;
+        }
+        #success-text span {
+            color: var(--success-text-color, #CDCDCD) !important;
+        }
+        .btn-start {
+            color: var(--start-text-color, #1a0f0a) !important;
         }
 
         /* INPUTS & FORM */
@@ -1165,7 +1191,7 @@
             <div id="state-idle" class="ui-state active">
                 <div class="welcome-container" style="display: flex; flex-direction: column; align-items: center;">
                     <button class="btn-start" onclick="changeState('form')" style="margin-top: 2vh;">
-                        <span>START HERE</span>
+                        <span id="start-btn-text">START HERE</span>
                     </button>
                 </div>
             </div>
@@ -1612,6 +1638,10 @@
                 if (data.subtitleColor && rootStyle.getPropertyValue('--subtitle-color') !== data.subtitleColor) rootStyle.setProperty('--subtitle-color', data.subtitleColor);
                 if (data.connectorColor && rootStyle.getPropertyValue('--connector-color') !== data.connectorColor) rootStyle.setProperty('--connector-color', data.connectorColor);
                 if (data.descColor && rootStyle.getPropertyValue('--desc-color') !== data.descColor) rootStyle.setProperty('--desc-color', data.descColor);
+                if (data.startTextColor && rootStyle.getPropertyValue('--start-text-color') !== data.startTextColor) rootStyle.setProperty('--start-text-color', data.startTextColor);
+                if (data.readyTextColor && rootStyle.getPropertyValue('--ready-text-color') !== data.readyTextColor) rootStyle.setProperty('--ready-text-color', data.readyTextColor);
+                if (data.reviewTextColor && rootStyle.getPropertyValue('--review-text-color') !== data.reviewTextColor) rootStyle.setProperty('--review-text-color', data.reviewTextColor);
+                if (data.successTextColor && rootStyle.getPropertyValue('--success-text-color') !== data.successTextColor) rootStyle.setProperty('--success-text-color', data.successTextColor);
 
                 const targetFrameColor = data.frameColor || 'rgba(30, 41, 59, 0.95)';
                 if (rootStyle.getPropertyValue('--frame') !== targetFrameColor) rootStyle.setProperty('--frame', targetFrameColor);
@@ -1752,6 +1782,10 @@
                 if (data.subtitleColor && rootStyle.getPropertyValue('--subtitle-color') !== data.subtitleColor) rootStyle.setProperty('--subtitle-color', data.subtitleColor);
                 if (data.connectorColor && rootStyle.getPropertyValue('--connector-color') !== data.connectorColor) rootStyle.setProperty('--connector-color', data.connectorColor);
                 if (data.descColor && rootStyle.getPropertyValue('--desc-color') !== data.descColor) rootStyle.setProperty('--desc-color', data.descColor);
+                if (data.startTextColor && rootStyle.getPropertyValue('--start-text-color') !== data.startTextColor) rootStyle.setProperty('--start-text-color', data.startTextColor);
+                if (data.readyTextColor && rootStyle.getPropertyValue('--ready-text-color') !== data.readyTextColor) rootStyle.setProperty('--ready-text-color', data.readyTextColor);
+                if (data.reviewTextColor && rootStyle.getPropertyValue('--review-text-color') !== data.reviewTextColor) rootStyle.setProperty('--review-text-color', data.reviewTextColor);
+                if (data.successTextColor && rootStyle.getPropertyValue('--success-text-color') !== data.successTextColor) rootStyle.setProperty('--success-text-color', data.successTextColor);
 
                 const targetFrameColor = data.frameColor || 'rgba(30, 41, 59, 0.95)';
                 if (rootStyle.getPropertyValue('--frame') !== targetFrameColor) rootStyle.setProperty('--frame', targetFrameColor);
