@@ -611,6 +611,12 @@
                             </div>
                         </div>
                         <div class="input-group">
+                            <label>Warna Subtitle</label>
+                            <div class="color-row">
+                                <input type="color" id="subtitleColor">
+                            </div>
+                        </div>
+                        <div class="input-group">
                             <label>Teks Deskripsi</label>
                             <div class="color-row">
                                 <input type="color" id="descColor">
@@ -959,6 +965,7 @@
                 document.getElementById('accentColor').value = data.accentColor || '#D3BB7C';
                 document.getElementById('frameColor').value = data.frameColor || '#333333';
                 document.getElementById('titleColor').value = data.titleColor || '#D3BB7C';
+                document.getElementById('subtitleColor').value = data.subtitleColor || '#F0E5C7';
                 document.getElementById('descColor').value = data.descColor || '#CDCDCD';
                 document.getElementById('fontUrl').value = data.fontUrl || '';
                 document.getElementById('fontFamily').value = data.fontFamily || '';
@@ -1026,6 +1033,7 @@
             document.getElementById('bgColor1').value = p.bg1;
             document.getElementById('accentColor').value = p.accent;
             document.getElementById('titleColor').value = p.title;
+            document.getElementById('subtitleColor').value = p.title;
             document.getElementById('descColor').value = p.desc;
             document.getElementById('frameColor').value = p.frame;
             document.getElementById('fontSelector').value = p.font;
@@ -1088,6 +1096,7 @@
                 accentColor: document.getElementById('accentColor').value,
                 frameColor: document.getElementById('frameColor').value,
                 titleColor: document.getElementById('titleColor').value,
+                subtitleColor: document.getElementById('subtitleColor').value,
                 descColor: document.getElementById('descColor').value,
                 fontSelector: document.getElementById('fontSelector').value,
                 fontUrl: document.getElementById('fontUrl').value,

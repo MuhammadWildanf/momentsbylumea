@@ -41,5 +41,6 @@
     "showLeftPanel": false,
     "showRightPanel": false,
     "qrResetDuration": 20,
+    "subtitleColor": "#f0e5c7",
     "eventDate": "2026-05-23"
 }

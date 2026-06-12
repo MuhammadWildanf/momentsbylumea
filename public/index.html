@@ -20,6 +20,7 @@
                 }
                 if (data.accentColor) root.style.setProperty('--accent', data.accentColor);
                 if (data.titleColor) root.style.setProperty('--title-color', data.titleColor);
+                if (data.subtitleColor) root.style.setProperty('--subtitle-color', data.subtitleColor);
                 if (data.descColor) root.style.setProperty('--desc-color', data.descColor);
                 if (data.frameColor) root.style.setProperty('--frame', data.frameColor);
                 if (data.bgColor1) root.style.setProperty('--bg-1', data.bgColor1);
@@ -225,6 +226,7 @@
 
         body {
             --title-color: #F0E5C7;
+            --subtitle-color: #F0E5C7;
             font-family: 'Aref Ruqaa', serif;
             background-color: #1a0f0a;
             /* Dark base matching the wedding theme */
@@ -431,7 +433,7 @@
             font-family: 'Aref Ruqaa', serif;
             color: #F0E5C7;
             font-size: min(3vh, 32px);
-            color: var(--title-color, #F0E5C7);
+            color: var(--subtitle-color, #F0E5C7);
             max-width: 600px;
             margin-bottom: 0.5vh;
             font-weight: 500;
@@ -1609,6 +1611,7 @@
 
                 if (data.accentColor && rootStyle.getPropertyValue('--accent') !== data.accentColor) rootStyle.setProperty('--accent', data.accentColor);
                 if (data.titleColor && rootStyle.getPropertyValue('--title-color') !== data.titleColor) rootStyle.setProperty('--title-color', data.titleColor);
+                if (data.subtitleColor && rootStyle.getPropertyValue('--subtitle-color') !== data.subtitleColor) rootStyle.setProperty('--subtitle-color', data.subtitleColor);
                 if (data.descColor && rootStyle.getPropertyValue('--desc-color') !== data.descColor) rootStyle.setProperty('--desc-color', data.descColor);
 
                 const targetFrameColor = data.frameColor || 'rgba(30, 41, 59, 0.95)';
@@ -1753,6 +1756,7 @@
 
                 if (data.accentColor && rootStyle.getPropertyValue('--accent') !== data.accentColor) rootStyle.setProperty('--accent', data.accentColor);
                 if (data.titleColor && rootStyle.getPropertyValue('--title-color') !== data.titleColor) rootStyle.setProperty('--title-color', data.titleColor);
+                if (data.subtitleColor && rootStyle.getPropertyValue('--subtitle-color') !== data.subtitleColor) rootStyle.setProperty('--subtitle-color', data.subtitleColor);
                 if (data.descColor && rootStyle.getPropertyValue('--desc-color') !== data.descColor) rootStyle.setProperty('--desc-color', data.descColor);
 
                 const targetFrameColor = data.frameColor || 'rgba(30, 41, 59, 0.95)';
