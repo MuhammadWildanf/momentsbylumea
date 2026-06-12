@@ -721,23 +721,17 @@
                     <label>Teks Tombol Mulai</label>
                     <input type="text" id="startText" placeholder="Mulai Pengalaman Anda">
                 </div>
-            </div>
-
-            <div class="grid-3">
-                <div class="card">
-                    <label>Halaman Bersiap</label>
-                    <small style="color:var(--text-muted); display:block; margin-bottom:8px;">Instruksi sebelum tamu menekan tombol rekam.</small>
-                    <textarea id="readyText" rows="3"></textarea>
+                <div class="input-group">
+                    <label>Instruksi Halaman Bersiap</label>
+                    <textarea id="readyText" rows="2" placeholder="Instruksi sebelum rekam..."></textarea>
                 </div>
-                <div class="card">
-                    <label>Halaman Review</label>
-                    <small style="color:var(--text-muted); display:block; margin-bottom:8px;">Instruksi setelah video selesai direkam.</small>
-                    <textarea id="reviewText" rows="3"></textarea>
+                <div class="input-group">
+                    <label>Instruksi Halaman Review</label>
+                    <textarea id="reviewText" rows="2" placeholder="Instruksi setelah rekam..."></textarea>
                 </div>
-                <div class="card">
-                    <label>Halaman Sukses</label>
-                    <small style="color:var(--text-muted); display:block; margin-bottom:8px;">Pesan penutup saat video sedang diproses.</small>
-                    <textarea id="successText" rows="3"></textarea>
+                <div class="input-group">
+                    <label>Pesan Halaman Sukses</label>
+                    <textarea id="successText" rows="2" placeholder="Pesan sukses setelah upload..."></textarea>
                 </div>
             </div>
 
@@ -801,10 +795,14 @@
             <h2>Pengaturan Inti Sistem</h2>
             <div class="card">
 
-                <div class="grid-2">
+                <div class="grid-3">
                     <div class="input-group">
                         <label>Durasi Maksimal Video (Detik)</label>
                         <input type="number" id="recordingDuration">
+                    </div>
+                    <div class="input-group">
+                        <label>Auto-Reset QR Code (Detik)</label>
+                        <input type="number" id="qrResetDuration">
                     </div>
                     <div class="input-group">
                         <label>Tanggal Event Galeri Tamu (YYYY-MM-DD)</label>
@@ -977,6 +975,7 @@
                 document.getElementById('recordingCdText').value = data.recordingCdText || '';
                 document.getElementById('photoCdText').value = data.photoCdText || '';
                 document.getElementById('recordingDuration').value = data.recordingDuration || 15;
+                document.getElementById('qrResetDuration').value = data.qrResetDuration || 45;
                 document.getElementById('eventDate').value = data.eventDate || '2026-05-23';
                 document.getElementById('showLeftPanel').checked = data.showLeftPanel !== false;
                 document.getElementById('showRightPanel').checked = data.showRightPanel !== false;
@@ -1102,6 +1101,7 @@
                 recordingCdText: document.getElementById('recordingCdText').value,
                 photoCdText: document.getElementById('photoCdText').value,
                 recordingDuration: parseInt(document.getElementById('recordingDuration').value),
+                qrResetDuration: parseInt(document.getElementById('qrResetDuration').value),
                 eventDate: document.getElementById('eventDate').value,
                 showLeftPanel: document.getElementById('showLeftPanel').checked,
                 showRightPanel: document.getElementById('showRightPanel').checked,

@@ -1300,8 +1300,7 @@
                 <div style="margin-top: 25px;">
                     <button class="btn-primary" onclick="resetApp()"
                         style="padding: 10px 35px; font-size: 16px; border-radius: 50px; min-width: 150px;">Done</button>
-                    <div id="auto-reset-countdown" style="margin-top: 12px; font-size: 13px; color: #a3a3a3;">Auto-reset
-                        in 45s</div>
+                    <div id="auto-reset-countdown" style="margin-top: 12px; font-size: 13px; color: #a3a3a3;"></div>
                 </div>
             </div>
         </div>
@@ -1536,6 +1535,7 @@
                 window.showRightPanel = data.showRightPanel !== false;
                 window.enableGesture = data.enableGesture !== false;
                 window.recordingDuration = data.recordingDuration || 15;
+                window.qrResetDuration = data.qrResetDuration || 45;
                 window.readyCdText = data.readyCdText || 'Recording Begins in...';
                 window.recordingCdText = data.recordingCdText || 'Recording...';
                 window.photoCdText = data.photoCdText || 'Taking Photo in...';
@@ -1687,19 +1687,19 @@
                 const defaults = {
                     ready: "Get your pen and look at mirror. <br> Hit the record button when you are ready.",
                     review: "Please review your video, <br> you can RETAKE or UPLOAD.",
-                    success: "Your video is still processing, <br> we will notify on your WhatsApp number when is done. <br><br> Thank You"
+                    success: "Your memories are ready! ✨<br><span style=\"color:#CDCDCD; font-size:18px; font-weight:400;\">Scan this QR code to view and download your video and photo.</span>"
                 };
 
                 const readyEl = document.getElementById('ready-text');
-                const targetReady = data.readyText || defaults.ready;
+                const targetReady = (data.readyText || defaults.ready).replace(/\n/g, '<br>');
                 if (readyEl && readyEl.innerHTML !== targetReady) readyEl.innerHTML = targetReady;
 
                 const reviewEl = document.getElementById('review-video-text');
-                const targetReview = data.reviewText || defaults.review;
+                const targetReview = (data.reviewText || defaults.review).replace(/\n/g, '<br>');
                 if (reviewEl && reviewEl.innerHTML !== targetReview) reviewEl.innerHTML = targetReview;
 
                 const successEl = document.getElementById('success-text');
-                const targetSuccess = data.successText || defaults.success;
+                const targetSuccess = (data.successText || defaults.success).replace(/\n/g, '<br>');
                 if (successEl && successEl.innerHTML !== targetSuccess) successEl.innerHTML = targetSuccess;
 
                 // 3. Smart Video Asset Updates (Prevent infinite reload cycle)
@@ -1769,6 +1769,7 @@
 
                 window.enableGesture = data.enableGesture !== false;
                 window.recordingDuration = data.recordingDuration || 15;
+                window.qrResetDuration = data.qrResetDuration || 45;
                 window.readyCdText = data.readyCdText || 'Recording Begins in...';
                 window.recordingCdText = data.recordingCdText || 'Recording...';
                 window.photoCdText = data.photoCdText || 'Taking Photo in...';
@@ -2182,7 +2183,7 @@
                         }
 
                         // Start auto-reset countdown
-                        let timeLeft = 45;
+                        let timeLeft = window.qrResetDuration || 45;
                         if (countdownEl) {
                             countdownEl.innerText = `Auto-reset in ${timeLeft}s`;
                             autoResetTimer = setInterval(() => {

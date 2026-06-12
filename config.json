@@ -3,7 +3,7 @@
     "subtitle": "A special moment awaits you!",
     "readyText": "",
     "reviewText": "",
-    "successText": "",
+    "successText": "Scan this QR code to get your video and photo instantly on your phone. \nSave it, share it, and love it!",
     "bgColor1": "#1a100a",
     "bgColor2": "#3c2a21",
     "accentColor": "#d3bb7c",
@@ -30,7 +30,7 @@
     "descPremium": "Enter your details to unveil a personalized wedding experience.",
     "startText": "",
     "emailSubject": "",
-    "messageTemplate": "Hi {name}! ✨\n\nYour special moment is here! 🎬 Video dan foto ScribbleBooth Anda sudah siap untuk di-download dan dibagikan.\n\nAmbil file Anda di sini: 🔗 {link}\n\nSave it, love it, share it! Jangan lupa tag kami di sosial media ya! 📸✨",
+    "messageTemplate": "",
     "fontSelector": "luxury",
     "titleFontFamily": "'Luxurious Script', cursive",
     "readyCdText": "",
@@ -40,5 +40,6 @@
     "descColor": "#cdcdcd",
     "showLeftPanel": false,
     "showRightPanel": false,
+    "qrResetDuration": 20,
     "eventDate": "2026-05-23"
 }

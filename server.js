@@ -393,6 +393,10 @@ const DEFAULT_CONFIG = {
     resultVideoUrl: "",
     frameColor: "#3d3d3d",
     recordingDuration: 15,
+    qrResetDuration: 45,
+    readyText: "Get your pen and look at mirror. <br> Hit the record button when you are ready.",
+    reviewText: "Please review your video, <br> you can RETAKE or UPLOAD.",
+    successText: "Your memories are ready! ✨<br><span style=\"color:#CDCDCD; font-size:18px; font-weight:400;\">Scan this QR code to view and download your video and photo.</span>",
     eventDate: "2026-05-23"
 };
 
