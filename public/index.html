@@ -7,6 +7,16 @@
     <title>LUMEA</title>
     <!-- INSTANT THEME RESTORER (Pencegah Style Flash / FOUC saat Refresh) -->
     <script>
+        window.formatTitleText = function (title) {
+            if (!title) return '';
+            const match = title.match(/\s+(&|and|dan|bersama)\s+/i);
+            if (match) {
+                const connector = match[1];
+                const parts = title.split(match[0]);
+                return '<span>' + parts[0].trim() + '</span> <span class="title-amp">' + connector + '</span> <span>' + parts.slice(1).join(match[0]).trim() + '</span>';
+            }
+            return '<span>' + title + '</span>';
+        };
         try {
             const cached = localStorage.getItem('vb_config');
             if (cached) {
@@ -1133,14 +1143,7 @@
                                 if (data.title) {
                                     const titleRow = document.querySelector('.names-row');
                                     if (titleRow) {
-                                        let formattedTitle = '';
-                                        if (data.title.includes('&')) {
-                                            const parts = data.title.split('&');
-                                            formattedTitle = '<span>' + parts[0].trim() + '</span> <span class="title-amp">&amp;</span> <span>' + parts.slice(1).join('&').trim() + '</span>';
-                                        } else {
-                                            formattedTitle = '<span>' + data.title + '</span>';
-                                        }
-                                        titleRow.innerHTML = formattedTitle;
+                                        titleRow.innerHTML = window.formatTitleText(data.title);
                                     }
                                 }
                                 if (data.idleHeadMode === 'logo' && data.logoUrl) {
@@ -1558,14 +1561,7 @@
                 // Immediately update titles & subtitles
                 const titleRow = document.querySelector('.names-row');
                 if (titleRow && data.title) {
-                    let formattedTitle = '';
-                    if (data.title.includes('&')) {
-                        const parts = data.title.split('&');
-                        formattedTitle = `<span>${parts[0].trim()}</span> <span class="title-amp">&amp;</span> <span>${parts.slice(1).join('&').trim()}</span>`;
-                    } else {
-                        formattedTitle = `<span>${data.title}</span>`;
-                    }
-                    titleRow.innerHTML = formattedTitle;
+                    titleRow.innerHTML = window.formatTitleText(data.title);
                 }
 
                 const subEl = document.getElementById('idle-sub');
@@ -1651,13 +1647,7 @@
 
                 const titleRow = document.querySelector('.names-row');
                 if (titleRow && data.title) {
-                    let formattedTitle = '';
-                    if (data.title.includes('&')) {
-                        const parts = data.title.split('&');
-                        formattedTitle = `<span>${parts[0].trim()}</span> <span class="title-amp">&amp;</span> <span>${parts.slice(1).join('&').trim()}</span>`;
-                    } else {
-                        formattedTitle = `<span>${data.title}</span>`;
-                    }
+                    const formattedTitle = window.formatTitleText(data.title);
                     if (titleRow.innerHTML !== formattedTitle) titleRow.innerHTML = formattedTitle;
                 }
 
