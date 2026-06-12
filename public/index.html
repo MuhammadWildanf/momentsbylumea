@@ -17,7 +17,7 @@
             }
             return '<span>' + title + '</span>';
         };
-        window.applyThemeColors = function(data, target) {
+        window.applyThemeColors = function (data, target) {
             if (!target) return;
             const styleObj = target.style || target;
             if (typeof styleObj.setProperty !== 'function') return;
@@ -64,7 +64,7 @@
             }
         };
 
-        window.updateConfigurableTexts = function(data) {
+        window.updateConfigurableTexts = function (data) {
             if (!data) return;
 
             // Form State
@@ -582,21 +582,27 @@
         #ready-text {
             color: var(--ready-text-color, #F0E5C7) !important;
         }
+
         #ready-text span {
             color: var(--ready-text-color, #F0E5C7) !important;
         }
+
         #review-video-text {
             color: var(--review-text-color, #F0E5C7) !important;
         }
+
         #review-video-text span {
             color: var(--review-text-color, #CDCDCD) !important;
         }
+
         #success-text {
             color: var(--success-text-color, #F0E5C7) !important;
         }
+
         #success-text span {
             color: var(--success-text-color, #CDCDCD) !important;
         }
+
         .btn-start {
             color: var(--start-text-color, #1a0f0a) !important;
         }
@@ -604,54 +610,71 @@
         #form-label-name {
             color: var(--form-label-color, #F0E5C7) !important;
         }
+
         #form-submit-text {
             color: var(--form-submit-color, #1a0f0a) !important;
         }
+
         #ready-header-title {
             color: var(--ready-header-title-color, #F0E5C7) !important;
         }
+
         #ready-header-subtitle {
             color: var(--ready-header-subtitle-color, #F0E5C7) !important;
         }
+
         #ready-back-text {
             color: var(--ready-back-color, #e7e5d8) !important;
         }
+
         #review-retake-text {
             color: var(--review-retake-color, #e7e5d8) !important;
         }
+
         #review-photo-text {
             color: var(--review-photo-color, #1a0f0a) !important;
         }
+
         #photo-header-title {
             color: var(--photo-header-title-color, #F0E5C7) !important;
         }
+
         #photo-header-subtitle {
             color: var(--photo-header-subtitle-color, #F0E5C7) !important;
         }
+
         #ready-photo-text {
             color: var(--photo-instruction-color, #F0E5C7) !important;
         }
+
         #ready-photo-text span {
             color: var(--photo-instruction-color, #F0E5C7) !important;
         }
+
         #photo-back-text {
             color: var(--photo-back-color, #e7e5d8) !important;
         }
+
         #final-header-title {
             color: var(--final-header-title-color, #F0E5C7) !important;
         }
+
         #final-retake-all-text {
             color: var(--final-retake-all-color, #e7e5d8) !important;
         }
+
         #final-retake-photo-text {
             color: var(--final-retake-photo-color, #e7e5d8) !important;
         }
+
         #final-upload-text {
             color: var(--final-upload-color, #1a0f0a) !important;
         }
+
         #success-footer-text {
             color: var(--success-footer-color, #CDCDCD) !important;
         }
+
         #success-done-text {
             color: var(--success-done-color, #1a0f0a) !important;
         }
@@ -1321,13 +1344,11 @@
         <div class="center-panel">
             <div id="idle-header">
                 <div class="scribble-title logo" id="main-title" style="margin-bottom: 20px;">
-                    <img src="/before.png" alt="" class="title-ornament">
                     <div class="names-row">
                         <span>Audric</span>
                         <span class="title-amp">&</span>
                         <span>Catherine</span>
                     </div>
-                    <img src="/after.png" alt="" class="title-ornament">
                 </div>
                 <script>
                     (function () {
@@ -1421,8 +1442,10 @@
                     review your video, <br> <span style="color:#CDCDCD; font-size:24px; font-weight:400;">you can RETAKE
                         or NEXT.</span></h2>
                 <div class="btn-row" style="gap: 20px;">
-                    <button class="btn-outline" onclick="retakeVideo()"><span id="review-retake-text">RETAKE</span></button>
-                    <button class="btn-primary" onclick="preparePhotoSession()"><span id="review-photo-text">TAKE A PHOTO</span></button>
+                    <button class="btn-outline" onclick="retakeVideo()"><span
+                            id="review-retake-text">RETAKE</span></button>
+                    <button class="btn-primary" onclick="preparePhotoSession()"><span id="review-photo-text">TAKE A
+                            PHOTO</span></button>
                 </div>
             </div>
 
@@ -1453,7 +1476,9 @@
 
             <!-- STATE REVIEW FINAL (NEW) -->
             <div id="state-review-final" class="ui-state">
-                <h2 id="final-header-title" style="font-size: min(4vh, 28px); color:#F0E5C7; font-weight:700; margin-bottom: 2vh;">Review your session.</h2>
+                <h2 id="final-header-title"
+                    style="font-size: min(4vh, 28px); color:#F0E5C7; font-weight:700; margin-bottom: 2vh;">Review your
+                    session.</h2>
                 <div class="final-preview-container">
                     <div class="final-preview-box">
                         <video id="final-video-preview" autoplay muted loop
@@ -1468,9 +1493,12 @@
                     </div>
                 </div>
                 <div class="btn-row final-btn-row">
-                    <button class="btn-outline" onclick="retakeVideo()"><span id="final-retake-all-text">RETAKE ALL</span></button>
-                    <button class="btn-outline" onclick="retakePhotoOnly()"><span id="final-retake-photo-text">RETAKE PHOTO</span></button>
-                    <button class="btn-primary" onclick="submitVideo()"><span id="final-upload-text">UPLOAD BOTH</span></button>
+                    <button class="btn-outline" onclick="retakeVideo()"><span id="final-retake-all-text">RETAKE
+                            ALL</span></button>
+                    <button class="btn-outline" onclick="retakePhotoOnly()"><span id="final-retake-photo-text">RETAKE
+                            PHOTO</span></button>
+                    <button class="btn-primary" onclick="submitVideo()"><span id="final-upload-text">UPLOAD
+                            BOTH</span></button>
                 </div>
             </div>
 
@@ -1489,14 +1517,17 @@
                     <img id="qr-image" style="width: 200px; height: 200px; display: block;" src="" alt="QR Code">
                 </div>
 
-                <h2 id="success-footer-container" style="font-size:20px; color:#CDCDCD; font-weight:400; margin-top: 10px;">
-                    <span id="success-footer-text" style="font-size:32px; font-family:'Luxurious Script', cursive;">Thank you for being part of
+                <h2 id="success-footer-container"
+                    style="font-size:20px; color:#CDCDCD; font-weight:400; margin-top: 10px;">
+                    <span id="success-footer-text"
+                        style="font-size:32px; font-family:'Luxurious Script', cursive;">Thank you for being part of
                         this moment</span>
                 </h2>
 
                 <div style="margin-top: 25px;">
                     <button class="btn-primary" onclick="resetApp()"
-                        style="padding: 10px 35px; font-size: 16px; border-radius: 50px; min-width: 150px;"><span id="success-done-text">Done</span></button>
+                        style="padding: 10px 35px; font-size: 16px; border-radius: 50px; min-width: 150px;"><span
+                            id="success-done-text">Done</span></button>
                     <div id="auto-reset-countdown" style="margin-top: 12px; font-size: 13px; color: #a3a3a3;"></div>
                 </div>
             </div>
