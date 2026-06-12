@@ -400,6 +400,7 @@ const DEFAULT_CONFIG = {
     accentColor: "#d3bb7c",
     titleColor: "#f0e5c7",
     subtitleColor: "#f0e5c7",
+    connectorColor: "#f0e5c7",
     descColor: "#cdcdcd",
     eventDate: "2026-05-23"
 };
