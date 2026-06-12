@@ -549,6 +549,19 @@
             background: var(--accent);
             color: #000;
         }
+
+        /* Side-by-side input and color picker */
+        .input-with-color {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .input-with-color .text-control {
+            flex: 1;
+        }
+        .input-with-color .color-control {
+            flex-shrink: 0;
+        }
     </style>
 </head>
 
@@ -602,24 +615,6 @@
                             <label>Warna Aksen</label>
                             <div class="color-row">
                                 <input type="color" id="accentColor">
-                            </div>
-                        </div>
-                        <div class="input-group">
-                            <label>Warna Judul</label>
-                            <div class="color-row">
-                                <input type="color" id="titleColor">
-                            </div>
-                        </div>
-                        <div class="input-group">
-                            <label>Warna Subtitle</label>
-                            <div class="color-row">
-                                <input type="color" id="subtitleColor">
-                            </div>
-                        </div>
-                        <div class="input-group">
-                            <label>Teks Deskripsi</label>
-                            <div class="color-row">
-                                <input type="color" id="descColor">
                             </div>
                         </div>
                         <div class="input-group">
@@ -711,17 +706,44 @@
                     </div>
                 </div>
                 <div class="input-group">
-                    <label>Teks Judul Utama</label>
-                    <input type="text" id="title" placeholder="Audric & Catherine">
+                    <label>Teks Judul Utama & Warna</label>
+                    <div class="input-with-color">
+                        <div class="text-control">
+                            <input type="text" id="title" placeholder="Audric & Catherine">
+                        </div>
+                        <div class="color-control">
+                            <div class="color-row" style="padding: 6px 10px;">
+                                <input type="color" id="titleColor">
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="input-group">
-                    <label>Teks Subjudul</label>
-                    <textarea id="subtitle" rows="2">Momen spesial menanti Anda.</textarea>
+                    <label>Teks Subjudul & Warna</label>
+                    <div class="input-with-color">
+                        <div class="text-control">
+                            <textarea id="subtitle" rows="2">Momen spesial menanti Anda.</textarea>
+                        </div>
+                        <div class="color-control">
+                            <div class="color-row" style="padding: 6px 10px;">
+                                <input type="color" id="subtitleColor">
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="input-group">
-                    <label>Teks Deskripsi Singkat</label>
-                    <textarea id="descPremium"
-                        rows="2">Masukkan data Anda untuk merekam kenangan indah bersama kami.</textarea>
+                    <label>Teks Deskripsi Singkat & Warna</label>
+                    <div class="input-with-color">
+                        <div class="text-control">
+                            <textarea id="descPremium"
+                                rows="2">Masukkan data Anda untuk merekam kenangan indah bersama kami.</textarea>
+                        </div>
+                        <div class="color-control">
+                            <div class="color-row" style="padding: 6px 10px;">
+                                <input type="color" id="descColor">
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="input-group">
                     <label>Teks Tombol Mulai</label>
