@@ -382,9 +382,9 @@ app.post('/api/videobooth/submit', (req, res, next) => {
 const CONFIG_FILE = path.join(__dirname, 'config.json');
 const DEFAULT_CONFIG = {
     title: 'Audric & Catherine',
-    subtitle: 'A special moment awaits you.',
+    subtitle: 'A special moment awaits you!',
     descPremium: 'Enter your details to unveil a personalized wedding experience.',
-    startText: 'Begin your experience',
+    startText: 'START HERE',
     messageTemplate: 'Halo {name}! ✨\n\nKenangan Anda di ScribbleBooth sudah siap! Silakan lihat dan download melalui link folder di bawah ini:\n\n🔗 {link}\n\nTerima kasih sudah mampir!',
     emailSubject: 'Kenangan ScribbleBooth Anda sudah siap! ✨',
     bgColor1: '#2c3e50',
@@ -394,9 +394,12 @@ const DEFAULT_CONFIG = {
     frameColor: "#3d3d3d",
     recordingDuration: 15,
     qrResetDuration: 45,
-    readyText: "Get your pen and look at mirror. <br> Hit the record button when you are ready.",
-    reviewText: "Please review your video, <br> you can RETAKE or UPLOAD.",
-    successText: "Your memories are ready! ✨<br><span style=\"color:#CDCDCD; font-size:18px; font-weight:400;\">Scan this QR code to view and download your video and photo.</span>",
+    readyTextMain: "Get your pen and look at mirror.",
+    readyTextSub: "Hit the record button when you are ready.",
+    reviewTextMain: "Please review your video,",
+    reviewTextSub: "you can RETAKE or NEXT.",
+    successTextMain: "Your memories are ready! ✨",
+    successTextSub: "Scan this QR code to view and download your video and photo.",
     accentColor: "#d3bb7c",
     titleColor: "#f0e5c7",
     subtitleColor: "#f0e5c7",
@@ -425,7 +428,8 @@ const DEFAULT_CONFIG = {
     photoHeaderTitleColor: "#f0e5c7",
     photoHeaderSubtitle: "Strike a beautiful pose for the camera",
     photoHeaderSubtitleColor: "#f0e5c7",
-    photoInstructionText: "Look at the camera and smile. <br> Hit the shutter button when you are ready.",
+    photoInstructionMain: "Look at the camera and smile.",
+    photoInstructionSub: "Hit the shutter button when you are ready.",
     photoInstructionTextColor: "#f0e5c7",
     photoBackText: "BACK",
     photoBackTextColor: "#e7e5d8",
@@ -443,7 +447,21 @@ const DEFAULT_CONFIG = {
     successFooterTextColor: "#cdcdcd",
     successDoneText: "Done",
     successDoneTextColor: "#1a0f0a",
-    eventDate: "2026-05-23"
+    eventDate: "2026-05-23",
+    readyCdText: "Recording Begins in...",
+    recordingCdText: "Recording...",
+    photoCdText: "Taking Photo in...",
+    previewPanelFooter: "Preview Your Moment",
+    loadingPreviewText: "Loading Preview...",
+    loadingTutorialText: "Loading Tutorial...",
+    readyCountdownText: "Start Recording",
+    photoCountdownText: "Take a Photo",
+    resultLoadingText: "Loading your memories... ✨",
+    resultErrorText: "Sorry, your session was not found or has expired.",
+    resultProcessingText: "Processing your video & photo... please wait a moment. ✨<br><small style=\"font-size: 14px; opacity: 0.8; display: block; margin-top: 10px;\">Rendering process usually takes 10-15 seconds.</small>",
+    resultSaveVideoText: "🎬 Save Your Video",
+    resultSavePhotoText: "📸 Save Your Photo",
+    resultFooterText: "Here’s to the moments you’ll always look back on - @momentsbylumea"
 };
 
 // Buat config.json jika baru pertama kali di-run
@@ -454,7 +472,7 @@ if (!fs.existsSync(CONFIG_FILE)) {
 app.get('/api/config', (req, res) => {
     try {
         const configData = fs.readFileSync(CONFIG_FILE);
-        res.json(JSON.parse(configData));
+        res.json({ ...DEFAULT_CONFIG, ...JSON.parse(configData) });
     } catch (err) {
         res.json(DEFAULT_CONFIG);
     }

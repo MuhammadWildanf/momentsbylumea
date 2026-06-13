@@ -690,7 +690,7 @@
 
                     // Title and subtitle syncing
                     if (config.title) {
-                        document.getElementById('galleryTitle').innerText = config.title;
+                        document.getElementById('galleryTitle').innerHTML = config.title;
                     }
 
                     if (config.subtitle) {
@@ -703,7 +703,7 @@
                             });
                             document.getElementById('gallerySubtitle').innerHTML = `${config.subtitle} &bull; <span style="color: var(--accent); font-weight: 700;">${formattedEventDate}</span>`;
                         } catch (e) {
-                            document.getElementById('gallerySubtitle').innerText = config.subtitle;
+                            document.getElementById('gallerySubtitle').innerHTML = config.subtitle;
                         }
                     } else {
                         try {

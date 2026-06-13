@@ -198,10 +198,10 @@
 </head>
 
 <body>
-    <div id="loading" class="loading">Memuat kenangan Anda... ✨</div>
+    <div id="loading" class="loading">Loading your memories... ✨</div>
 
     <div id="error" class="error-state">
-        Maaf, sesi Anda tidak ditemukan atau sudah kadaluarsa.
+        Sorry, your session was not found or has expired.
     </div>
 
     <div id="content" class="container" style="display: none;">
@@ -240,7 +240,11 @@
             const urlParams = new URLSearchParams(window.location.search);
             const sessionId = urlParams.get('id');
 
-            // Load theme configuration immediately in parallel
+            // Default fallbacks in English
+            window.resultErrorTextVal = "Sorry, your session was not found or has expired.";
+            window.resultProcessingTextVal = `Processing your video & photo... please wait a moment. ✨<br><small style="font-size: 14px; opacity: 0.8; display: block; margin-top: 10px;">Rendering process usually takes 10-15 seconds.</small>`;
+
+            // Load theme & text configuration immediately in parallel
             let themePromise = fetch('/api/config')
                 .then(res => res.json())
                 .then(configData => {
@@ -249,6 +253,89 @@
                     }
                     if (configData.accentColor) {
                         document.documentElement.style.setProperty('--accent', configData.accentColor);
+                    }
+
+                    // Apply custom fonts
+                    const isDirectFont = configData.fontUrl && /\.(ttf|otf|woff|woff2)(\?.*)?$/i.test(configData.fontUrl);
+                    if (configData.fontUrl && !isDirectFont) {
+                        let link = document.getElementById('dynamic-font');
+                        if (!link) {
+                            link = document.createElement('link');
+                            link.id = 'dynamic-font';
+                            link.rel = 'stylesheet';
+                            document.head.appendChild(link);
+                        }
+                        link.href = configData.fontUrl;
+                    }
+                    if (configData.fontFamily || configData.titleFontFamily) {
+                        let styleParams = document.getElementById('dynamic-font-styles');
+                        if (!styleParams) {
+                            styleParams = document.createElement('style');
+                            styleParams.id = 'dynamic-font-styles';
+                            document.head.appendChild(styleParams);
+                        }
+
+                        let fontFaceRule = '';
+                        if (isDirectFont) {
+                            let format = 'truetype';
+                            if (configData.fontUrl.toLowerCase().includes('.otf')) format = 'opentype';
+                            else if (configData.fontUrl.toLowerCase().includes('.woff2')) format = 'woff2';
+                            else if (configData.fontUrl.toLowerCase().includes('.woff')) format = 'woff';
+
+                            fontFaceRule = `
+                                @font-face {
+                                    font-family: ${configData.fontFamily || "'CustomUploadedFont'"};
+                                    src: url("${configData.fontUrl}") format("${format}");
+                                    font-weight: normal;
+                                    font-style: normal;
+                                }
+                            `;
+                        }
+
+                        styleParams.innerHTML = `
+                            ${fontFaceRule}
+                            :root { 
+                                --title-font-dyn: ${configData.titleFontFamily || configData.fontFamily || "'Luxurious Script', cursive"}; 
+                                --body-font-dyn: ${configData.fontFamily || "'Aref Ruqaa', serif"};
+                            }
+                            body, button, .btn, .footer-text, .loading, .error-state {
+                                font-family: var(--body-font-dyn) !important;
+                            }
+                            .title {
+                                font-family: var(--title-font-dyn) !important;
+                            }
+                        `;
+                    }
+
+                    // Apply config texts
+                    const loadingTextVal = configData.resultLoadingText || "Loading your memories... ✨";
+                    const errorTextVal = configData.resultErrorText || "Sorry, your session was not found or has expired.";
+                    const saveVideoTextVal = configData.resultSaveVideoText || "🎬 Save Your Video";
+                    const savePhotoTextVal = configData.resultSavePhotoText || "📸 Save Your Photo";
+                    const resultFooterTextVal = configData.resultFooterText || "Here’s to the moments you’ll always look back on - @momentsbylumea";
+
+                    window.resultErrorTextVal = errorTextVal;
+                    window.resultProcessingTextVal = configData.resultProcessingText || `Processing your video & photo... please wait a moment. ✨<br><small style="font-size: 14px; opacity: 0.8; display: block; margin-top: 10px;">Rendering process usually takes 10-15 seconds.</small>`;
+
+                    const loadingEl = document.getElementById('loading');
+                    if (loadingEl && loadingEl.innerHTML.indexOf('Processing') === -1 && loadingEl.innerHTML.indexOf('processing') === -1) {
+                        loadingEl.innerHTML = loadingTextVal;
+                    }
+                    const errorEl = document.getElementById('error');
+                    if (errorEl) {
+                        errorEl.innerHTML = errorTextVal;
+                    }
+                    const videoDownloadEl = document.getElementById('videoDownload');
+                    if (videoDownloadEl) {
+                        videoDownloadEl.innerHTML = saveVideoTextVal;
+                    }
+                    const photoDownloadEl = document.getElementById('photoDownload');
+                    if (photoDownloadEl) {
+                        photoDownloadEl.innerHTML = savePhotoTextVal;
+                    }
+                    const footerEl = document.querySelector('.footer-text');
+                    if (footerEl) {
+                        footerEl.innerHTML = `<strong>${resultFooterTextVal}</strong>`;
                     }
                 }).catch(e => console.warn("Failed to load theme:", e));
 
@@ -273,10 +360,10 @@
                         attempts++;
                         if (attempts >= maxAttempts) {
                             loadingEl.style.display = 'none';
-                            errorEl.innerText = "Maaf, sesi Anda tidak ditemukan atau sudah kadaluarsa.";
+                            errorEl.innerHTML = window.resultErrorTextVal;
                             errorEl.style.display = 'block';
                         } else {
-                            loadingEl.innerHTML = `Sedang memproses video & foto Anda... mohon tunggu sebentar. ✨<br><small style="font-size: 14px; opacity: 0.8; display: block; margin-top: 10px;">Proses rendering biasanya memakan waktu 10-15 detik.</small>`;
+                            loadingEl.innerHTML = window.resultProcessingTextVal;
                             setTimeout(checkResult, 3000);
                         }
                         return;

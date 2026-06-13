@@ -47,6 +47,7 @@
             flex-direction: column;
             padding: 30px 0;
             backdrop-filter: blur(10px);
+            overflow-y: auto;
         }
 
         .logo-area {
@@ -169,7 +170,14 @@
             transition: 0.3s;
         }
 
-        input:focus {
+        select option {
+            background-color: #121214;
+            color: #fff;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
             border-color: var(--accent);
             box-shadow: 0 0 15px var(--accent-glow);
         }
@@ -556,11 +564,59 @@
             align-items: center;
             gap: 15px;
         }
+
         .input-with-color .text-control {
             flex: 1;
         }
+
         .input-with-color .color-control {
             flex-shrink: 0;
+        }
+
+        /* Text formatting toolbar */
+        .text-toolbar {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 6px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 6px;
+            padding: 3px;
+            width: fit-content;
+        }
+
+        .btn-tool {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            padding: 4px 8px;
+            font-size: 11px;
+            font-family: inherit;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 26px;
+            height: 26px;
+        }
+
+        .btn-tool:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--accent);
+        }
+
+        .btn-tool b {
+            font-weight: 800;
+        }
+
+        .btn-tool i {
+            font-style: italic;
+        }
+
+        .btn-tool u {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -572,22 +628,35 @@
             <h1>ScribbleBooth</h1>
             <span>Config Suite 1.0</span>
         </div>
-        <div class="nav-item active" onclick="showSection('visuals')">🎨 Tampilan Visual</div>
-        <div class="nav-item" onclick="showSection('content')">✍️ Konten Teks</div>
-        <div class="nav-item" onclick="showSection('media')">🎬 Aset Media</div>
-        <div class="nav-item" onclick="showSection('system')">⚙️ Pengaturan Inti</div>
-        <div class="nav-item" onclick="showSection('sessions')">📊 Data Sesi & Galeri</div>
+        <div class="nav-item active" onclick="showSection('visuals')">🎨 Visual Theme</div>
+        
+        <div style="font-size: 10px; text-transform: uppercase; color: var(--text-muted); padding: 15px 30px 5px 30px; letter-spacing: 1.5px; font-weight: 700;">✍️ Edit Per Screen</div>
+        <div class="nav-item" onclick="showSection('content-idle')">🖥️ State Idle (Frame 3)</div>
+        <div class="nav-item" onclick="showSection('content-form')">📝 State Form</div>
+        <div class="nav-item" onclick="showSection('content-ready-video')">🎬 State Ready Video (Frame 4)</div>
+        <div class="nav-item" onclick="showSection('content-review-video')">🎥 State Review Video</div>
+        <div class="nav-item" onclick="showSection('content-ready-photo')">📸 State Ready Photo</div>
+        <div class="nav-item" onclick="showSection('content-review-final')">🏁 State Review Final</div>
+        <div class="nav-item" onclick="showSection('content-success')">🎉 State Success (Frame 6)</div>
+        <div class="nav-item" onclick="showSection('content-side-panel')">📐 Side Panel Overlays</div>
+        <div class="nav-item" onclick="showSection('content-result')">📱 Guest Result Page</div>
+        
+        <div style="height: 1px; background: rgba(255,255,255,0.08); margin: 10px 30px;"></div>
+        <div class="nav-item" onclick="showSection('media')">🎬 Media Assets</div>
+        <div class="nav-item" onclick="showSection('system')">⚙️ Core Settings</div>
+        <div class="nav-item" onclick="showSection('sessions')">📊 Sessions & Gallery</div>
     </div>
 
     <div class="main-view">
 
         <!-- SECTION: VISUALS -->
         <div id="section-visuals" class="view-section active">
-            <h2>Tampilan Visual Layar</h2>
+            <h2>Screen Visual Theme</h2>
             <!-- Pilihan Tema Cepat (Presets) - Deactivated/Hidden -->
             <div class="card" style="display: none;">
                 <label>Pilihan Tema Cepat</label>
-                <small style="color:var(--text-muted); display:block; margin-bottom:15px;">Pilih salah satu tema ini untuk mengubah semua warna secara otomatis.</small>
+                <small style="color:var(--text-muted); display:block; margin-bottom:15px;">Pilih salah satu tema ini
+                    untuk mengubah semua warna secara otomatis.</small>
                 <div class="preset-grid">
                     <div class="preset-card active" id="preset-gold" onclick="applyPreset('gold')">
                         <span class="preset-icon">👑</span>
@@ -635,7 +704,7 @@
                 </div>
 
                 <div class="card" style="grid-column: span 2;">
-                    <label>Gaya Huruf (Tipografi)</label>
+                    <label>Typography & Fonts</label>
                     <div class="input-group">
                         <select id="fontSelector" onchange="updateFontHidden()">
                             <option value="luxury">Luxury Script (ScribbleBooth Default)</option>
@@ -643,59 +712,110 @@
                             <option value="modern">Modern Minimalist (Montserrat)</option>
                             <option value="classic">Classic Wedding (Cinzel)</option>
                             <option value="romantic">Romantic (Great Vibes)</option>
+                            <option value="custom">Custom / Upload Font</option>
                         </select>
-                        <small style="color:var(--text-muted); display:block; margin-top:8px;">Font akan otomatis
-                            teraplikasi pada Judul dan Teks tanpa perlu mengatur URL khusus.</small>
+                        <small style="color:var(--text-muted); display:block; margin-top:8px;">Fonts will automatically apply to Titles and Texts without needing custom font URLs.</small>
                     </div>
-                    <input type="hidden" id="fontUrl">
-                    <input type="hidden" id="fontFamily">
-                    <input type="hidden" id="titleFontFamily">
+
+                    <div id="custom-font-fields" style="display: none; margin-top: 15px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 15px;">
+                        <div class="input-group" style="margin-bottom: 15px;">
+                            <label>Sumber Font (Font Source)</label>
+                            <div class="radio-group" style="margin-top: 5px;">
+                                <div class="radio-item">
+                                    <input type="radio" name="fontSourceType" id="font-source-google" value="google" checked onchange="toggleFontSourceFields()">
+                                    <label for="font-source-google">🌐 Google Fonts / CSS Link</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" name="fontSourceType" id="font-source-upload" value="upload" onchange="toggleFontSourceFields()">
+                                    <label for="font-source-upload">📤 Upload File Font (.ttf, .otf, .woff, .woff2)</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Google Font fields -->
+                        <div id="font-google-container" class="input-group">
+                            <label>Google Fonts URL / Font CSS URL</label>
+                            <input type="text" id="fontUrl" placeholder="e.g.: https://fonts.googleapis.com/css2?family=Roboto&display=swap">
+                            <small style="color:var(--text-muted); display:block; margin-top:5px;">Enter the Google Fonts stylesheet URL.</small>
+                        </div>
+
+                        <!-- Local Font upload fields -->
+                        <div id="font-upload-container" class="input-group" style="display: none;">
+                            <label>Upload File Font (.ttf, .otf, .woff, .woff2)</label>
+                            <div class="upload-box" style="margin-top: 5px; padding: 15px; background: rgba(255,255,255,0.02); border: 1px dashed var(--border); border-radius: 8px;">
+                                <small id="fontFileStatus" style="color:var(--accent); font-size:10px; display:block; margin-bottom:10px;">No file uploaded yet</small>
+                                <input type="file" id="fontFile" accept=".ttf,.otf,.woff,.woff2" style="font-size:11px; margin-bottom: 10px;">
+                                <div class="btn-browse" onclick="openLibrary('fontUrl', 'fontFileStatus')" style="display: inline-block;">📁 Choose from Asset Library</div>
+                            </div>
+                        </div>
+
+                        <div class="grid-2" style="margin-top: 15px;">
+                            <div class="input-group">
+                                <label>Font Family (Regular Text)</label>
+                                <input type="text" id="fontFamily" placeholder="e.g. 'Roboto', sans-serif">
+                                <small style="color:var(--text-muted); display:block; margin-top:5px;">Use the appropriate font family name.</small>
+                            </div>
+                            <div class="input-group">
+                                <label>Font Family (Main Title)</label>
+                                <input type="text" id="titleFontFamily" placeholder="e.g. 'Luxurious Script', cursive">
+                                <small style="color:var(--text-muted); display:block; margin-top:5px;">Font family name for the main title.</small>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
 
             <div class="card">
-                <label>Gambar Latar & Bingkai</label>
+                <label>Background Images & Overlay Frames</label>
                 <div class="grid-3">
                     <div class="input-group">
-                        <label>Latar Belakang (Wallpaper)</label>
+                        <label>Main Background (Wallpaper)</label>
                         <div class="upload-box">
                             <small id="bgStatus"
                                 style="color:var(--accent); font-size:10px; display:block; margin-bottom:5px;">/bg1.png</small>
                             <input type="file" id="bgFile" accept="image/*" style="font-size:11px;">
-                            <div class="btn-browse" onclick="openLibrary('bgImageUrl', 'bgStatus')">📁 Pilih dari Galeri
+                            <div class="btn-browse" onclick="openLibrary('bgImageUrl', 'bgStatus')">📁 Choose from
+                                Gallery
                             </div>
                         </div>
                     </div>
                     <div class="input-group">
-                        <label>Bingkai Kiri Kanan</label>
+                        <label>Side Panels Border Frame</label>
                         <div class="upload-box">
                             <small id="frameStatus"
                                 style="color:var(--accent); font-size:10px; display:block; margin-bottom:5px;">/frame_gold.png</small>
                             <input type="file" id="frameFile" accept="image/*" style="font-size:11px;">
-                            <div class="btn-browse" onclick="openLibrary('frameImageUrl', 'frameStatus')">📁 Pilih dari
-                                Galeri</div>
+                            <div class="btn-browse" onclick="openLibrary('frameImageUrl', 'frameStatus')">📁 Choose from
+                                Gallery</div>
                         </div>
                     </div>
                     <div class="input-group">
-                        <label>Bingkai Hasil Video (Overlay)</label>
+                        <label>Video Output Overlay Frame</label>
                         <div class="upload-box">
                             <small id="overlayStatus"
                                 style="color:var(--accent); font-size:10px; display:block; margin-bottom:5px;">/overlay.png</small>
                             <input type="file" id="overlayFile" accept="image/*" style="font-size:11px;">
-                            <div class="btn-browse" onclick="openLibrary('overlayImageUrl', 'overlayStatus')">📁 Pilih
-                                dari Galeri</div>
+                            <div class="btn-browse" onclick="openLibrary('overlayImageUrl', 'overlayStatus')">📁 Choose
+                                from Gallery</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- SECTION: CONTENT -->
-        <div id="section-content" class="view-section">
-            <h2>Konten Teks Layar</h2>
+        <!-- SECTION: CONTENT - STATE IDLE (FRAME 3) -->
+        <div id="section-content-idle" class="view-section content-section">
+            <h2>State Idle (Frame 3)</h2>
+
+            <!-- 1. Halaman Awal (Idle Screen) -->
             <div class="card">
+                <h3 style="font-size: 15px; color: var(--accent); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 10px;">
+                    🖥️ State Idle (Frame 3)
+                </h3>
                 <div class="input-group">
-                    <label>Mode Tampilan Judul Utama</label>
+                    <label>Main Title Display Mode</label>
                     <div class="radio-group">
                         <div class="radio-item">
                             <input type="radio" name="idleHeadMode" id="mode-title" value="title" checked>
@@ -708,20 +828,20 @@
                     </div>
                 </div>
                 <div class="input-group">
-                    <label>Teks Judul Utama & Warna</label>
+                    <label>Main Title Text</label>
                     <div class="input-with-color">
                         <div class="text-control">
                             <input type="text" id="title" placeholder="Audric & Catherine">
                         </div>
                         <div class="color-control" style="display: flex; gap: 10px; align-items: center;">
                             <div style="display: flex; flex-direction: column; align-items: center;">
-                                <span style="font-size: 10px; margin-bottom: 2px; color: #a1a1aa; font-weight: 500;">Nama</span>
+                                <span style="font-size: 10px; margin-bottom: 2px; color: #a1a1aa; font-weight: 500;">Names</span>
                                 <div class="color-row" style="padding: 6px 10px;">
                                     <input type="color" id="titleColor">
                                 </div>
                             </div>
                             <div style="display: flex; flex-direction: column; align-items: center;">
-                                <span style="font-size: 10px; margin-bottom: 2px; color: #a1a1aa; font-weight: 500;">Hubung</span>
+                                <span style="font-size: 10px; margin-bottom: 2px; color: #a1a1aa; font-weight: 500;">Connect</span>
                                 <div class="color-row" style="padding: 6px 10px;">
                                     <input type="color" id="connectorColor">
                                 </div>
@@ -730,10 +850,10 @@
                     </div>
                 </div>
                 <div class="input-group">
-                    <label>Teks Subjudul & Warna</label>
+                    <label>Subtitle Text</label>
                     <div class="input-with-color">
                         <div class="text-control">
-                            <textarea id="subtitle" rows="2">Momen spesial menanti Anda.</textarea>
+                            <textarea id="subtitle" rows="2">A special moment awaits you.</textarea>
                         </div>
                         <div class="color-control">
                             <div class="color-row" style="padding: 6px 10px;">
@@ -743,11 +863,10 @@
                     </div>
                 </div>
                 <div class="input-group">
-                    <label>Teks Deskripsi Singkat & Warna</label>
+                    <label>Short Description</label>
                     <div class="input-with-color">
                         <div class="text-control">
-                            <textarea id="descPremium"
-                                rows="2">Masukkan data Anda untuk merekam kenangan indah bersama kami.</textarea>
+                            <textarea id="descPremium" rows="2">Enter your details to unveil a personalized wedding experience.</textarea>
                         </div>
                         <div class="color-control">
                             <div class="color-row" style="padding: 6px 10px;">
@@ -757,10 +876,10 @@
                     </div>
                 </div>
                 <div class="input-group">
-                    <label>Teks Tombol Mulai & Warna</label>
+                    <label>Start Button Text</label>
                     <div class="input-with-color">
                         <div class="text-control">
-                            <input type="text" id="startText" placeholder="Mulai Pengalaman Anda">
+                            <input type="text" id="startText" placeholder="Start Here">
                         </div>
                         <div class="color-control">
                             <div class="color-row" style="padding: 6px 10px;">
@@ -769,11 +888,94 @@
                         </div>
                     </div>
                 </div>
-                <div class="input-group">
-                    <label>Instruksi Halaman Bersiap & Warna</label>
+            </div>
+        </div>
+
+        <!-- SECTION: CONTENT - HALAMAN 2 (FORM) -->
+        <div id="section-content-form" class="view-section content-section">
+            <h2>State Form</h2>
+
+            <!-- 2. Halaman Form Registrasi -->
+            <div class="card">
+                <h3 style="font-size: 15px; color: var(--accent); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 10px;">
+                    📝 State Form
+                </h3>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Name Label & Color</label>
+                        <div class="input-with-color">
+                            <div class="text-control">
+                                <input type="text" id="formLabelName" placeholder="Name">
+                            </div>
+                            <div class="color-control">
+                                <div class="color-row" style="padding: 6px 10px;">
+                                    <input type="color" id="formLabelNameColor">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Name Field Placeholder</label>
+                        <input type="text" id="formPlaceholderName" placeholder="Please input your name">
+                    </div>
+                </div>
+                <div class="input-group" style="margin-top: 10px;">
+                    <label>Submit Button & Color</label>
                     <div class="input-with-color">
                         <div class="text-control">
-                            <textarea id="readyText" rows="2" placeholder="Instruksi sebelum rekam..."></textarea>
+                            <input type="text" id="formSubmitText" placeholder="SUBMIT">
+                        </div>
+                        <div class="color-control">
+                            <div class="color-row" style="padding: 6px 10px;">
+                                <input type="color" id="formSubmitTextColor">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION: CONTENT - STATE READY VIDEO (FRAME 4) -->
+        <div id="section-content-ready-video" class="view-section content-section">
+            <h2>State Ready Video (Frame 4)</h2>
+
+            <!-- 3. Halaman Bersiap Video -->
+            <div class="card">
+                <h3 style="font-size: 15px; color: var(--accent); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 10px;">
+                    🎬 State Ready Video (Frame 4)
+                </h3>
+                <div class="input-group">
+                    <label>Header Title & Color</label>
+                    <div class="input-with-color">
+                        <div class="text-control">
+                            <input type="text" id="readyHeaderTitle" placeholder="Ready To Play Words?">
+                        </div>
+                        <div class="color-control">
+                            <div class="color-row" style="padding: 6px 10px;">
+                                <input type="color" id="readyHeaderTitleColor">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group" style="margin-top: 10px;">
+                    <label>Header Subtitle & Color</label>
+                    <div class="input-with-color">
+                        <div class="text-control">
+                            <input type="text" id="readyHeaderSubtitle" placeholder="Write a simple letter...">
+                        </div>
+                        <div class="color-control">
+                            <div class="color-row" style="padding: 6px 10px;">
+                                <input type="color" id="readyHeaderSubtitleColor">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group" style="margin-top: 10px;">
+                    <label>Preparation Instruction & Color</label>
+                    <div class="input-with-color">
+                        <div class="text-control">
+                            <input type="text" id="readyTextMain" placeholder="Get your pen and look at mirror." style="margin-bottom: 5px;">
+                            <input type="text" id="readyTextSub" placeholder="Hit the record button when you are ready.">
                         </div>
                         <div class="color-control">
                             <div class="color-row" style="padding: 6px 10px;">
@@ -782,11 +984,51 @@
                         </div>
                     </div>
                 </div>
+                <div class="grid-3" style="margin-top: 10px;">
+                    <div class="input-group">
+                        <label>Start Recording Button Label</label>
+                        <input type="text" id="readyCountdownText" placeholder="Start Recording">
+                    </div>
+                    <div class="input-group">
+                        <label>Countdown Status Message</label>
+                        <input type="text" id="readyCdText" placeholder="Recording Begins in...">
+                    </div>
+                    <div class="input-group">
+                        <label>Back Button & Color</label>
+                        <div class="input-with-color">
+                            <div class="text-control">
+                                <input type="text" id="readyBackText" placeholder="BACK">
+                            </div>
+                            <div class="color-control">
+                                <div class="color-row" style="padding: 6px 10px;">
+                                    <input type="color" id="readyBackTextColor">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION: CONTENT - STATE REVIEW VIDEO -->
+        <div id="section-content-review-video" class="view-section content-section">
+            <h2>State Review Video</h2>
+
+            <!-- 4. Halaman Review Video -->
+            <div class="card">
+                <h3 style="font-size: 15px; color: var(--accent); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 10px;">
+                    🎥 State Review Video
+                </h3>
                 <div class="input-group">
-                    <label>Instruksi Halaman Review & Warna</label>
+                    <label>Recording Status Text</label>
+                    <input type="text" id="recordingCdText" placeholder="Recording...">
+                </div>
+                <div class="input-group" style="margin-top: 10px;">
+                    <label>Review Page Instruction & Color</label>
                     <div class="input-with-color">
                         <div class="text-control">
-                            <textarea id="reviewText" rows="2" placeholder="Instruksi setelah rekam..."></textarea>
+                            <input type="text" id="reviewTextMain" placeholder="Please review your video," style="margin-bottom: 5px;">
+                            <input type="text" id="reviewTextSub" placeholder="you can RETAKE or NEXT.">
                         </div>
                         <div class="color-control">
                             <div class="color-row" style="padding: 6px 10px;">
@@ -795,11 +1037,203 @@
                         </div>
                     </div>
                 </div>
+                <div class="grid-2" style="margin-top: 10px;">
+                    <div class="input-group">
+                        <label>Retake Button & Color</label>
+                        <div class="input-with-color">
+                            <div class="text-control">
+                                <input type="text" id="reviewRetakeText" placeholder="RETAKE">
+                            </div>
+                            <div class="color-control">
+                                <div class="color-row" style="padding: 6px 10px;">
+                                    <input type="color" id="reviewRetakeTextColor">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Proceed to Photo Button & Color</label>
+                        <div class="input-with-color">
+                            <div class="text-control">
+                                <input type="text" id="reviewPhotoText" placeholder="TAKE A PHOTO">
+                            </div>
+                            <div class="color-control">
+                                <div class="color-row" style="padding: 6px 10px;">
+                                    <input type="color" id="reviewPhotoTextColor">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION: CONTENT - STATE READY PHOTO -->
+        <div id="section-content-ready-photo" class="view-section content-section">
+            <h2>State Ready Photo</h2>
+
+            <!-- 5. Halaman Bersiap Foto -->
+            <div class="card">
+                <h3 style="font-size: 15px; color: var(--accent); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 10px;">
+                    📸 State Ready Photo
+                </h3>
                 <div class="input-group">
-                    <label>Pesan Halaman Sukses & Warna</label>
+                    <label>Header Title & Color</label>
                     <div class="input-with-color">
                         <div class="text-control">
-                            <textarea id="successText" rows="2" placeholder="Pesan sukses setelah upload..."></textarea>
+                            <input type="text" id="photoHeaderTitle" placeholder="Ready for Photo Session?">
+                        </div>
+                        <div class="color-control">
+                            <div class="color-row" style="padding: 6px 10px;">
+                                <input type="color" id="photoHeaderTitleColor">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group" style="margin-top: 10px;">
+                    <label>Header Subtitle & Color</label>
+                    <div class="input-with-color">
+                        <div class="text-control">
+                            <input type="text" id="photoHeaderSubtitle" placeholder="Strike a pose for the camera">
+                        </div>
+                        <div class="color-control">
+                            <div class="color-row" style="padding: 6px 10px;">
+                                <input type="color" id="photoHeaderSubtitleColor">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group" style="margin-top: 10px;">
+                    <label>Photo Instruction & Color</label>
+                    <div class="input-with-color">
+                        <div class="text-control">
+                            <input type="text" id="photoInstructionMain" placeholder="Look at the camera and smile." style="margin-bottom: 5px;">
+                            <input type="text" id="photoInstructionSub" placeholder="Hit the shutter button when you are ready.">
+                        </div>
+                        <div class="color-control">
+                            <div class="color-row" style="padding: 6px 10px;">
+                                <input type="color" id="photoInstructionTextColor">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid-3" style="margin-top: 10px;">
+                    <div class="input-group">
+                        <label>Shutter Button Label</label>
+                        <input type="text" id="photoCountdownText" placeholder="Take a Photo">
+                    </div>
+                    <div class="input-group">
+                        <label>Countdown Status Message</label>
+                        <input type="text" id="photoCdText" placeholder="Taking Photo in...">
+                    </div>
+                    <div class="input-group">
+                        <label>Back Button & Color</label>
+                        <div class="input-with-color">
+                            <div class="text-control">
+                                <input type="text" id="photoBackText" placeholder="BACK">
+                            </div>
+                            <div class="color-control">
+                                <div class="color-row" style="padding: 6px 10px;">
+                                    <input type="color" id="photoBackTextColor">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION: CONTENT - STATE REVIEW FINAL -->
+        <div id="section-content-review-final" class="view-section content-section">
+            <h2>State Review Final</h2>
+
+            <!-- 6. Halaman Review Akhir -->
+            <div class="card">
+                <h3 style="font-size: 15px; color: var(--accent); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 10px;">
+                    🏁 State Review Final
+                </h3>
+                <div class="input-group">
+                    <label>Header Title & Color</label>
+                    <div class="input-with-color">
+                        <div class="text-control">
+                            <input type="text" id="finalHeaderTitle" placeholder="Review your session.">
+                        </div>
+                        <div class="color-control">
+                            <div class="color-row" style="padding: 6px 10px;">
+                                <input type="color" id="finalHeaderTitleColor">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid-2" style="margin-top: 10px;">
+                    <div class="input-group">
+                        <label>Video Label</label>
+                        <input type="text" id="finalVideoLabel" placeholder="VIDEO">
+                    </div>
+                    <div class="input-group">
+                        <label>Photo Label</label>
+                        <input type="text" id="finalPhotoLabel" placeholder="PHOTO">
+                    </div>
+                </div>
+                <div class="grid-3" style="margin-top: 10px;">
+                    <div class="input-group">
+                        <label>Retake All Button & Color</label>
+                        <div class="input-with-color">
+                            <div class="text-control">
+                                <input type="text" id="finalRetakeAllText" placeholder="RETAKE ALL">
+                            </div>
+                            <div class="color-control">
+                                <div class="color-row" style="padding: 6px 10px;">
+                                    <input type="color" id="finalRetakeAllTextColor">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Retake Photo Button & Color</label>
+                        <div class="input-with-color">
+                            <div class="text-control">
+                                <input type="text" id="finalRetakePhotoText" placeholder="RETAKE PHOTO">
+                            </div>
+                            <div class="color-control">
+                                <div class="color-row" style="padding: 6px 10px;">
+                                    <input type="color" id="finalRetakePhotoTextColor">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Upload Button & Color</label>
+                        <div class="input-with-color">
+                            <div class="text-control">
+                                <input type="text" id="finalUploadText" placeholder="UPLOAD BOTH">
+                            </div>
+                            <div class="color-control">
+                                <div class="color-row" style="padding: 6px 10px;">
+                                    <input type="color" id="finalUploadTextColor">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION: CONTENT - STATE SUCCESS (FRAME 6) -->
+        <div id="section-content-success" class="view-section content-section">
+            <h2>State Success (Frame 6)</h2>
+
+            <!-- 7. Halaman Sukses & Selesai -->
+            <div class="card">
+                <h3 style="font-size: 15px; color: var(--accent); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 10px;">
+                    🎉 State Success (Frame 6)
+                </h3>
+                <div class="input-group">
+                    <label>Success Page Message & Color</label>
+                    <div class="input-with-color">
+                        <div class="text-control">
+                            <input type="text" id="successTextMain" placeholder="Your memories are ready! ✨" style="margin-bottom: 5px;">
+                            <input type="text" id="successTextSub" placeholder="Scan this QR code to view and download your video and photo.">
                         </div>
                         <div class="color-control">
                             <div class="color-row" style="padding: 6px 10px;">
@@ -808,346 +1242,130 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="card">
-                <label>Kustomisasi Teks & Warna Layar Lainnya</label>
-                
-                <!-- State Form -->
-                <div style="margin-top: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
-                    <h3 style="font-size: 14px; color: var(--accent); margin-bottom: 10px;">Halaman Form Registrasi</h3>
-                    
-                    <div class="grid-2">
-                        <div class="input-group">
-                            <label>Label Nama & Warna</label>
-                            <div class="input-with-color">
-                                <div class="text-control">
-                                    <input type="text" id="formLabelName" placeholder="Name">
-                                </div>
-                                <div class="color-control">
-                                    <div class="color-row" style="padding: 6px 10px;">
-                                        <input type="color" id="formLabelNameColor">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="input-group">
-                            <label>Placeholder Kolom Nama</label>
-                            <input type="text" id="formPlaceholderName" placeholder="Please input your name">
-                        </div>
-                    </div>
-                    
-                    <div class="input-group" style="margin-top: 10px;">
-                        <label>Tombol Submit & Warna</label>
-                        <div class="input-with-color">
-                            <div class="text-control">
-                                <input type="text" id="formSubmitText" placeholder="SUBMIT">
-                            </div>
-                            <div class="color-control">
-                                <div class="color-row" style="padding: 6px 10px;">
-                                    <input type="color" id="formSubmitTextColor">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- State Ready -->
-                <div style="margin-top: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
-                    <h3 style="font-size: 14px; color: var(--accent); margin-bottom: 10px;">Halaman Bersiap Video</h3>
-                    
+                <div class="grid-2" style="margin-top: 10px;">
                     <div class="input-group">
-                        <label>Judul Layar & Warna</label>
+                        <label>Footer Thank You Message & Color</label>
                         <div class="input-with-color">
                             <div class="text-control">
-                                <input type="text" id="readyHeaderTitle" placeholder="Ready To Play Words?">
+                                <input type="text" id="successFooterText" placeholder="Thank you for being part of this moment">
                             </div>
                             <div class="color-control">
                                 <div class="color-row" style="padding: 6px 10px;">
-                                    <input type="color" id="readyHeaderTitleColor">
+                                    <input type="color" id="successFooterTextColor">
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="grid-2" style="margin-top: 10px;">
-                        <div class="input-group">
-                            <label>Subjudul Layar & Warna</label>
-                            <div class="input-with-color">
-                                <div class="text-control">
-                                    <input type="text" id="readyHeaderSubtitle" placeholder="Write a simple letter...">
-                                </div>
-                                <div class="color-control">
-                                    <div class="color-row" style="padding: 6px 10px;">
-                                        <input type="color" id="readyHeaderSubtitleColor">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="input-group">
-                            <label>Tombol Kembali (Back) & Warna</label>
-                            <div class="input-with-color">
-                                <div class="text-control">
-                                    <input type="text" id="readyBackText" placeholder="BACK">
-                                </div>
-                                <div class="color-control">
-                                    <div class="color-row" style="padding: 6px 10px;">
-                                        <input type="color" id="readyBackTextColor">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- State Review Video -->
-                <div style="margin-top: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
-                    <h3 style="font-size: 14px; color: var(--accent); margin-bottom: 10px;">Halaman Review Video</h3>
-                    
-                    <div class="grid-2">
-                        <div class="input-group">
-                            <label>Tombol Retake & Warna</label>
-                            <div class="input-with-color">
-                                <div class="text-control">
-                                    <input type="text" id="reviewRetakeText" placeholder="RETAKE">
-                                </div>
-                                <div class="color-control">
-                                    <div class="color-row" style="padding: 6px 10px;">
-                                        <input type="color" id="reviewRetakeTextColor">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="input-group">
-                            <label>Tombol Lanjut Foto & Warna</label>
-                            <div class="input-with-color">
-                                <div class="text-control">
-                                    <input type="text" id="reviewPhotoText" placeholder="TAKE A PHOTO">
-                                </div>
-                                <div class="color-control">
-                                    <div class="color-row" style="padding: 6px 10px;">
-                                        <input type="color" id="reviewPhotoTextColor">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- State Ready Photo -->
-                <div style="margin-top: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
-                    <h3 style="font-size: 14px; color: var(--accent); margin-bottom: 10px;">Halaman Bersiap Foto</h3>
-                    
                     <div class="input-group">
-                        <label>Judul Layar & Warna</label>
+                        <label>Done Button & Color</label>
                         <div class="input-with-color">
                             <div class="text-control">
-                                <input type="text" id="photoHeaderTitle" placeholder="Ready for Photo Session?">
+                                <input type="text" id="successDoneText" placeholder="Done">
                             </div>
                             <div class="color-control">
                                 <div class="color-row" style="padding: 6px 10px;">
-                                    <input type="color" id="photoHeaderTitleColor">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-group" style="margin-top: 10px;">
-                        <label>Subjudul Layar & Warna</label>
-                        <div class="input-with-color">
-                            <div class="text-control">
-                                <input type="text" id="photoHeaderSubtitle" placeholder="Strike a pose for the camera">
-                            </div>
-                            <div class="color-control">
-                                <div class="color-row" style="padding: 6px 10px;">
-                                    <input type="color" id="photoHeaderSubtitleColor">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="grid-2" style="margin-top: 10px;">
-                        <div class="input-group">
-                            <label>Instruksi Foto & Warna</label>
-                            <div class="input-with-color">
-                                <div class="text-control">
-                                    <textarea id="photoInstructionText" rows="2" placeholder="Look at the camera and smile..."></textarea>
-                                </div>
-                                <div class="color-control">
-                                    <div class="color-row" style="padding: 6px 10px;">
-                                        <input type="color" id="photoInstructionTextColor">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="input-group">
-                            <label>Tombol Kembali (Back) & Warna</label>
-                            <div class="input-with-color">
-                                <div class="text-control">
-                                    <input type="text" id="photoBackText" placeholder="BACK">
-                                </div>
-                                <div class="color-control">
-                                    <div class="color-row" style="padding: 6px 10px;">
-                                        <input type="color" id="photoBackTextColor">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- State Review Final -->
-                <div style="margin-top: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
-                    <h3 style="font-size: 14px; color: var(--accent); margin-bottom: 10px;">Halaman Review Akhir</h3>
-                    
-                    <div class="input-group">
-                        <label>Judul Layar & Warna</label>
-                        <div class="input-with-color">
-                            <div class="text-control">
-                                <input type="text" id="finalHeaderTitle" placeholder="Review your session.">
-                            </div>
-                            <div class="color-control">
-                                <div class="color-row" style="padding: 6px 10px;">
-                                    <input type="color" id="finalHeaderTitleColor">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="grid-2" style="margin-top: 10px;">
-                        <div class="input-group">
-                            <label>Label Video</label>
-                            <input type="text" id="finalVideoLabel" placeholder="VIDEO">
-                        </div>
-                        <div class="input-group">
-                            <label>Label Foto</label>
-                            <input type="text" id="finalPhotoLabel" placeholder="PHOTO">
-                        </div>
-                    </div>
-
-                    <div class="grid-3" style="margin-top: 10px;">
-                        <div class="input-group">
-                            <label>Tombol Retake All & Warna</label>
-                            <div class="input-with-color">
-                                <div class="text-control">
-                                    <input type="text" id="finalRetakeAllText" placeholder="RETAKE ALL">
-                                </div>
-                                <div class="color-control">
-                                    <div class="color-row" style="padding: 6px 10px;">
-                                        <input type="color" id="finalRetakeAllTextColor">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="input-group">
-                            <label>Tombol Retake Foto & Warna</label>
-                            <div class="input-with-color">
-                                <div class="text-control">
-                                    <input type="text" id="finalRetakePhotoText" placeholder="RETAKE PHOTO">
-                                </div>
-                                <div class="color-control">
-                                    <div class="color-row" style="padding: 6px 10px;">
-                                        <input type="color" id="finalRetakePhotoTextColor">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="input-group">
-                            <label>Tombol Upload & Warna</label>
-                            <div class="input-with-color">
-                                <div class="text-control">
-                                    <input type="text" id="finalUploadText" placeholder="UPLOAD BOTH">
-                                </div>
-                                <div class="color-control">
-                                    <div class="color-row" style="padding: 6px 10px;">
-                                        <input type="color" id="finalUploadTextColor">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- State Success / Done -->
-                <div style="margin-top: 15px;">
-                    <h3 style="font-size: 14px; color: var(--accent); margin-bottom: 10px;">Halaman Sukses & Selesai</h3>
-                    
-                    <div class="grid-2">
-                        <div class="input-group">
-                            <label>Pesan Terima Kasih & Warna</label>
-                            <div class="input-with-color">
-                                <div class="text-control">
-                                    <input type="text" id="successFooterText" placeholder="Thank you for being part of this moment">
-                                </div>
-                                <div class="color-control">
-                                    <div class="color-row" style="padding: 6px 10px;">
-                                        <input type="color" id="successFooterTextColor">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="input-group">
-                            <label>Tombol Selesai (Done) & Warna</label>
-                            <div class="input-with-color">
-                                <div class="text-control">
-                                    <input type="text" id="successDoneText" placeholder="Done">
-                                </div>
-                                <div class="color-control">
-                                    <div class="color-row" style="padding: 6px 10px;">
-                                        <input type="color" id="successDoneTextColor">
-                                    </div>
+                                    <input type="color" id="successDoneTextColor">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
+        <!-- SECTION: CONTENT - SIDE PANEL OVERLAYS -->
+        <div id="section-content-side-panel" class="view-section content-section">
+            <h2>Side Panel Overlays</h2>
+
+            <!-- 8. Halaman Panel Samping -->
             <div class="card">
-                <label>Teks Hitung Mundur & Status</label>
+                <h3 style="font-size: 15px; color: var(--accent); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 10px;">
+                    📐 Side Panel Overlays
+                </h3>
                 <div class="grid-3">
                     <div class="input-group">
-                        <label>Persiapan Sebelum Video</label>
-                        <input type="text" id="readyCdText" placeholder="Bersiap dalam...">
+                        <label>Left Panel Footer Text</label>
+                        <input type="text" id="previewPanelFooter" placeholder="Preview Your Moment">
                     </div>
                     <div class="input-group">
-                        <label>Status Saat Merekam Video</label>
-                        <input type="text" id="recordingCdText" placeholder="Recording...">
+                        <label>Left Panel Loading Text</label>
+                        <input type="text" id="loadingPreviewText" placeholder="Loading Preview...">
                     </div>
                     <div class="input-group">
-                        <label>Persiapan Sebelum Foto</label>
-                        <input type="text" id="photoCdText" placeholder="Lanjut Foto dalam...">
+                        <label>Right Panel Loading Text</label>
+                        <input type="text" id="loadingTutorialText" placeholder="Loading Tutorial...">
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION: CONTENT - GUEST RESULT PAGE -->
+        <div id="section-content-result" class="view-section content-section">
+            <h2>Guest Result Page</h2>
+
+            <!-- 9. Halaman Unduh Hasil Tamu -->
+            <div class="card">
+                <h3 style="font-size: 15px; color: var(--accent); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 10px;">
+                    📱 Guest Result Page
+                </h3>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Initial Loading Text</label>
+                        <input type="text" id="resultLoadingText" placeholder="Loading your memories... ✨">
+                    </div>
+                    <div class="input-group">
+                        <label>Session Not Found Text</label>
+                        <input type="text" id="resultErrorText" placeholder="Sorry, your session was not found or has expired.">
+                    </div>
+                </div>
+                <div class="input-group" style="margin-top: 10px;">
+                    <label>Processing / Rendering Text</label>
+                    <textarea id="resultProcessingText" rows="2" placeholder="Processing your video..."></textarea>
+                </div>
+                <div class="grid-2" style="margin-top: 10px;">
+                    <div class="input-group">
+                        <label>Save Video Button Label</label>
+                        <input type="text" id="resultSaveVideoText" placeholder="🎬 Save Your Video">
+                    </div>
+                    <div class="input-group">
+                        <label>Save Photo Button Label</label>
+                        <input type="text" id="resultSavePhotoText" placeholder="📸 Save Your Photo">
+                    </div>
+                </div>
+                <div class="input-group" style="margin-top: 10px;">
+                    <label>Result Page Footer Text</label>
+                    <input type="text" id="resultFooterText" placeholder="Here’s to the moments you’ll always look back on - @momentsbylumea"></input>
                 </div>
             </div>
         </div>
 
         <!-- SECTION: MEDIA -->
         <div id="section-media" class="view-section">
-            <h2>Aset Logo & Video</h2>
+            <h2>Logo & Video Assets</h2>
             <div class="grid-2">
                 <div class="card">
-                    <label>Logo Utama (Opsional)</label>
+                    <label>Main Branding Logo (Optional)</label>
                     <div class="upload-box">
                         <img id="logoPreview" class="preview-img" src="">
                         <input type="file" id="logoFile" accept="image/*">
-                        <div class="btn-browse" onclick="openLibrary('logoUrl', 'logoPreview')">📁 Pilih dari Galeri
+                        <div class="btn-browse" onclick="openLibrary('logoUrl', 'logoPreview')">📁 Choose from Asset Library
                         </div>
                     </div>
                 </div>
                 <div class="card">
-                    <label>Video Tutorial (Layar Kanan)</label>
+                    <label>Tutorial Video (Right Display)</label>
                     <div class="upload-box">
                         <span id="tutorialPath" style="font-size: 11px; word-break: break-all;">No video</span><br><br>
                         <input type="file" id="tutorialFile" accept="video/*">
-                        <div class="btn-browse" onclick="openLibrary('tutorialVideoUrl', 'tutorialPath')">📁 Pilih dari
-                            Galeri</div>
+                        <div class="btn-browse" onclick="openLibrary('tutorialVideoUrl', 'tutorialPath')">📁 Choose from Asset Library</div>
                     </div>
                 </div>
                 <div class="card">
-                    <label>Video Contoh Hasil (Layar Kiri)</label>
+                    <label>Example Outcome Video (Left Display)</label>
                     <div class="upload-box">
                         <span id="resultPath" style="font-size: 11px; word-break: break-all;">No video</span><br><br>
                         <input type="file" id="resultFile" accept="video/*">
-                        <div class="btn-browse" onclick="openLibrary('resultVideoUrl', 'resultPath')">📁 Pilih dari
-                            Galeri</div>
+                        <div class="btn-browse" onclick="openLibrary('resultVideoUrl', 'resultPath')">📁 Choose from Asset Library</div>
                     </div>
                 </div>
             </div>
@@ -1157,20 +1375,20 @@
 
         <!-- SECTION: SYSTEM -->
         <div id="section-system" class="view-section">
-            <h2>Pengaturan Inti Sistem</h2>
+            <h2>Core System Settings</h2>
             <div class="card">
 
                 <div class="grid-3">
                     <div class="input-group">
-                        <label>Durasi Maksimal Video (Detik)</label>
+                        <label>Maximum Recording Duration (Seconds)</label>
                         <input type="number" id="recordingDuration">
                     </div>
                     <div class="input-group">
-                        <label>Auto-Reset QR Code (Detik)</label>
+                        <label>Auto-Reset QR Code Duration (Seconds)</label>
                         <input type="number" id="qrResetDuration">
                     </div>
                     <div class="input-group">
-                        <label>Tanggal Event Galeri Tamu (YYYY-MM-DD)</label>
+                        <label>Guest Gallery Event Date (YYYY-MM-DD)</label>
                         <input type="date" id="eventDate" style="color-scheme: dark;">
                     </div>
                 </div>
@@ -1178,8 +1396,8 @@
                     <div class="input-group" style="grid-column: span 2;">
                         <div class="form-row-between" style="padding-top: 15px;">
                             <div>
-                                <label style="margin:0;">Fitur Menggambar di Udara</label>
-                                <small style="color:var(--text-muted);">Aktifkan deteksi jari tangan untuk efek coretan pada video</small>
+                                <label style="margin:0;">Air Drawing Gesture Feature</label>
+                                <small style="color:var(--text-muted);">Enable finger detection to allow guests to draw in the air during video capture</small>
                             </div>
                             <label class="switch">
                                 <input type="checkbox" id="enableGesture">
@@ -1190,13 +1408,14 @@
                 </div>
 
                 <div style="border-top: 1px solid var(--border); margin-top: 20px; padding-top: 20px;">
-                    <label style="font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; font-weight:600; margin-bottom:15px; display:block;">Tampilan Panel Idle Screen</label>
+                    <label
+                        style="font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; font-weight:600; margin-bottom:15px; display:block;">Idle Screen Panels Layout</label>
                     <div class="grid-2">
                         <div class="input-group" style="margin-bottom:0;">
                             <div class="form-row-between">
                                 <div>
-                                    <label style="margin:0;">Panel Kiri (Preview Hasil)</label>
-                                    <small style="color:var(--text-muted);">Tampilkan panel kiri saat layar idle</small>
+                                    <label style="margin:0;">Left Panel (Outcome Preview)</label>
+                                    <small style="color:var(--text-muted);">Show outcomes preview side-panel on the left during idle state</small>
                                 </div>
                                 <label class="switch">
                                     <input type="checkbox" id="showLeftPanel" checked>
@@ -1207,8 +1426,8 @@
                         <div class="input-group" style="margin-bottom:0;">
                             <div class="form-row-between">
                                 <div>
-                                    <label style="margin:0;">Panel Kanan (Tutorial)</label>
-                                    <small style="color:var(--text-muted);">Tampilkan panel kanan saat layar idle</small>
+                                    <label style="margin:0;">Right Panel (Tutorial)</label>
+                                    <small style="color:var(--text-muted);">Show tutorial side-panel on the right during idle state</small>
                                 </div>
                                 <label class="switch">
                                     <input type="checkbox" id="showRightPanel" checked>
@@ -1223,22 +1442,28 @@
 
         <!-- SECTION: SESSIONS -->
         <div id="section-sessions" class="view-section">
-            <h2>Data Sesi & Galeri Hasil</h2>
+            <h2>Guest Sessions & Outcome Gallery</h2>
             <div class="card">
                 <!-- Search & Filters -->
                 <div style="display: flex; gap: 15px; margin-bottom: 25px; align-items: center;">
                     <div style="position: relative; flex: 1;">
-                        <input type="text" id="session-search" placeholder="🔍 Cari berdasarkan nama tamu, nomor WhatsApp, atau ID sesi..." oninput="filterSessions()" style="padding-left: 15px;">
+                        <input type="text" id="session-search"
+                            placeholder="🔍 Search by guest name, WhatsApp number, or session ID..."
+                            oninput="filterSessions()" style="padding-left: 15px;">
                     </div>
-                    <button class="btn-primary" onclick="loadSessions()" style="padding: 12px 25px; font-size: 14px; box-shadow: none; margin: 0; width: auto; height: auto; border-radius: 8px;">🔄 Refresh</button>
+                    <button class="btn-primary" onclick="loadSessions()"
+                        style="padding: 12px 25px; font-size: 14px; box-shadow: none; margin: 0; width: auto; height: auto; border-radius: 8px;">🔄
+                        Refresh</button>
                 </div>
-                
+
                 <!-- Session Grid -->
-                <div id="sessions-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px;">
+                <div id="sessions-list"
+                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px;">
                     <!-- Session cards will be dynamically loaded here -->
                 </div>
-                <div id="sessions-empty" style="text-align: center; color: var(--text-muted); padding: 50px 0; font-size: 15px; display: none;">
-                    📭 Tidak ada data sesi ditemukan.
+                <div id="sessions-empty"
+                    style="text-align: center; color: var(--text-muted); padding: 50px 0; font-size: 15px; display: none;">
+                    📭 No session data found.
                 </div>
             </div>
         </div>
@@ -1248,17 +1473,17 @@
     <!-- SAVE BAR -->
     <div class="save-bar">
         <button class="btn-primary" onclick="saveConfig()">
-            <span>💾</span> SIMPAN SEMUA PENGATURAN
+            <span>💾</span> SAVE ALL SETTINGS
         </button>
     </div>
 
-    <div class="success-toast" id="successMsg">✨ Konfigurasi sistem berhasil disimpan dan diperbarui!</div>
+    <div class="success-toast" id="successMsg">✨ System configuration successfully saved and updated!</div>
 
     <!-- ASSET LIBRARY MODAL -->
     <div class="modal-overlay" id="libraryModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Galeri Aset Server</h3>
+                <h3>Server Asset Gallery</h3>
                 <button class="btn-close" onclick="closeLibrary()">&times;</button>
             </div>
             <div class="asset-grid" id="assetGrid">
@@ -1268,15 +1493,19 @@
     </div>
 
     <!-- SESSION PREVIEW MODAL -->
-    <div class="modal-overlay" id="previewModal" style="display: none; align-items: center; justify-content: center; z-index: 1100;">
+    <div class="modal-overlay" id="previewModal"
+        style="display: none; align-items: center; justify-content: center; z-index: 1100;">
         <div class="modal-content" style="max-width: 500px; width: 95%; max-height: 90vh;">
             <div class="modal-header">
-                <h3 id="previewModalTitle">Preview Sesi</h3>
+                <h3 id="previewModalTitle">Session Preview</h3>
                 <button class="btn-close" onclick="closePreviewModal()">&times;</button>
             </div>
-            <div style="padding: 0; display: flex; flex-direction: column; align-items: center; background: #000; min-height: 350px; justify-content: center; position: relative;">
-                <video id="previewModalVideo" controls style="width: 100%; max-height: 70vh; display: none; object-fit: contain;"></video>
-                <img id="previewModalImage" style="width: 100%; max-height: 70vh; display: none; object-fit: contain;" />
+            <div
+                style="padding: 0; display: flex; flex-direction: column; align-items: center; background: #000; min-height: 350px; justify-content: center; position: relative;">
+                <video id="previewModalVideo" controls
+                    style="width: 100%; max-height: 70vh; display: none; object-fit: contain;"></video>
+                <img id="previewModalImage"
+                    style="width: 100%; max-height: 70vh; display: none; object-fit: contain;" />
             </div>
         </div>
     </div>
@@ -1288,7 +1517,7 @@
             document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById('section-' + id).classList.add('active');
-            
+
             if (window.event && window.event.currentTarget) {
                 window.event.currentTarget.classList.add('active');
             } else if (window.event && window.event.target) {
@@ -1314,11 +1543,11 @@
             .then(res => res.json())
             .then(data => {
                 dataBackup = data;
-                
-                document.getElementById('title').value = data.title || '';
-                document.getElementById('subtitle').value = data.subtitle || '';
-                document.getElementById('descPremium').value = data.descPremium || '';
-                document.getElementById('startText').value = data.startText || '';
+
+                document.getElementById('title').value = data.title || 'Audric & Catherine';
+                document.getElementById('subtitle').value = data.subtitle || 'A special moment awaits you!';
+                document.getElementById('descPremium').value = data.descPremium || 'Enter your details to unveil a personalized wedding experience.';
+                document.getElementById('startText').value = data.startText || 'START HERE';
                 if (document.getElementById('emailSubject')) document.getElementById('emailSubject').value = data.emailSubject || '';
                 if (document.getElementById('messageTemplate')) document.getElementById('messageTemplate').value = data.messageTemplate || '';
                 document.getElementById('bgColor1').value = data.bgColor1 || '#2c3e50';
@@ -1332,8 +1561,8 @@
                 document.getElementById('readyTextColor').value = data.readyTextColor || '#f0e5c7';
                 document.getElementById('reviewTextColor').value = data.reviewTextColor || '#f0e5c7';
                 document.getElementById('successTextColor').value = data.successTextColor || '#f0e5c7';
-                
-                // Load dynamic screen texts & colors
+
+                // Load dynamic screen texts  s
                 document.getElementById('formLabelName').value = data.formLabelName || 'Name';
                 document.getElementById('formLabelNameColor').value = data.formLabelNameColor || '#f0e5c7';
                 document.getElementById('formPlaceholderName').value = data.formPlaceholderName || 'Please input your name';
@@ -1353,7 +1582,8 @@
                 document.getElementById('photoHeaderTitleColor').value = data.photoHeaderTitleColor || '#f0e5c7';
                 document.getElementById('photoHeaderSubtitle').value = data.photoHeaderSubtitle || 'Strike a beautiful pose for the camera';
                 document.getElementById('photoHeaderSubtitleColor').value = data.photoHeaderSubtitleColor || '#f0e5c7';
-                document.getElementById('photoInstructionText').value = data.photoInstructionText || 'Look at the camera and smile. <br> Hit the shutter button when you are ready.';
+                document.getElementById('photoInstructionMain').value = data.photoInstructionMain || 'Look at the camera and smile.';
+                document.getElementById('photoInstructionSub').value = data.photoInstructionSub || 'Hit the shutter button when you are ready.';
                 document.getElementById('photoInstructionTextColor').value = data.photoInstructionTextColor || '#f0e5c7';
                 document.getElementById('photoBackText').value = data.photoBackText || 'BACK';
                 document.getElementById('photoBackTextColor').value = data.photoBackTextColor || '#e7e5d8';
@@ -1375,16 +1605,44 @@
                 document.getElementById('fontFamily').value = data.fontFamily || '';
                 document.getElementById('titleFontFamily').value = data.titleFontFamily || '';
 
+                // Restore custom font source settings
+                const fontSourceType = data.fontSourceType || (data.fontUrl && data.fontUrl.startsWith('/uploads_assets/') ? 'upload' : 'google');
+                if (fontSourceType === 'upload') {
+                    document.getElementById('font-source-upload').checked = true;
+                    document.getElementById('fontFileStatus').innerText = data.fontUrl || 'No file uploaded yet';
+                } else {
+                    document.getElementById('font-source-google').checked = true;
+                }
+
                 if (data.fontSelector) {
                     document.getElementById('fontSelector').value = data.fontSelector;
+                    updateFontHidden();
                 }
                 document.getElementById('enableGesture').checked = data.enableGesture !== false;
-                if (document.getElementById('readyText')) document.getElementById('readyText').value = data.readyText || '';
-                if (document.getElementById('reviewText')) document.getElementById('reviewText').value = data.reviewText || '';
-                if (document.getElementById('successText')) document.getElementById('successText').value = data.successText || '';
-                document.getElementById('readyCdText').value = data.readyCdText || '';
-                document.getElementById('recordingCdText').value = data.recordingCdText || '';
-                document.getElementById('photoCdText').value = data.photoCdText || '';
+                document.getElementById('readyTextMain').value = data.readyTextMain || 'Get your pen and look at mirror.';
+                document.getElementById('readyTextSub').value = data.readyTextSub || 'Hit the record button when you are ready.';
+                document.getElementById('reviewTextMain').value = data.reviewTextMain || 'Please review your video,';
+                document.getElementById('reviewTextSub').value = data.reviewTextSub || 'you can RETAKE or NEXT.';
+                document.getElementById('successTextMain').value = data.successTextMain || 'Your memories are ready! ✨';
+                document.getElementById('successTextSub').value = data.successTextSub || 'Scan this QR code to view and download your video and photo.';
+                document.getElementById('readyCdText').value = data.readyCdText || 'Recording Begins in...';
+                document.getElementById('recordingCdText').value = data.recordingCdText || 'Recording...';
+                document.getElementById('photoCdText').value = data.photoCdText || 'Taking Photo in...';
+
+                // Side Panel & Idle Button Labels
+                document.getElementById('previewPanelFooter').value = data.previewPanelFooter || 'Preview Your Moment';
+                document.getElementById('loadingPreviewText').value = data.loadingPreviewText || 'Loading Preview...';
+                document.getElementById('loadingTutorialText').value = data.loadingTutorialText || 'Loading Tutorial...';
+                document.getElementById('readyCountdownText').value = data.readyCountdownText || 'Start Recording';
+                document.getElementById('photoCountdownText').value = data.photoCountdownText || 'Take a Photo';
+
+                // Result Page Labels
+                document.getElementById('resultLoadingText').value = data.resultLoadingText || 'Loading your memories... ✨';
+                document.getElementById('resultErrorText').value = data.resultErrorText || 'Sorry, your session was not found or has expired.';
+                document.getElementById('resultProcessingText').value = data.resultProcessingText || 'Processing your video & photo... please wait a moment. ✨<br><small style="font-size: 14px; opacity: 0.8; display: block; margin-top: 10px;">Rendering process usually takes 10-15 seconds.</small>';
+                document.getElementById('resultSaveVideoText').value = data.resultSaveVideoText || '🎬 Save Your Video';
+                document.getElementById('resultSavePhotoText').value = data.resultSavePhotoText || '📸 Save Your Photo';
+                document.getElementById('resultFooterText').value = data.resultFooterText || 'Here’s to the moments you’ll always look back on - @momentsbylumea';
                 document.getElementById('recordingDuration').value = data.recordingDuration || 15;
                 document.getElementById('qrResetDuration').value = data.qrResetDuration || 45;
                 document.getElementById('eventDate').value = data.eventDate || '2026-05-23';
@@ -1417,9 +1675,35 @@
 
         function updateFontHidden() {
             const s = document.getElementById('fontSelector').value;
-            document.getElementById('fontUrl').value = fontsPreset[s].url;
-            document.getElementById('fontFamily').value = fontsPreset[s].family;
-            document.getElementById('titleFontFamily').value = fontsPreset[s].titleFamily;
+            const customFields = document.getElementById('custom-font-fields');
+            if (s === 'custom') {
+                if (customFields) {
+                    customFields.style.display = 'block';
+                    toggleFontSourceFields();
+                }
+            } else {
+                if (customFields) customFields.style.display = 'none';
+                if (fontsPreset[s]) {
+                    document.getElementById('fontUrl').value = fontsPreset[s].url;
+                    document.getElementById('fontFamily').value = fontsPreset[s].family;
+                    document.getElementById('titleFontFamily').value = fontsPreset[s].titleFamily;
+                }
+            }
+        }
+
+        function toggleFontSourceFields() {
+            const googleRb = document.getElementById('font-source-google');
+            const uploadRb = document.getElementById('font-source-upload');
+            const googleContainer = document.getElementById('font-google-container');
+            const uploadContainer = document.getElementById('font-upload-container');
+            
+            if (googleRb && googleRb.checked) {
+                if (googleContainer) googleContainer.style.display = 'block';
+                if (uploadContainer) uploadContainer.style.display = 'none';
+            } else if (uploadRb && uploadRb.checked) {
+                if (googleContainer) googleContainer.style.display = 'none';
+                if (uploadContainer) uploadContainer.style.display = 'block';
+            }
         }
 
         function applyPreset(t) {
@@ -1510,6 +1794,23 @@
             const frameUrl = await uploadHelper(document.getElementById('frameFile').files[0], 'frame');
             const overlayUrl = await uploadHelper(document.getElementById('overlayFile').files[0], 'overlay');
 
+            let uploadedFontUrl = null;
+            const fontSel = document.getElementById('fontSelector').value;
+            const googleRb = document.getElementById('font-source-google');
+            const fontSourceType = (googleRb && googleRb.checked) ? 'google' : 'upload';
+
+            if (fontSel === 'custom' && fontSourceType === 'upload') {
+                const fontFile = document.getElementById('fontFile').files[0];
+                if (fontFile) {
+                    uploadedFontUrl = await uploadHelper(fontFile, 'font');
+                } else {
+                    const statusText = document.getElementById('fontFileStatus').innerText;
+                    if (statusText && statusText.startsWith('/uploads_assets/')) {
+                        uploadedFontUrl = statusText;
+                    }
+                }
+            }
+
             const bgText = document.getElementById('bgStatus').innerText;
             const payload = {
                 title: document.getElementById('title').value,
@@ -1548,7 +1849,8 @@
                 photoHeaderTitleColor: document.getElementById('photoHeaderTitleColor').value,
                 photoHeaderSubtitle: document.getElementById('photoHeaderSubtitle').value,
                 photoHeaderSubtitleColor: document.getElementById('photoHeaderSubtitleColor').value,
-                photoInstructionText: document.getElementById('photoInstructionText').value,
+                photoInstructionMain: document.getElementById('photoInstructionMain').value,
+                photoInstructionSub: document.getElementById('photoInstructionSub').value,
                 photoInstructionTextColor: document.getElementById('photoInstructionTextColor').value,
                 photoBackText: document.getElementById('photoBackText').value,
                 photoBackTextColor: document.getElementById('photoBackTextColor').value,
@@ -1567,16 +1869,31 @@
                 successDoneText: document.getElementById('successDoneText').value,
                 successDoneTextColor: document.getElementById('successDoneTextColor').value,
                 fontSelector: document.getElementById('fontSelector').value,
-                fontUrl: document.getElementById('fontUrl').value,
+                fontSourceType: fontSourceType,
+                fontUrl: uploadedFontUrl || document.getElementById('fontUrl').value,
                 fontFamily: document.getElementById('fontFamily').value,
                 titleFontFamily: document.getElementById('titleFontFamily').value,
                 enableGesture: document.getElementById('enableGesture').checked,
-                readyText: document.getElementById('readyText') ? document.getElementById('readyText').value : '',
-                reviewText: document.getElementById('reviewText') ? document.getElementById('reviewText').value : '',
-                successText: document.getElementById('successText') ? document.getElementById('successText').value : '',
+                readyTextMain: document.getElementById('readyTextMain').value,
+                readyTextSub: document.getElementById('readyTextSub').value,
+                reviewTextMain: document.getElementById('reviewTextMain').value,
+                reviewTextSub: document.getElementById('reviewTextSub').value,
+                successTextMain: document.getElementById('successTextMain').value,
+                successTextSub: document.getElementById('successTextSub').value,
                 readyCdText: document.getElementById('readyCdText').value,
                 recordingCdText: document.getElementById('recordingCdText').value,
                 photoCdText: document.getElementById('photoCdText').value,
+                previewPanelFooter: document.getElementById('previewPanelFooter').value,
+                loadingPreviewText: document.getElementById('loadingPreviewText').value,
+                loadingTutorialText: document.getElementById('loadingTutorialText').value,
+                readyCountdownText: document.getElementById('readyCountdownText').value,
+                photoCountdownText: document.getElementById('photoCountdownText').value,
+                resultLoadingText: document.getElementById('resultLoadingText').value,
+                resultErrorText: document.getElementById('resultErrorText').value,
+                resultProcessingText: document.getElementById('resultProcessingText').value,
+                resultSaveVideoText: document.getElementById('resultSaveVideoText').value,
+                resultSavePhotoText: document.getElementById('resultSavePhotoText').value,
+                resultFooterText: document.getElementById('resultFooterText').value,
                 recordingDuration: parseInt(document.getElementById('recordingDuration').value),
                 qrResetDuration: parseInt(document.getElementById('qrResetDuration').value),
                 eventDate: document.getElementById('eventDate').value,
@@ -1602,7 +1919,7 @@
             }).then(() => {
                 localStorage.setItem('vb_config', JSON.stringify(payload));
                 btn.disabled = false;
-                btn.innerHTML = "<span>💾</span> SIMPAN SEMUA PENGATURAN";
+                btn.innerHTML = "<span>💾</span> SAVE ALL SETTINGS";
                 const msg = document.getElementById('successMsg');
                 msg.style.display = 'block';
                 setTimeout(() => msg.style.display = 'none', 3000);
@@ -1612,6 +1929,10 @@
                 if (overlayUrl) document.getElementById('overlayStatus').innerText = overlayUrl;
                 if (tutUrl) document.getElementById('tutorialPath').innerText = tutUrl;
                 if (resUrl) document.getElementById('resultPath').innerText = resUrl;
+                if (uploadedFontUrl) {
+                    document.getElementById('fontFileStatus').innerText = uploadedFontUrl;
+                    document.getElementById('fontUrl').value = uploadedFontUrl;
+                }
 
                 document.getElementById('bgFile').value = '';
                 document.getElementById('frameFile').value = '';
@@ -1619,6 +1940,7 @@
                 document.getElementById('logoFile').value = '';
                 document.getElementById('tutorialFile').value = '';
                 document.getElementById('resultFile').value = '';
+                document.getElementById('fontFile').value = '';
             });
         }
 
@@ -1655,9 +1977,12 @@
                     item.className = 'asset-item';
 
                     const isVideo = asset.url.toLowerCase().endsWith('.mp4') || asset.url.toLowerCase().endsWith('.webm');
+                    const isFont = /\.(ttf|otf|woff|woff2)(\?.*)?$/i.test(asset.url.toLowerCase());
 
                     if (isVideo) {
                         item.innerHTML = `<video src="${asset.url}" muted></video>`;
+                    } else if (isFont) {
+                        item.innerHTML = `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #18181b; color: #d3bb7c; font-size: 36px; font-weight: bold; font-family: sans-serif;">Aa</div>`;
                     } else {
                         item.innerHTML = `<img src="${asset.url}" alt="${asset.name}">`;
                     }
@@ -1715,38 +2040,38 @@
         async function loadSessions() {
             const listEl = document.getElementById('sessions-list');
             const emptyEl = document.getElementById('sessions-empty');
-            
-            listEl.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px 0;">⌛ Memuat data sesi...</div>';
+
+            listEl.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px 0;">⌛ Loading session data...</div>';
             emptyEl.style.display = 'none';
-            
+
             try {
                 const res = await fetch('/api/sessions');
                 const data = await res.json();
-                
+
                 if (data.status === 'success') {
                     sessionsData = data.sessions || [];
                     renderSessions(sessionsData);
                 } else {
-                    listEl.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #ff4444; padding: 40px 0;">❌ Gagal memuat data: ${data.message}</div>`;
+                    listEl.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #ff4444; padding: 40px 0;">❌ Failed to load data: ${data.message}</div>`;
                 }
             } catch (err) {
-                listEl.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #ff4444; padding: 40px 0;">❌ Koneksi gagal ke server.</div>';
+                listEl.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #ff4444; padding: 40px 0;">❌ Connection to server failed.</div>';
             }
         }
 
         function renderSessions(sessions) {
             const listEl = document.getElementById('sessions-list');
             const emptyEl = document.getElementById('sessions-empty');
-            
+
             listEl.innerHTML = '';
-            
+
             if (sessions.length === 0) {
                 emptyEl.style.display = 'block';
                 return;
             }
-            
+
             emptyEl.style.display = 'none';
-            
+
             sessions.forEach(s => {
                 const formattedDate = new Date(s.createdAt).toLocaleString('id-ID', {
                     day: '2-digit',
@@ -1778,9 +2103,9 @@
                     }
                 }
                 if (!displayPhone) {
-                    displayPhone = 'Tanpa WA';
+                    displayPhone = 'No WhatsApp';
                 }
-                
+
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.style.margin = '0';
@@ -1791,7 +2116,7 @@
                 card.style.border = '1px solid var(--border)';
                 card.style.borderRadius = '16px';
                 card.style.transition = '0.3s';
-                
+
                 card.innerHTML = `
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
                         <h4 style="margin: 0; font-size: 16px; font-family: 'Outfit', sans-serif; color: var(--accent); font-weight: 600;">${escapeHtml(s.name)}</h4>
@@ -1813,18 +2138,18 @@
                         <!-- Photo Thumbnail -->
                         <div style="position: relative; aspect-ratio: 9/16; background: #000; border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); cursor: pointer;" onclick="openPreview('image', '${s.photoLink}', '${escapeJs(s.name)}')">
                             <img src="${s.photoLink}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" />
-                            <span style="position: absolute; bottom: 6px; left: 6px; background: rgba(0,0,0,0.65); color: #fff; font-size: 9px; padding: 2px 6px; border-radius: 4px; font-weight: 600; letter-spacing: 0.5px;">FOTO</span>
+                            <span style="position: absolute; bottom: 6px; left: 6px; background: rgba(0,0,0,0.65); color: #fff; font-size: 9px; padding: 2px 6px; border-radius: 4px; font-weight: 600; letter-spacing: 0.5px;">PHOTO</span>
                         </div>
                     </div>
                     
                     <!-- Action Row -->
                     <div style="display: flex; gap: 8px;">
                         <a href="/api/download?url=${encodeURIComponent(s.videoLink)}&name=Video-${encodeURIComponent(s.name)}.mp4" class="btn-browse" style="flex: 1; text-align: center; margin: 0; padding: 8px 5px; font-size: 11px; border-radius: 6px; text-decoration: none;">📥 Video</a>
-                        <a href="/api/download?url=${encodeURIComponent(s.photoLink)}&name=Photo-${encodeURIComponent(s.name)}.jpg" class="btn-browse" style="flex: 1; text-align: center; margin: 0; padding: 8px 5px; font-size: 11px; border-radius: 6px; text-decoration: none;">📥 Foto</a>
-                        <button onclick="deleteSession(event, '${s.id}', '${escapeJs(s.name)}')" style="background: rgba(255, 68, 68, 0.1); border: 1px solid rgba(255, 68, 68, 0.3); color: #ff4444; border-radius: 6px; width: 34px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s;" title="Hapus Sesi" onmouseover="this.style.background='rgba(255, 68, 68, 0.2)'" onmouseout="this.style.background='rgba(255, 68, 68, 0.1)'">🗑️</button>
+                        <a href="/api/download?url=${encodeURIComponent(s.photoLink)}&name=Photo-${encodeURIComponent(s.name)}.jpg" class="btn-browse" style="flex: 1; text-align: center; margin: 0; padding: 8px 5px; font-size: 11px; border-radius: 6px; text-decoration: none;">📥 Photo</a>
+                        <button onclick="deleteSession(event, '${s.id}', '${escapeJs(s.name)}')" style="background: rgba(255, 68, 68, 0.1); border: 1px solid rgba(255, 68, 68, 0.3); color: #ff4444; border-radius: 6px; width: 34px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s;" title="Delete Session" onmouseover="this.style.background='rgba(255, 68, 68, 0.2)'" onmouseout="this.style.background='rgba(255, 68, 68, 0.1)'">🗑️</button>
                     </div>
                 `;
-                
+
                 listEl.appendChild(card);
             });
         }
@@ -1835,14 +2160,14 @@
                 renderSessions(sessionsData);
                 return;
             }
-            
+
             const filtered = sessionsData.filter(s => {
                 const name = (s.name || '').toLowerCase();
                 const phone = (s.phone || '').toLowerCase();
                 const id = (s.id || '').toLowerCase();
                 return name.includes(query) || phone.includes(query) || id.includes(query);
             });
-            
+
             renderSessions(filtered);
         }
 
@@ -1851,15 +2176,15 @@
             const video = document.getElementById('previewModalVideo');
             const image = document.getElementById('previewModalImage');
             const title = document.getElementById('previewModalTitle');
-            
-            title.innerText = `Preview ${type === 'video' ? 'Video' : 'Foto'} - ${name}`;
+
+            title.innerText = `Preview ${type === 'video' ? 'Video' : 'Photo'} - ${name}`;
             modal.style.display = 'flex';
-            
+
             if (type === 'video') {
                 video.src = url;
                 video.style.display = 'block';
                 image.style.display = 'none';
-                video.play().catch(e => {});
+                video.play().catch(e => { });
             } else {
                 image.src = url;
                 image.style.display = 'block';
@@ -1867,7 +2192,7 @@
                 video.pause();
             }
         }
-        
+
         function closePreviewModal() {
             const modal = document.getElementById('previewModal');
             const video = document.getElementById('previewModalVideo');
@@ -1878,7 +2203,7 @@
 
         async function deleteSession(event, id, name) {
             event.stopPropagation();
-            if (!confirm(`Apakah Anda yakin ingin menghapus sesi dari "${name}"?\nSemua data lokal sesi ini akan dihapus permanen.`)) return;
+            if (!confirm(`Are you sure you want to delete the session of "${name}"?\nAll local data for this session will be permanently deleted.`)) return;
 
             try {
                 const res = await fetch(`/api/sessions/${id}`, { method: 'DELETE' });
@@ -1887,17 +2212,17 @@
                     // Update local data and render
                     sessionsData = sessionsData.filter(s => s.id !== id);
                     filterSessions();
-                    
+
                     // Show success toast
                     const toast = document.getElementById('successMsg');
-                    toast.innerText = `Sesi "${name}" berhasil dihapus.`;
+                    toast.innerText = `Session "${name}" successfully deleted.`;
                     toast.style.display = 'block';
                     setTimeout(() => { toast.style.display = 'none'; }, 3000);
                 } else {
                     alert('Error: ' + data.message);
                 }
             } catch (err) {
-                alert('Gagal menyambung ke server.');
+                alert('Failed to connect to the server.');
             }
         }
 
@@ -1906,10 +2231,125 @@
             if (!str) return '';
             return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
-        
+
         function escapeJs(str) {
             if (!str) return '';
             return str.replace(/'/g, "\\'").replace(/"/g, '\\"');
+        }
+
+        // MS Word-style Formatting Toolbar implementation
+        function formatText(input, tag) {
+            const start = input.selectionStart;
+            const end = input.selectionEnd;
+            const value = input.value;
+            
+            const selectedText = value.substring(start, end);
+            const openTag = `<${tag}>`;
+            const closeTag = `</${tag}>`;
+            
+            let newValue;
+            let newCursorPos;
+            
+            if (start !== end) {
+                // Text is selected, wrap it
+                newValue = value.substring(0, start) + openTag + selectedText + closeTag + value.substring(end);
+                newCursorPos = start + openTag.length + selectedText.length + closeTag.length;
+            } else {
+                // No text is selected, insert empty tags at cursor position
+                newValue = value.substring(0, start) + openTag + closeTag + value.substring(end);
+                newCursorPos = start + openTag.length;
+            }
+            
+            input.value = newValue;
+            input.focus();
+            input.setSelectionRange(newCursorPos, newCursorPos);
+            
+            // Trigger input event so that validation/saving picks up the change
+            const event = new Event('input', { bubbles: true });
+            input.dispatchEvent(event);
+        }
+
+        function initTextFormatToolbars() {
+            const targets = document.querySelectorAll('.content-section input[type="text"], .content-section textarea');
+            targets.forEach(input => {
+                const id = input.id.toLowerCase();
+                // Exclude placeholders, urls, family names, colors, dates, durations, etc.
+                if (id.includes('placeholder') || id.includes('url') || id.includes('family') || id.includes('color') || id.includes('date') || id.includes('duration') || id.includes('file')) {
+                    return;
+                }
+                
+                // Avoid double injection
+                if (input.dataset.hasToolbar) return;
+                input.dataset.hasToolbar = "true";
+                
+                // Create toolbar container
+                const toolbar = document.createElement('div');
+                toolbar.className = 'text-toolbar';
+                
+                // Bold Button
+                const boldBtn = document.createElement('button');
+                boldBtn.className = 'btn-tool';
+                boldBtn.type = 'button';
+                boldBtn.innerHTML = '<b>B</b>';
+                boldBtn.title = 'Bold (Ctrl+B)';
+                boldBtn.onclick = (e) => {
+                    e.preventDefault();
+                    formatText(input, 'b');
+                };
+                
+                // Italic Button
+                const italicBtn = document.createElement('button');
+                italicBtn.className = 'btn-tool';
+                italicBtn.type = 'button';
+                italicBtn.innerHTML = '<i>I</i>';
+                italicBtn.title = 'Italic (Ctrl+I)';
+                italicBtn.onclick = (e) => {
+                    e.preventDefault();
+                    formatText(input, 'i');
+                };
+                
+                // Underline Button
+                const underlineBtn = document.createElement('button');
+                underlineBtn.className = 'btn-tool';
+                underlineBtn.type = 'button';
+                underlineBtn.innerHTML = '<u>U</u>';
+                underlineBtn.title = 'Underline (Ctrl+U)';
+                underlineBtn.onclick = (e) => {
+                    e.preventDefault();
+                    formatText(input, 'u');
+                };
+                
+                toolbar.appendChild(boldBtn);
+                toolbar.appendChild(italicBtn);
+                toolbar.appendChild(underlineBtn);
+                
+                // Insert toolbar before the input element in the DOM
+                input.parentNode.insertBefore(toolbar, input);
+                
+                // Add keyboard shortcuts
+                input.addEventListener('keydown', (e) => {
+                    if (e.ctrlKey || e.metaKey) {
+                        const key = e.key.toLowerCase();
+                        if (key === 'b') {
+                            e.preventDefault();
+                            formatText(input, 'b');
+                        } else if (key === 'i') {
+                            e.preventDefault();
+                            formatText(input, 'i');
+                        } else if (key === 'u') {
+                            e.preventDefault();
+                            formatText(input, 'u');
+                        }
+                    }
+                });
+            });
+        }
+
+        // Initialize toolbars after DOM is fully loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initTextFormatToolbars);
+        } else {
+            initTextFormatToolbars();
         }
     </script>
 </body>

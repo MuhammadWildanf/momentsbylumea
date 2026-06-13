@@ -9,11 +9,12 @@
     <script>
         window.formatTitleText = function (title) {
             if (!title) return '';
-            const match = title.match(/\s+(and|dan|bersama)\s+/i) || title.match(/\s*(&|\+)\s*/);
+            const match = title.match(/(?:<[^>]+>)*\s+(and|dan|bersama)\s+(?:<[^>]+>)*/i) || 
+                          title.match(/(?:<[^>]+>)*\s*(&|\+)\s*(?:<[^>]+>)*/);
             if (match) {
-                const connector = match[1];
-                const parts = title.split(match[0]);
-                return '<span>' + parts[0].trim() + '</span> <span class="title-amp">' + connector + '</span> <span>' + parts.slice(1).join(match[0]).trim() + '</span>';
+                const connectorHtml = match[0];
+                const parts = title.split(connectorHtml);
+                return '<span>' + parts[0].trim() + '</span> <span class="title-amp">' + connectorHtml.trim() + '</span> <span>' + parts.slice(1).join(connectorHtml).trim() + '</span>';
             }
             return '<span>' + title + '</span>';
         };
@@ -69,72 +70,111 @@
 
             // Form State
             const formLabel = document.getElementById('form-label-name');
-            if (formLabel && data.formLabelName) formLabel.innerText = data.formLabelName;
+            if (formLabel && data.formLabelName) formLabel.innerHTML = data.formLabelName;
 
             const nameInput = document.getElementById('name');
             if (nameInput && data.formPlaceholderName) nameInput.placeholder = data.formPlaceholderName;
 
             const formSubmit = document.getElementById('form-submit-text');
-            if (formSubmit && data.formSubmitText) formSubmit.innerText = data.formSubmitText;
+            if (formSubmit && data.formSubmitText) formSubmit.innerHTML = data.formSubmitText;
 
             // Ready State
             const readyTitle = document.getElementById('ready-header-title');
-            if (readyTitle && data.readyHeaderTitle) readyTitle.innerText = data.readyHeaderTitle;
+            if (readyTitle && data.readyHeaderTitle) readyTitle.innerHTML = data.readyHeaderTitle;
 
             const readySubtitle = document.getElementById('ready-header-subtitle');
-            if (readySubtitle && data.readyHeaderSubtitle) readySubtitle.innerText = data.readyHeaderSubtitle;
+            if (readySubtitle && data.readyHeaderSubtitle) readySubtitle.innerHTML = data.readyHeaderSubtitle;
 
             const readyBack = document.getElementById('ready-back-text');
-            if (readyBack && data.readyBackText) readyBack.innerText = data.readyBackText;
+            if (readyBack && data.readyBackText) readyBack.innerHTML = data.readyBackText;
 
             // Review Video State
             const reviewRetake = document.getElementById('review-retake-text');
-            if (reviewRetake && data.reviewRetakeText) reviewRetake.innerText = data.reviewRetakeText;
+            if (reviewRetake && data.reviewRetakeText) reviewRetake.innerHTML = data.reviewRetakeText;
 
             const reviewPhoto = document.getElementById('review-photo-text');
-            if (reviewPhoto && data.reviewPhotoText) reviewPhoto.innerText = data.reviewPhotoText;
+            if (reviewPhoto && data.reviewPhotoText) reviewPhoto.innerHTML = data.reviewPhotoText;
 
             // Ready Photo State
             const photoTitle = document.getElementById('photo-header-title');
-            if (photoTitle && data.photoHeaderTitle) photoTitle.innerText = data.photoHeaderTitle;
+            if (photoTitle && data.photoHeaderTitle) photoTitle.innerHTML = data.photoHeaderTitle;
 
             const photoSubtitle = document.getElementById('photo-header-subtitle');
-            if (photoSubtitle && data.photoHeaderSubtitle) photoSubtitle.innerText = data.photoHeaderSubtitle;
+            if (photoSubtitle && data.photoHeaderSubtitle) photoSubtitle.innerHTML = data.photoHeaderSubtitle;
 
-            const photoInstruction = document.getElementById('ready-photo-text');
-            if (photoInstruction && data.photoInstructionText) {
-                const targetPhotoText = data.photoInstructionText.replace(/\n/g, '<br>');
-                if (photoInstruction.innerHTML !== targetPhotoText) photoInstruction.innerHTML = targetPhotoText;
-            }
+            const photoMain = document.getElementById('photo-instruction-main');
+            if (photoMain && data.photoInstructionMain) photoMain.innerHTML = data.photoInstructionMain;
+
+            const photoSub = document.getElementById('photo-instruction-sub');
+            if (photoSub && data.photoInstructionSub) photoSub.innerHTML = data.photoInstructionSub;
 
             const photoBack = document.getElementById('photo-back-text');
-            if (photoBack && data.photoBackText) photoBack.innerText = data.photoBackText;
+            if (photoBack && data.photoBackText) photoBack.innerHTML = data.photoBackText;
 
             // Review Final State
             const finalTitle = document.getElementById('final-header-title');
-            if (finalTitle && data.finalHeaderTitle) finalTitle.innerText = data.finalHeaderTitle;
+            if (finalTitle && data.finalHeaderTitle) finalTitle.innerHTML = data.finalHeaderTitle;
 
             const videoLabel = document.getElementById('final-video-label');
-            if (videoLabel && data.finalVideoLabel) videoLabel.innerText = data.finalVideoLabel;
+            if (videoLabel && data.finalVideoLabel) videoLabel.innerHTML = data.finalVideoLabel;
 
             const photoLabel = document.getElementById('final-photo-label');
-            if (photoLabel && data.finalPhotoLabel) photoLabel.innerText = data.finalPhotoLabel;
+            if (photoLabel && data.finalPhotoLabel) photoLabel.innerHTML = data.finalPhotoLabel;
 
             const finalRetakeAll = document.getElementById('final-retake-all-text');
-            if (finalRetakeAll && data.finalRetakeAllText) finalRetakeAll.innerText = data.finalRetakeAllText;
+            if (finalRetakeAll && data.finalRetakeAllText) finalRetakeAll.innerHTML = data.finalRetakeAllText;
 
             const finalRetakePhoto = document.getElementById('final-retake-photo-text');
-            if (finalRetakePhoto && data.finalRetakePhotoText) finalRetakePhoto.innerText = data.finalRetakePhotoText;
+            if (finalRetakePhoto && data.finalRetakePhotoText) finalRetakePhoto.innerHTML = data.finalRetakePhotoText;
 
             const finalUpload = document.getElementById('final-upload-text');
-            if (finalUpload && data.finalUploadText) finalUpload.innerText = data.finalUploadText;
+            if (finalUpload && data.finalUploadText) finalUpload.innerHTML = data.finalUploadText;
 
             // Success State
             const successFooter = document.getElementById('success-footer-text');
-            if (successFooter && data.successFooterText) successFooter.innerText = data.successFooterText;
+            if (successFooter && data.successFooterText) successFooter.innerHTML = data.successFooterText;
 
             const successDone = document.getElementById('success-done-text');
-            if (successDone && data.successDoneText) successDone.innerText = data.successDoneText;
+            if (successDone && data.successDoneText) successDone.innerHTML = data.successDoneText;
+
+            // Split Instruction texts
+            const readyMain = document.getElementById('ready-text-main');
+            if (readyMain && data.readyTextMain) readyMain.innerHTML = data.readyTextMain;
+
+            const readySub = document.getElementById('ready-text-sub');
+            if (readySub && data.readyTextSub) readySub.innerHTML = data.readyTextSub;
+
+            const reviewMain = document.getElementById('review-text-main');
+            if (reviewMain && data.reviewTextMain) reviewMain.innerHTML = data.reviewTextMain;
+
+            const reviewSub = document.getElementById('review-text-sub');
+            if (reviewSub && data.reviewTextSub) reviewSub.innerHTML = data.reviewTextSub;
+
+            const successMain = document.getElementById('success-text-main');
+            if (successMain && data.successTextMain) successMain.innerHTML = data.successTextMain;
+
+            const successSub = document.getElementById('success-text-sub');
+            if (successSub && data.successTextSub) successSub.innerHTML = data.successTextSub;
+
+            // New dynamic panel & loading texts
+            const previewFooter = document.getElementById('preview-panel-footer');
+            if (previewFooter && data.previewPanelFooter) previewFooter.innerHTML = data.previewPanelFooter;
+
+            const loadingPreview = document.getElementById('loading-preview-text');
+            if (loadingPreview && data.loadingPreviewText) loadingPreview.innerHTML = data.loadingPreviewText;
+
+            const loadingTutorial = document.getElementById('loading-tutorial-text');
+            if (loadingTutorial && data.loadingTutorialText) loadingTutorial.innerHTML = data.loadingTutorialText;
+
+            const countdownArea = document.getElementById('countdown-area');
+            if (countdownArea && data.readyCountdownText && (countdownArea.innerHTML === 'Start Recording' || countdownArea.innerHTML === data.readyCountdownText)) {
+                countdownArea.innerHTML = data.readyCountdownText;
+            }
+
+            const countdownPhotoArea = document.getElementById('countdown-area-photo');
+            if (countdownPhotoArea && data.photoCountdownText && (countdownPhotoArea.innerHTML === 'Take a Photo' || countdownPhotoArea.innerHTML === data.photoCountdownText)) {
+                countdownPhotoArea.innerHTML = data.photoCountdownText;
+            }
         };
 
         try {
@@ -153,9 +193,19 @@
                 if (data.bgColor1) root.style.setProperty('--bg-1', data.bgColor1);
                 if (data.bgColor2) root.style.setProperty('--bg-2', data.bgColor2);
                 if (data.fontFamily) root.style.setProperty('--body-font-dyn', data.fontFamily);
+                root.style.setProperty('--font-style-sub', 'normal');
 
-                if (data.fontUrl && data.fontFamily) {
-                    document.write('<style>@import url("' + data.fontUrl + '"); :root { --body-font-dyn: ' + data.fontFamily + '; } body, input, button, textarea, .subtitle-premium, .desc-premium, .panel-footer, .ui-state h2, .delivery-tab { font-family: ' + data.fontFamily + ' !important; }</style>');
+                 if (data.fontUrl && data.fontFamily) {
+                    const isDirectFont = /\.(ttf|otf|woff|woff2)(\?.*)?$/i.test(data.fontUrl);
+                    if (isDirectFont) {
+                        let format = 'truetype';
+                        if (data.fontUrl.toLowerCase().includes('.otf')) format = 'opentype';
+                        else if (data.fontUrl.toLowerCase().includes('.woff2')) format = 'woff2';
+                        else if (data.fontUrl.toLowerCase().includes('.woff')) format = 'woff';
+                        document.write('<style>@font-face { font-family: ' + data.fontFamily + '; src: url("' + data.fontUrl + '") format("' + format + '"); font-weight: normal; font-style: normal; } :root { --body-font-dyn: ' + data.fontFamily + '; } body, input, button, textarea, .subtitle-premium, .desc-premium, .panel-footer, .ui-state h2, .delivery-tab { font-family: ' + data.fontFamily + ' !important; }</style>');
+                    } else {
+                        document.write('<style>@import url("' + data.fontUrl + '"); :root { --body-font-dyn: ' + data.fontFamily + '; } body, input, button, textarea, .subtitle-premium, .desc-premium, .panel-footer, .ui-state h2, .delivery-tab { font-family: ' + data.fontFamily + ' !important; }</style>');
+                    }
                 }
                 if (data.titleFontFamily) {
                     root.style.setProperty('--title-font-dyn', data.titleFontFamily);
@@ -210,6 +260,8 @@
             --bg-dark: #1a120b;
             --text-main: #f8fafc;
             --text-gold: #c5a059;
+            --title-color: #F0E5C7;
+            --subtitle-color: #F0E5C7;
         }
 
         /* PREMIUM BUTTONS (LUMEA STYLE) */
@@ -352,8 +404,6 @@
         }
 
         body {
-            --title-color: #F0E5C7;
-            --subtitle-color: #F0E5C7;
             font-family: 'Aref Ruqaa', serif;
             background-color: #1a0f0a;
             /* Dark base matching the wedding theme */
@@ -579,27 +629,23 @@
             text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
         }
 
-        #ready-text {
+        #ready-text, #ready-text-main, #ready-text-sub {
             color: var(--ready-text-color, #F0E5C7) !important;
         }
 
-        #ready-text span {
-            color: var(--ready-text-color, #F0E5C7) !important;
-        }
-
-        #review-video-text {
+        #review-video-text, #review-text-main {
             color: var(--review-text-color, #F0E5C7) !important;
         }
 
-        #review-video-text span {
+        #review-text-sub {
             color: var(--review-text-color, #CDCDCD) !important;
         }
 
-        #success-text {
+        #success-text, #success-text-main {
             color: var(--success-text-color, #F0E5C7) !important;
         }
 
-        #success-text span {
+        #success-text-sub {
             color: var(--success-text-color, #CDCDCD) !important;
         }
 
@@ -643,11 +689,7 @@
             color: var(--photo-header-subtitle-color, #F0E5C7) !important;
         }
 
-        #ready-photo-text {
-            color: var(--photo-instruction-color, #F0E5C7) !important;
-        }
-
-        #ready-photo-text span {
+        #ready-photo-text, #photo-instruction-main, #photo-instruction-sub {
             color: var(--photo-instruction-color, #F0E5C7) !important;
         }
 
@@ -1334,10 +1376,10 @@
                     onerror="console.error('Video Error (Result):', this.error)"></video>
                 <div id="label-left-overlay"
                     style="color:rgba(255,255,255,0.3); font-weight:700; font-size:24px; position:absolute; z-index: 5;">
-                    Loading Preview...</div>
+                    <span id="loading-preview-text">Loading Preview...</span></div>
             </div>
-            <div class="panel-footer" style="margin-top: auto; margin-bottom: 25px; font-size: 20px;">Preview Your
-                Moment</div>
+            <div class="panel-footer" style="margin-top: auto; margin-bottom: 25px; font-size: 20px;">
+                <span id="preview-panel-footer">Preview Your Moment</span></div>
         </div>
 
         <!-- CENTER PANEL -->
@@ -1412,13 +1454,15 @@
                         style="font-size: min(5vh, 48px); color: #F0E5C7; font-weight: 700; margin-bottom: 10px; font-family: var(--body-font-dyn) !important;">
                         Ready To Play Words?</h1>
                     <p id="ready-header-subtitle"
-                        style="font-size: min(3vh, 28px); color: #F0E5C7; font-family: var(--body-font-dyn) !important; font-style: italic;">
+                        style="font-size: min(3vh, 28px); color: #F0E5C7; font-family: var(--body-font-dyn) !important; font-style: var(--font-style-sub, italic);">
                         Write a simple letter to the Bride and Groom</p>
                 </div>
                 <h2 id="ready-text"
-                    style="font-size:34px; color:#F0E5C7; line-height:1.4; font-weight:700; margin-bottom:50px;">Get
-                    your pen and look at mirror. <br> <span style="color:#F0E5C7; font-size:24px; font-weight:400;">Hit
-                        the record button when you are ready.</span></h2>
+                    style="font-size:34px; color:#F0E5C7; line-height:1.4; font-weight:700; margin-bottom:50px;">
+                    <span id="ready-text-main">Get your pen and look at mirror.</span>
+                    <br>
+                    <span id="ready-text-sub" style="font-size:24px; font-weight:400;">Hit the record button when you are ready.</span>
+                </h2>
                 <button class="btn-record-circle" id="btn-record" onclick="startRecording()"></button>
                 <div class="countdown-text"
                     style="margin-top: 15px; font-weight: 700; color: #CDCDCD; font-size: 24px;">
@@ -1434,9 +1478,11 @@
             <!-- STATE REVIEW VIDEO (NEW) -->
             <div id="state-review-video" class="ui-state">
                 <h2 id="review-video-text"
-                    style="font-size:34px; color:#F0E5C7; line-height:1.4; font-weight:700; margin-bottom:10px;">Please
-                    review your video, <br> <span style="color:#CDCDCD; font-size:24px; font-weight:400;">you can RETAKE
-                        or NEXT.</span></h2>
+                    style="font-size:34px; color:#F0E5C7; line-height:1.4; font-weight:700; margin-bottom:10px;">
+                    <span id="review-text-main">Please review your video,</span>
+                    <br>
+                    <span id="review-text-sub" style="font-size:24px; font-weight:400;">you can RETAKE or NEXT.</span>
+                </h2>
                 <div class="btn-row" style="gap: 20px;">
                     <button class="btn-outline" onclick="retakeVideo()"><span
                             id="review-retake-text">RETAKE</span></button>
@@ -1452,13 +1498,15 @@
                         style="font-size: min(5vh, 48px); color: #F0E5C7; font-weight: 700; margin-bottom: 10px; font-family: var(--body-font-dyn) !important;">
                         Ready for Photo Session?</h1>
                     <p id="photo-header-subtitle"
-                        style="font-size: min(3vh, 28px); color: #F0E5C7; font-family: var(--body-font-dyn) !important; font-style: italic;">
+                        style="font-size: min(3vh, 28px); color: #F0E5C7; font-family: var(--body-font-dyn) !important; font-style: var(--font-style-sub, italic);">
                         Strike a beautiful pose for the camera</p>
                 </div>
                 <h2 id="ready-photo-text"
-                    style="font-size:34px; color:#F0E5C7; line-height:1.4; font-weight:700; margin-bottom:50px;">Look at
-                    the camera and smile. <br> <span style="color:#F0E5C7; font-size:24px; font-weight:400;">Hit the
-                        shutter button when you are ready.</span></h2>
+                    style="font-size:34px; color:#F0E5C7; line-height:1.4; font-weight:700; margin-bottom:50px;">
+                    <span id="photo-instruction-main">Look at the camera and smile.</span>
+                    <br>
+                    <span id="photo-instruction-sub" style="font-size:24px; font-weight:400;">Hit the shutter button when you are ready.</span>
+                </h2>
                 <button class="btn-record-circle" id="btn-photo-shutter" onclick="startPhotoCountdown()"></button>
                 <div class="countdown-text"
                     style="margin-top: 15px; font-weight: 700; color: #CDCDCD; font-size: 24px;">
@@ -1502,9 +1550,9 @@
             <div id="state-processing" class="ui-state" style="text-align: center;">
                 <h2 id="success-text"
                     style="font-size:30px; color:#F0E5C7; line-height:1.5; font-weight:600; margin-bottom: 15px;">
-                    Your memories are ready! ✨<br>
-                    <span style="color:#CDCDCD; font-size:18px; font-weight:400;">Scan this QR code to view and download
-                        your video and photo.</span>
+                    <span id="success-text-main">Your memories are ready! ✨</span>
+                    <br>
+                    <span id="success-text-sub" style="font-size:18px; font-weight:400;">Scan this QR code to view and download your video and photo.</span>
                 </h2>
 
                 <!-- QR Code Display -->
@@ -1544,7 +1592,7 @@
                     onerror="console.error('Video Error (Tutorial):', this.error)"></video>
                 <div id="label-right-overlay"
                     style="color:rgba(255,255,255,0.3); font-weight:700; font-size:24px; position:absolute; z-index: 5;">
-                    Loading Tutorial...</div>
+                    <span id="loading-tutorial-text">Loading Tutorial...</span></div>
                 <!-- TIMER SVG (MOVED TO END FOR TOP STACKING) -->
                 <svg class="timer-progress-container hidden" id="svg-timer">
                     <rect class="progress-rect" id="rect-timer" x="5" y="5" rx="15" ry="15"></rect>
@@ -1716,14 +1764,14 @@
                             btn.classList.remove('recording');
                             btn.style.pointerEvents = 'auto';
                         }
-                        document.getElementById('countdown-area').innerText = 'Start Recording';
+                        document.getElementById('countdown-area').innerText = window.readyCountdownText || 'Start Recording';
                     } else {
                         // Reset Shutter Button UI
                         const btn = document.getElementById('btn-photo-shutter');
                         if (btn) {
                             btn.style.pointerEvents = 'auto';
                         }
-                        document.getElementById('countdown-area-photo').innerText = 'Take a Photo';
+                        document.getElementById('countdown-area-photo').innerText = window.photoCountdownText || 'Take a Photo';
                     }
                 } else {
                     if (webcamEl) webcamEl.classList.add('hidden');
@@ -1763,6 +1811,8 @@
                 window.readyCdText = data.readyCdText || 'Recording Begins in...';
                 window.recordingCdText = data.recordingCdText || 'Recording...';
                 window.photoCdText = data.photoCdText || 'Taking Photo in...';
+                window.readyCountdownText = data.readyCountdownText || 'Start Recording';
+                window.photoCountdownText = data.photoCountdownText || 'Take a Photo';
 
                 // Immediately show/hide Left/Right panels based on cache
                 const leftPanel = document.getElementById('panel-left');
@@ -1784,13 +1834,13 @@
                 }
 
                 const subEl = document.getElementById('idle-sub');
-                if (subEl && data.subtitle) subEl.innerText = data.subtitle;
+                if (subEl && data.subtitle) subEl.innerHTML = data.subtitle;
 
                 const descEl = document.getElementById('desc-premium');
-                if (descEl && data.descPremium) descEl.innerText = data.descPremium;
+                if (descEl && data.descPremium) descEl.innerHTML = data.descPremium;
 
                 const startBtn = document.getElementById('start-btn-text');
-                if (startBtn && data.startText) startBtn.innerText = data.startText;
+                if (startBtn && data.startText) startBtn.innerHTML = data.startText;
 
                 window.updateConfigurableTexts(data);
 
@@ -1836,6 +1886,8 @@
 
                 const bg2 = data.bgColor2 || '#ebedee';
                 if (rootStyle.getPropertyValue('--bg-2') !== bg2) rootStyle.setProperty('--bg-2', bg2);
+
+                if (rootStyle.getPropertyValue('--font-style-sub') !== 'normal') rootStyle.setProperty('--font-style-sub', 'normal');
             } catch (e) {
                 console.warn("Cached theme apply failed:", e);
             }
@@ -1884,34 +1936,17 @@
                     if (mainTitleEl && mainTitleEl.classList.contains('hidden')) mainTitleEl.classList.remove('hidden');
                     if (brandingLogoEl && brandingLogoEl.style.display !== 'none') brandingLogoEl.style.display = 'none';
                     const subEl = document.getElementById('idle-sub');
-                    if (subEl && data.subtitle && subEl.innerText !== data.subtitle) subEl.innerText = data.subtitle;
+                    if (subEl && data.subtitle && subEl.innerHTML !== data.subtitle) subEl.innerHTML = data.subtitle;
 
                     const descEl = document.getElementById('desc-premium');
-                    if (descEl && data.descPremium && descEl.innerText !== data.descPremium) descEl.innerText = data.descPremium;
+                    if (descEl && data.descPremium && descEl.innerHTML !== data.descPremium) descEl.innerHTML = data.descPremium;
 
                     const startBtn = document.getElementById('start-btn-text');
-                    if (startBtn && data.startText && startBtn.innerText !== data.startText) startBtn.innerText = data.startText;
+                    if (startBtn && data.startText && startBtn.innerHTML !== data.startText) startBtn.innerHTML = data.startText;
 
                     window.updateConfigurableTexts(data);
 
-                    // Update Instruction Texts (Only if different)
-                    const defaults = {
-                        ready: "Get your pen and look at mirror. <br> Hit the record button when you are ready.",
-                        review: "Please review your video, <br> you can RETAKE or UPLOAD.",
-                        success: "Your memories are ready! ✨<br><span style=\"color:#CDCDCD; font-size:18px; font-weight:400;\">Scan this QR code to view and download your video and photo.</span>"
-                    };
-
-                    const readyEl = document.getElementById('ready-text');
-                    const targetReady = (data.readyText || defaults.ready).replace(/\n/g, '<br>');
-                    if (readyEl && readyEl.innerHTML !== targetReady) readyEl.innerHTML = targetReady;
-
-                    const reviewEl = document.getElementById('review-video-text');
-                    const targetReview = (data.reviewText || defaults.review).replace(/\n/g, '<br>');
-                    if (reviewEl && reviewEl.innerHTML !== targetReview) reviewEl.innerHTML = targetReview;
-
-                    const successEl = document.getElementById('success-text');
-                    const targetSuccess = (data.successText || defaults.success).replace(/\n/g, '<br>');
-                    if (successEl && successEl.innerHTML !== targetSuccess) successEl.innerHTML = targetSuccess;
+                    // Dynamic texts are handled in updateConfigurableTexts
                 }
 
                 // 3. Smart Video Asset Updates (Prevent infinite reload cycle)
@@ -1973,6 +2008,8 @@
                 const bg2 = data.bgColor2 || '#ebedee';
                 if (rootStyle.getPropertyValue('--bg-2') !== bg2) rootStyle.setProperty('--bg-2', bg2);
 
+                if (rootStyle.getPropertyValue('--font-style-sub') !== 'normal') rootStyle.setProperty('--font-style-sub', 'normal');
+
                 const fontFamily = data.fontFamily || "'Aref Ruqaa', serif";
                 if (rootStyle.getPropertyValue('--body-font-dyn') !== fontFamily) rootStyle.setProperty('--body-font-dyn', fontFamily);
 
@@ -1982,6 +2019,8 @@
                 window.readyCdText = data.readyCdText || 'Recording Begins in...';
                 window.recordingCdText = data.recordingCdText || 'Recording...';
                 window.photoCdText = data.photoCdText || 'Taking Photo in...';
+                window.readyCountdownText = data.readyCountdownText || 'Start Recording';
+                window.photoCountdownText = data.photoCountdownText || 'Take a Photo';
                 window.showLeftPanel = data.showLeftPanel !== false;
                 window.showRightPanel = data.showRightPanel !== false;
 
@@ -1991,7 +2030,8 @@
                 }
 
                 // Update Font if provided
-                if (data.fontUrl) {
+                const isDirectFont = data.fontUrl && /\.(ttf|otf|woff|woff2)(\?.*)?$/i.test(data.fontUrl);
+                if (data.fontUrl && !isDirectFont) {
                     let link = document.getElementById('dynamic-font');
                     if (!link) {
                         link = document.createElement('link');
@@ -2009,9 +2049,27 @@
                         document.head.appendChild(styleParams);
                     }
 
+                    let fontFaceRule = '';
+                    if (isDirectFont) {
+                        let format = 'truetype';
+                        if (data.fontUrl.toLowerCase().includes('.otf')) format = 'opentype';
+                        else if (data.fontUrl.toLowerCase().includes('.woff2')) format = 'woff2';
+                        else if (data.fontUrl.toLowerCase().includes('.woff')) format = 'woff';
+
+                        fontFaceRule = `
+                            @font-face {
+                                font-family: ${data.fontFamily || "'CustomUploadedFont'"};
+                                src: url("${data.fontUrl}") format("${format}");
+                                font-weight: normal;
+                                font-style: normal;
+                            }
+                        `;
+                    }
+
                     styleParams.innerHTML = `
+                        ${fontFaceRule}
                         :root { 
-                            --title-font-dyn: ${data.titleFontFamily || "'Luxurious Script', cursive"}; 
+                            --title-font-dyn: ${data.titleFontFamily || data.fontFamily || "'Luxurious Script', cursive"}; 
                             --body-font-dyn: ${data.fontFamily || "'Aref Ruqaa', serif"};
                         }
                         body, input, button, textarea, .subtitle-premium, .desc-premium, .panel-footer, .ui-state h2, .delivery-tab {
@@ -2022,7 +2080,7 @@
                         }
                         #countdown-area, .countdown-text {
                             font-family: var(--body-font-dyn) !important;
-                            font-style: italic;
+                            font-style: var(--font-style-sub, italic);
                         }
                         #countdown-val {
                             font-family: 'Roboto', sans-serif !important;
@@ -2357,6 +2415,7 @@
 
             // Return to idle state smoothly!
             changeState('idle');
+            applyTheme().catch(e => console.warn("Auto-apply theme on reset failed:", e));
         }
 
         async function submitVideo() {
