@@ -470,6 +470,7 @@ if (!fs.existsSync(CONFIG_FILE)) {
 }
 
 app.get('/api/config', (req, res) => {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
     try {
         const configData = fs.readFileSync(CONFIG_FILE);
         res.json({ ...DEFAULT_CONFIG, ...JSON.parse(configData) });

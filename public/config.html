@@ -1539,7 +1539,7 @@
         let dataBackup = {};
 
         // LOAD DATA
-        fetch('/api/config')
+        fetch('/api/config', { cache: 'no-store' })
             .then(res => res.json())
             .then(data => {
                 dataBackup = data;
@@ -2292,6 +2292,9 @@
                 boldBtn.type = 'button';
                 boldBtn.innerHTML = '<b>B</b>';
                 boldBtn.title = 'Bold (Ctrl+B)';
+                boldBtn.onmousedown = (e) => {
+                    e.preventDefault(); // Keep input focused to preserve selection
+                };
                 boldBtn.onclick = (e) => {
                     e.preventDefault();
                     formatText(input, 'b');
@@ -2301,8 +2304,11 @@
                 const italicBtn = document.createElement('button');
                 italicBtn.className = 'btn-tool';
                 italicBtn.type = 'button';
-                italicBtn.innerHTML = '<i>I</i>';
+                italicBtn.innerHTML = '<i style="font-family: Georgia, serif; font-weight: bold; font-style: italic;">I</i>';
                 italicBtn.title = 'Italic (Ctrl+I)';
+                italicBtn.onmousedown = (e) => {
+                    e.preventDefault(); // Keep input focused to preserve selection
+                };
                 italicBtn.onclick = (e) => {
                     e.preventDefault();
                     formatText(input, 'i');
@@ -2314,6 +2320,9 @@
                 underlineBtn.type = 'button';
                 underlineBtn.innerHTML = '<u>U</u>';
                 underlineBtn.title = 'Underline (Ctrl+U)';
+                underlineBtn.onmousedown = (e) => {
+                    e.preventDefault(); // Keep input focused to preserve selection
+                };
                 underlineBtn.onclick = (e) => {
                     e.preventDefault();
                     formatText(input, 'u');

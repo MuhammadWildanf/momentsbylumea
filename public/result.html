@@ -245,7 +245,7 @@
             window.resultProcessingTextVal = `Processing your video & photo... please wait a moment. ✨<br><small style="font-size: 14px; opacity: 0.8; display: block; margin-top: 10px;">Rendering process usually takes 10-15 seconds.</small>`;
 
             // Load theme & text configuration immediately in parallel
-            let themePromise = fetch('/api/config')
+            let themePromise = fetch('/api/config', { cache: 'no-store' })
                 .then(res => res.json())
                 .then(configData => {
                     if (configData.bgImageUrl) {

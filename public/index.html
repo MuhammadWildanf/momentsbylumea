@@ -316,6 +316,10 @@
             box-shadow: 0 5px 15px rgba(231, 229, 216, 0.2) !important;
         }
 
+        #countdown-val, #countdown-val-photo {
+            color: inherit !important;
+        }
+
         .btn-outline {
             position: relative;
             display: inline-flex !important;
@@ -324,8 +328,8 @@
             gap: 10px !important;
             padding: 12px 32px !important;
             background: transparent !important;
-            color: #e7e5d8 !important;
-            border: 1px solid #e7e5d8 !important;
+            color: inherit !important;
+            border: 1px solid currentColor !important;
             border-radius: 50px !important;
             font-weight: 700 !important;
             font-size: min(2.5vh, 20px) !important;
@@ -719,6 +723,33 @@
 
         #success-done-text {
             color: var(--success-done-color, #1a0f0a) !important;
+        }
+
+        /* Dynamic colors for outline buttons border & color */
+        button:has(#ready-back-text) {
+            color: var(--ready-back-color, #e7e5d8) !important;
+        }
+        button:has(#review-retake-text) {
+            color: var(--review-retake-color, #e7e5d8) !important;
+        }
+        button:has(#photo-back-text) {
+            color: var(--photo-back-color, #e7e5d8) !important;
+        }
+        button:has(#final-retake-all-text) {
+            color: var(--final-retake-all-color, #e7e5d8) !important;
+        }
+        button:has(#final-retake-photo-text) {
+            color: var(--final-retake-photo-color, #e7e5d8) !important;
+        }
+
+        /* Dynamic colors for countdown area status texts under circle buttons */
+        #state-ready .countdown-text,
+        #state-ready #countdown-area {
+            color: var(--ready-text-color, #F0E5C7) !important;
+        }
+        #state-ready-photo .countdown-text,
+        #state-ready-photo #countdown-area-photo {
+            color: var(--photo-instruction-color, #F0E5C7) !important;
         }
 
         /* INPUTS & FORM */
@@ -1465,7 +1496,7 @@
                 </h2>
                 <button class="btn-record-circle" id="btn-record" onclick="startRecording()"></button>
                 <div class="countdown-text"
-                    style="margin-top: 15px; font-weight: 700; color: #CDCDCD; font-size: 24px;">
+                    style="margin-top: 15px; font-weight: 700; font-size: 24px;">
                     <span id="countdown-area">Start Recording</span>
                 </div>
                 <br>
@@ -1509,7 +1540,7 @@
                 </h2>
                 <button class="btn-record-circle" id="btn-photo-shutter" onclick="startPhotoCountdown()"></button>
                 <div class="countdown-text"
-                    style="margin-top: 15px; font-weight: 700; color: #CDCDCD; font-size: 24px;">
+                    style="margin-top: 15px; font-weight: 700; font-size: 24px;">
                     <span id="countdown-area-photo">Take a Photo</span>
                 </div>
                 <br>
@@ -1562,7 +1593,7 @@
                 </div>
 
                 <h2 id="success-footer-container"
-                    style="font-size:20px; color:#CDCDCD; font-weight:400; margin-top: 10px;">
+                    style="font-size:20px; font-weight:400; margin-top: 10px;">
                     <span id="success-footer-text"
                         style="font-size:32px; font-family:'Luxurious Script', cursive;">Thank you for being part of
                         this moment</span>
@@ -1764,14 +1795,14 @@
                             btn.classList.remove('recording');
                             btn.style.pointerEvents = 'auto';
                         }
-                        document.getElementById('countdown-area').innerText = window.readyCountdownText || 'Start Recording';
+                        document.getElementById('countdown-area').innerHTML = window.readyCountdownText || 'Start Recording';
                     } else {
                         // Reset Shutter Button UI
                         const btn = document.getElementById('btn-photo-shutter');
                         if (btn) {
                             btn.style.pointerEvents = 'auto';
                         }
-                        document.getElementById('countdown-area-photo').innerText = window.photoCountdownText || 'Take a Photo';
+                        document.getElementById('countdown-area-photo').innerHTML = window.photoCountdownText || 'Take a Photo';
                     }
                 } else {
                     if (webcamEl) webcamEl.classList.add('hidden');
@@ -1895,7 +1926,7 @@
 
         async function applyTheme() {
             try {
-                const res = await fetch('/api/config');
+                const res = await fetch('/api/config', { cache: 'no-store' });
                 const data = await res.json();
                 localStorage.setItem('vb_config', JSON.stringify(data));
 
@@ -1943,24 +1974,22 @@
 
                     const startBtn = document.getElementById('start-btn-text');
                     if (startBtn && data.startText && startBtn.innerHTML !== data.startText) startBtn.innerHTML = data.startText;
-
-                    window.updateConfigurableTexts(data);
-
-                    // Dynamic texts are handled in updateConfigurableTexts
                 }
+
+                window.updateConfigurableTexts(data);
 
                 // 3. Smart Video Asset Updates (Prevent infinite reload cycle)
                 const tutorialVid = document.getElementById('preview');
                 const resultVid = document.getElementById('loop-preview');
 
-                if (data.tutorialVideoUrl) {
+                if (data.tutorialVideoUrl && tutorialVid) {
                     const cleanSrc = tutorialVid.src ? tutorialVid.src.split('?')[0] : '';
                     const targetUrl = new URL(data.tutorialVideoUrl, window.location.origin).href;
                     if (cleanSrc !== targetUrl) {
                         console.log("[THEME] Loading Tutorial:", targetUrl);
                         tutorialVid.src = targetUrl;
                     }
-                } else {
+                } else if (tutorialVid) {
                     if (tutorialVid.src !== '') tutorialVid.src = '';
                 }
 
@@ -1971,7 +2000,7 @@
                         console.log("[THEME] Loading Loop:", targetUrl);
                         resultVid.src = targetUrl;
                     }
-                } else {
+                } else if (resultVid) {
                     if (resultVid.src !== '') resultVid.src = '';
                 }
 
@@ -2082,8 +2111,9 @@
                             font-family: var(--body-font-dyn) !important;
                             font-style: var(--font-style-sub, italic);
                         }
-                        #countdown-val {
+                        #countdown-val, #countdown-val-photo {
                             font-family: 'Roboto', sans-serif !important;
+                            color: inherit !important;
                         }
                     `;
                 }
@@ -2312,7 +2342,7 @@
             const btn = document.getElementById('btn-photo-shutter');
             if (btn) btn.style.pointerEvents = 'auto';
             const area = document.getElementById('countdown-area-photo');
-            if (area) area.innerText = 'Take a Photo';
+            if (area) area.innerHTML = window.photoCountdownText || 'Take a Photo';
         }
 
         function startPhotoCountdown() {
