@@ -1242,7 +1242,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="grid-2" style="margin-top: 10px;">
+                <div class="grid-3" style="margin-top: 10px;">
                     <div class="input-group">
                         <label>Footer Thank You Message & Color</label>
                         <div class="input-with-color">
@@ -1268,6 +1268,10 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Auto-Reset Label Text</label>
+                        <input type="text" id="successAutoResetText" placeholder="Auto-reset in">
                     </div>
                 </div>
             </div>
@@ -1625,6 +1629,7 @@
                 document.getElementById('reviewTextSub').value = data.reviewTextSub || 'you can RETAKE or NEXT.';
                 document.getElementById('successTextMain').value = data.successTextMain || 'Your memories are ready! ✨';
                 document.getElementById('successTextSub').value = data.successTextSub || 'Scan this QR code to view and download your video and photo.';
+                document.getElementById('successAutoResetText').value = data.successAutoResetText || 'Auto-reset in';
                 document.getElementById('readyCdText').value = data.readyCdText || 'Recording Begins in...';
                 document.getElementById('recordingCdText').value = data.recordingCdText || 'Recording...';
                 document.getElementById('photoCdText').value = data.photoCdText || 'Taking Photo in...';
@@ -1880,6 +1885,7 @@
                 reviewTextSub: document.getElementById('reviewTextSub').value,
                 successTextMain: document.getElementById('successTextMain').value,
                 successTextSub: document.getElementById('successTextSub').value,
+                successAutoResetText: document.getElementById('successAutoResetText').value,
                 readyCdText: document.getElementById('readyCdText').value,
                 recordingCdText: document.getElementById('recordingCdText').value,
                 photoCdText: document.getElementById('photoCdText').value,

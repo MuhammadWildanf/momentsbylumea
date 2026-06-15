@@ -105,5 +105,6 @@
     "resultSavePhotoText": "📸 Save Your Photo",
     "resultFooterText": "Here’s to the moments you’ll always look back on - @momentsbylumea",
     "fontSourceType": "google",
-    "italicSubtitle": true
+    "italicSubtitle": true,
+    "successAutoResetText": "Auto-reset in"
 }

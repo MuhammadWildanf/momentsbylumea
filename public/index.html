@@ -1861,6 +1861,7 @@
                 window.photoCdText = data.photoCdText || 'Taking Photo in...';
                 window.readyCountdownText = data.readyCountdownText || 'Start Recording';
                 window.photoCountdownText = data.photoCountdownText || 'Take a Photo';
+                window.successAutoResetText = data.successAutoResetText || 'Auto-reset in';
 
                 // Immediately show/hide Left/Right panels based on cache
                 const leftPanel = document.getElementById('panel-left');
@@ -2067,6 +2068,7 @@
                 window.photoCdText = data.photoCdText || 'Taking Photo in...';
                 window.readyCountdownText = data.readyCountdownText || 'Start Recording';
                 window.photoCountdownText = data.photoCountdownText || 'Take a Photo';
+                window.successAutoResetText = data.successAutoResetText || 'Auto-reset in';
                 window.showLeftPanel = data.showLeftPanel !== false;
                 window.showRightPanel = data.showRightPanel !== false;
 
@@ -2499,11 +2501,12 @@
 
                         // Start auto-reset countdown
                         let timeLeft = window.qrResetDuration || 45;
+                        const autoResetLabel = window.successAutoResetText || 'Auto-reset in';
                         if (countdownEl) {
-                            countdownEl.innerText = `Auto-reset in ${timeLeft}s`;
+                            countdownEl.innerText = `${autoResetLabel} ${timeLeft}s`;
                             autoResetTimer = setInterval(() => {
                                 timeLeft--;
-                                if (countdownEl) countdownEl.innerText = `Auto-reset in ${timeLeft}s`;
+                                if (countdownEl) countdownEl.innerText = `${autoResetLabel} ${timeLeft}s`;
                                 if (timeLeft <= 0) {
                                     clearInterval(autoResetTimer);
                                     autoResetTimer = null;
