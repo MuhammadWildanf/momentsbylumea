@@ -725,6 +725,25 @@
             color: var(--success-done-color, #1a0f0a) !important;
         }
 
+        #auto-reset-countdown {
+            color: var(--success-text-color, #a3a3a3) !important;
+        }
+
+        #label-left-overlay, #label-right-overlay {
+            color: rgba(255, 255, 255, 0.3) !important;
+        }
+
+        .preview-badge {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff !important;
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-size: 10px;
+        }
+
         /* Dynamic colors for outline buttons border & color */
         button:has(#ready-back-text) {
             color: var(--ready-back-color, #e7e5d8) !important;
@@ -1406,7 +1425,7 @@
                     onplaying="this.style.opacity=1; document.getElementById('label-left-overlay').classList.add('hidden')"
                     onerror="console.error('Video Error (Result):', this.error)"></video>
                 <div id="label-left-overlay"
-                    style="color:rgba(255,255,255,0.3); font-weight:700; font-size:24px; position:absolute; z-index: 5;">
+                    style="font-weight:700; font-size:24px; position:absolute; z-index: 5;">
                     <span id="loading-preview-text">Loading Preview...</span></div>
             </div>
             <div class="panel-footer" style="margin-top: auto; margin-bottom: 25px; font-size: 20px;">
@@ -1482,14 +1501,14 @@
             <div id="state-ready" class="ui-state">
                 <div style="margin-bottom: 40px; text-align: center;">
                     <h1 id="ready-header-title"
-                        style="font-size: min(5vh, 48px); color: #F0E5C7; font-weight: 700; margin-bottom: 10px; font-family: var(--body-font-dyn) !important;">
+                        style="font-size: min(5vh, 48px); font-weight: 700; margin-bottom: 10px; font-family: var(--body-font-dyn) !important;">
                         Ready To Play Words?</h1>
                     <p id="ready-header-subtitle"
-                        style="font-size: min(3vh, 28px); color: #F0E5C7; font-family: var(--body-font-dyn) !important; font-style: var(--font-style-sub, italic);">
+                        style="font-size: min(3vh, 28px); font-family: var(--body-font-dyn) !important; font-style: var(--font-style-sub, italic);">
                         Write a simple letter to the Bride and Groom</p>
                 </div>
                 <h2 id="ready-text"
-                    style="font-size:34px; color:#F0E5C7; line-height:1.4; font-weight:700; margin-bottom:50px;">
+                    style="font-size:34px; line-height:1.4; font-weight:700; margin-bottom:50px;">
                     <span id="ready-text-main">Get your pen and look at mirror.</span>
                     <br>
                     <span id="ready-text-sub" style="font-size:24px; font-weight:400;">Hit the record button when you are ready.</span>
@@ -1509,7 +1528,7 @@
             <!-- STATE REVIEW VIDEO (NEW) -->
             <div id="state-review-video" class="ui-state">
                 <h2 id="review-video-text"
-                    style="font-size:34px; color:#F0E5C7; line-height:1.4; font-weight:700; margin-bottom:10px;">
+                    style="font-size:34px; line-height:1.4; font-weight:700; margin-bottom:10px;">
                     <span id="review-text-main">Please review your video,</span>
                     <br>
                     <span id="review-text-sub" style="font-size:24px; font-weight:400;">you can RETAKE or NEXT.</span>
@@ -1526,14 +1545,14 @@
             <div id="state-ready-photo" class="ui-state">
                 <div style="margin-bottom: 40px; text-align: center;">
                     <h1 id="photo-header-title"
-                        style="font-size: min(5vh, 48px); color: #F0E5C7; font-weight: 700; margin-bottom: 10px; font-family: var(--body-font-dyn) !important;">
+                        style="font-size: min(5vh, 48px); font-weight: 700; margin-bottom: 10px; font-family: var(--body-font-dyn) !important;">
                         Ready for Photo Session?</h1>
                     <p id="photo-header-subtitle"
-                        style="font-size: min(3vh, 28px); color: #F0E5C7; font-family: var(--body-font-dyn) !important; font-style: var(--font-style-sub, italic);">
+                        style="font-size: min(3vh, 28px); font-family: var(--body-font-dyn) !important; font-style: var(--font-style-sub, italic);">
                         Strike a beautiful pose for the camera</p>
                 </div>
                 <h2 id="ready-photo-text"
-                    style="font-size:34px; color:#F0E5C7; line-height:1.4; font-weight:700; margin-bottom:50px;">
+                    style="font-size:34px; line-height:1.4; font-weight:700; margin-bottom:50px;">
                     <span id="photo-instruction-main">Look at the camera and smile.</span>
                     <br>
                     <span id="photo-instruction-sub" style="font-size:24px; font-weight:400;">Hit the shutter button when you are ready.</span>
@@ -1552,19 +1571,17 @@
             <!-- STATE REVIEW FINAL (NEW) -->
             <div id="state-review-final" class="ui-state">
                 <h2 id="final-header-title"
-                    style="font-size: min(4vh, 28px); color:#F0E5C7; font-weight:700; margin-bottom: 2vh;">Review your
+                    style="font-size: min(4vh, 28px); font-weight:700; margin-bottom: 2vh;">Review your
                     session.</h2>
                 <div class="final-preview-container">
                     <div class="final-preview-box">
                         <video id="final-video-preview" autoplay muted loop
                             style="width:100%; height:100%; object-fit:cover;"></video>
-                        <span id="final-video-label"
-                            style="position:absolute; bottom:10px; left:10px; background:rgba(0,0,0,0.5); color:#fff; padding:2px 8px; border-radius:5px; font-size:10px;">VIDEO</span>
+                        <span id="final-video-label" class="preview-badge">VIDEO</span>
                     </div>
                     <div class="final-preview-box">
                         <img id="final-photo-preview" style="width:100%; height:100%; object-fit:cover;">
-                        <span id="final-photo-label"
-                            style="position:absolute; bottom:10px; left:10px; background:rgba(0,0,0,0.5); color:#fff; padding:2px 8px; border-radius:5px; font-size:10px;">PHOTO</span>
+                        <span id="final-photo-label" class="preview-badge">PHOTO</span>
                     </div>
                 </div>
                 <div class="btn-row final-btn-row">
@@ -1580,7 +1597,7 @@
             <!-- STATE SUCCESS (FRAME 6) -->
             <div id="state-processing" class="ui-state" style="text-align: center;">
                 <h2 id="success-text"
-                    style="font-size:30px; color:#F0E5C7; line-height:1.5; font-weight:600; margin-bottom: 15px;">
+                    style="font-size:30px; line-height:1.5; font-weight:600; margin-bottom: 15px;">
                     <span id="success-text-main">Your memories are ready! ✨</span>
                     <br>
                     <span id="success-text-sub" style="font-size:18px; font-weight:400;">Scan this QR code to view and download your video and photo.</span>
@@ -1603,7 +1620,7 @@
                     <button class="btn-primary" onclick="resetApp()"
                         style="padding: 10px 35px; font-size: 16px; border-radius: 50px; min-width: 150px;"><span
                             id="success-done-text">Done</span></button>
-                    <div id="auto-reset-countdown" style="margin-top: 12px; font-size: 13px; color: var(--success-text-color, #a3a3a3);"></div>
+                    <div id="auto-reset-countdown" style="margin-top: 12px; font-size: 13px;"></div>
                 </div>
             </div>
         </div>
@@ -1622,7 +1639,7 @@
                     onplaying="this.style.opacity=1; document.getElementById('label-right-overlay').classList.add('hidden')"
                     onerror="console.error('Video Error (Tutorial):', this.error)"></video>
                 <div id="label-right-overlay"
-                    style="color:rgba(255,255,255,0.3); font-weight:700; font-size:24px; position:absolute; z-index: 5;">
+                    style="font-weight:700; font-size:24px; position:absolute; z-index: 5;">
                     <span id="loading-tutorial-text">Loading Tutorial...</span></div>
                 <!-- TIMER SVG (MOVED TO END FOR TOP STACKING) -->
                 <svg class="timer-progress-container hidden" id="svg-timer">
