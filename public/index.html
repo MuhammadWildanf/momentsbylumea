@@ -182,8 +182,10 @@
             if (cached) {
                 const data = JSON.parse(cached);
                 const root = document.documentElement;
-                if (data.bgImageUrl) {
+                if (data.bgImageUrl && data.bgImageUrl !== 'none' && data.bgImageUrl !== 'Default') {
                     document.write('<style>body { background-image: url("' + data.bgImageUrl + '") !important; background-size: cover !important; }</style>');
+                } else {
+                    document.write('<style>body { background-image: radial-gradient(circle at center, var(--bg-1, #1a0f0a) 0%, var(--bg-2, #100a06) 100%) !important; }</style>');
                 }
                 if (data.frameImageUrl) {
                     root.style.setProperty('--frame-image', 'url("' + data.frameImageUrl + '")');
@@ -1906,7 +1908,7 @@
 
                 // Immediately apply cached background, frame and colors to prevent style flashing
                 const rootStyle = document.documentElement.style;
-                if (data.bgImageUrl) {
+                if (data.bgImageUrl && data.bgImageUrl !== 'none' && data.bgImageUrl !== 'Default') {
                     const targetBg = `url("${data.bgImageUrl}")`;
                     if (document.body.style.backgroundImage !== targetBg) {
                         document.body.style.backgroundImage = targetBg;
@@ -1951,7 +1953,7 @@
 
                 // 1. Preload Critical Images in Parallel
                 const criticalAssets = [];
-                if (data.bgImageUrl) criticalAssets.push(preloadImage(data.bgImageUrl));
+                if (data.bgImageUrl && data.bgImageUrl !== 'none' && data.bgImageUrl !== 'Default') criticalAssets.push(preloadImage(data.bgImageUrl));
                 if (data.frameImageUrl) criticalAssets.push(preloadImage(data.frameImageUrl));
                 if (data.logoUrl) criticalAssets.push(preloadImage(data.logoUrl));
                 try {
@@ -2025,7 +2027,7 @@
 
                 // 4. Optimized CSS Variable Updates (Prevent style flashing)
                 const rootStyle = document.documentElement.style;
-                if (data.bgImageUrl) {
+                if (data.bgImageUrl && data.bgImageUrl !== 'none' && data.bgImageUrl !== 'Default') {
                     const targetBg = `url("${data.bgImageUrl}")`;
                     if (document.body.style.backgroundImage !== targetBg) {
                         document.body.style.backgroundImage = targetBg;

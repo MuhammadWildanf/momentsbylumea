@@ -35,6 +35,8 @@
             --accent-glow: rgba(197, 160, 89, 0.3);
             --gold-gradient: linear-gradient(135deg, #c5a059 0%, #d4af37 50%, #b38b4d 100%);
             --bg-dark: #1a0f0a;
+            --bg-1: #1a0f0a;
+            --bg-2: #100a06;
             --text-main: #f8fafc;
             --text-muted: #a0a0a0;
             --border: rgba(197, 160, 89, 0.2);
@@ -53,7 +55,7 @@
             font-family: 'Aref Ruqaa', 'Playfair Display', serif;
             background-color: var(--bg-dark);
             color: var(--text-main);
-            background-image: url('/bg1.png');
+            background-image: radial-gradient(circle at center, var(--bg-1) 0%, var(--bg-2) 100%);
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -733,8 +735,16 @@
                 logo.style.display = 'inline-block';
             }
             // Background & colors syncing
-            if (config.bgImageUrl) {
+            if (config.bgColor1) {
+                document.documentElement.style.setProperty('--bg-1', config.bgColor1);
+            }
+            if (config.bgColor2) {
+                document.documentElement.style.setProperty('--bg-2', config.bgColor2);
+            }
+            if (config.bgImageUrl && config.bgImageUrl !== 'none' && config.bgImageUrl !== 'Default') {
                 document.body.style.backgroundImage = `url('${config.bgImageUrl}')`;
+            } else {
+                document.body.style.backgroundImage = 'radial-gradient(circle at center, var(--bg-1, #1a0f0a) 0%, var(--bg-2, #100a06) 100%)';
             }
             if (config.accentColor) {
                 document.documentElement.style.setProperty('--accent', config.accentColor);

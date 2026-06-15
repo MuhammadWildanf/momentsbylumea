@@ -690,32 +690,41 @@
             </div>
 
             <div class="grid-2">
-                <!-- Pengaturan Warna Utama - Deactivated/Hidden -->
-                <div class="card" style="display: none;">
-                    <label>Pengaturan Warna Utama</label>
-                    <div class="grid-3">
+                <!-- Pengaturan Warna Latar & Aksen (Unhidden and Enhanced) -->
+                <div class="card">
+                    <label>🎨 Background & Accent Colors (Warna Latar & Aksen)</label>
+                    <small style="color:var(--text-muted); display:block; margin-bottom:15px;">
+                        Configure your background colors (for gradient theme), accent color, and border frame color.
+                    </small>
+                    <div class="grid-2">
                         <div class="input-group">
-                            <label>Warna Aksen</label>
-                            <div class="color-row">
-                                <input type="color" id="accentColor">
-                            </div>
-                        </div>
-                        <div class="input-group">
-                            <label>Latar Panel Kanan Kiri</label>
-                            <div class="color-row">
+                            <label>Background Gradient Start</label>
+                            <div class="color-row" style="padding: 6px 10px;">
                                 <input type="color" id="bgColor1">
                             </div>
                         </div>
                         <div class="input-group">
-                            <label>Garis Bingkai</label>
-                            <div class="color-row">
+                            <label>Background Gradient End</label>
+                            <div class="color-row" style="padding: 6px 10px;">
+                                <input type="color" id="bgColor2">
+                            </div>
+                        </div>
+                        <div class="input-group" style="margin-top: 10px;">
+                            <label>Accent Color</label>
+                            <div class="color-row" style="padding: 6px 10px;">
+                                <input type="color" id="accentColor">
+                            </div>
+                        </div>
+                        <div class="input-group" style="margin-top: 10px;">
+                            <label>Frame Color</label>
+                            <div class="color-row" style="padding: 6px 10px;">
                                 <input type="color" id="frameColor">
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="card" style="grid-column: span 2;">
+                <div class="card">
                     <label>Typography & Fonts</label>
                     <div class="input-group">
                         <select id="fontSelector" onchange="updateFontHidden()">
@@ -788,8 +797,9 @@
                             <small id="bgStatus"
                                 style="color:var(--accent); font-size:10px; display:block; margin-bottom:5px;">/bg1.png</small>
                             <input type="file" id="bgFile" accept="image/*" style="font-size:11px;">
-                            <div class="btn-browse" onclick="openLibrary('bgImageUrl', 'bgStatus')">📁 Choose from
-                                Gallery
+                            <div style="display: flex; gap: 8px; margin-top: 5px;">
+                                <div class="btn-browse" onclick="openLibrary('bgImageUrl', 'bgStatus')" style="flex: 1; text-align: center; margin-top: 0;">📁 Gallery</div>
+                                <button type="button" class="btn-tool" onclick="document.getElementById('bgStatus').innerText = 'none'; bgUrl = 'none';" style="padding: 0 10px; height: 32px; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; background: rgba(255,255,255,0.02); color: #ef4444; font-size: 11px; cursor: pointer; transition: all 0.2s; white-space: nowrap;" onmouseover="this.style.background='rgba(239,68,68,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.02)'" title="Remove Background Image to show Gradient">Clear Image</button>
                             </div>
                         </div>
                     </div>
@@ -1567,6 +1577,7 @@
                 if (document.getElementById('emailSubject')) document.getElementById('emailSubject').value = data.emailSubject || '';
                 if (document.getElementById('messageTemplate')) document.getElementById('messageTemplate').value = data.messageTemplate || '';
                 document.getElementById('bgColor1').value = data.bgColor1 || '#2c3e50';
+                document.getElementById('bgColor2').value = data.bgColor2 || '#ebedee';
                 document.getElementById('accentColor').value = data.accentColor || '#D3BB7C';
                 document.getElementById('frameColor').value = data.frameColor || '#333333';
                 document.getElementById('titleColor').value = data.titleColor || '#D3BB7C';
@@ -1728,14 +1739,15 @@
             document.getElementById('preset-' + t).classList.add('active');
 
             const themes = {
-                gold: { bg1: '#1a100a', accent: '#D3BB7C', title: '#D3BB7C', frame: '#333333', desc: '#CDCDCD', font: 'luxury', bg: '/bg1.png', f: '/frame_gold.png', o: '/overlay.png' },
-                romantic: { bg1: '#fdf2f8', accent: '#ec4899', title: '#831843', frame: '#fbcfe8', desc: '#4a4a4a', font: 'romantic', bg: '', f: '', o: '' },
-                monochrome: { bg1: '#0a0a0a', accent: '#a3a3a3', title: '#ffffff', frame: '#262626', desc: '#a3a3a3', font: 'modern', bg: '', f: '', o: '' },
-                rustic: { bg1: '#292524', accent: '#d97706', title: '#fcd34d', frame: '#44403c', desc: '#d6d3d1', font: 'classic', bg: '', f: '', o: '' }
+                gold: { bg1: '#1a100a', bg2: '#3c2a21', accent: '#D3BB7C', title: '#D3BB7C', frame: '#333333', desc: '#CDCDCD', font: 'luxury', bg: '/bg1.png', f: '/frame_gold.png', o: '/overlay.png' },
+                romantic: { bg1: '#fdf2f8', bg2: '#fbcfe8', accent: '#ec4899', title: '#831843', frame: '#fbcfe8', desc: '#4a4a4a', font: 'romantic', bg: '', f: '', o: '' },
+                monochrome: { bg1: '#0a0a0a', bg2: '#1a1a1a', accent: '#a3a3a3', title: '#ffffff', frame: '#262626', desc: '#a3a3a3', font: 'modern', bg: '', f: '', o: '' },
+                rustic: { bg1: '#292524', bg2: '#1c1917', accent: '#d97706', title: '#fcd34d', frame: '#44403c', desc: '#d6d3d1', font: 'classic', bg: '', f: '', o: '' }
             };
             const p = themes[t];
             if (!p) return;
             document.getElementById('bgColor1').value = p.bg1;
+            document.getElementById('bgColor2').value = p.bg2;
             document.getElementById('accentColor').value = p.accent;
             document.getElementById('titleColor').value = p.title;
             document.getElementById('connectorColor').value = p.title;
@@ -1866,6 +1878,7 @@
                 emailSubject: document.getElementById('emailSubject') ? document.getElementById('emailSubject').value : '',
                 messageTemplate: document.getElementById('messageTemplate') ? document.getElementById('messageTemplate').value : '',
                 bgColor1: document.getElementById('bgColor1').value,
+                bgColor2: document.getElementById('bgColor2').value,
                 accentColor: document.getElementById('accentColor').value,
                 frameColor: document.getElementById('frameColor').value,
                 titleColor: document.getElementById('titleColor').value,

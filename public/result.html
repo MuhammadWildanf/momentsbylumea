@@ -28,6 +28,8 @@
             --accent: #c5a059;
             --gold-gradient: linear-gradient(135deg, #c5a059 0%, #d4af37 50%, #b38b4d 100%);
             --bg-dark: #1a0f0a;
+            --bg-1: #1a0f0a;
+            --bg-2: #100a06;
             --text-main: #f8fafc;
         }
 
@@ -41,7 +43,7 @@
             font-family: 'Aref Ruqaa', serif;
             background-color: var(--bg-dark);
             color: var(--text-main);
-            background-image: url('/bg1.png');
+            background-image: radial-gradient(circle at center, var(--bg-1) 0%, var(--bg-2) 100%);
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -248,8 +250,16 @@
             let themePromise = fetch('/api/config', { cache: 'no-store' })
                 .then(res => res.json())
                 .then(configData => {
-                    if (configData.bgImageUrl) {
+                    if (configData.bgColor1) {
+                        document.documentElement.style.setProperty('--bg-1', configData.bgColor1);
+                    }
+                    if (configData.bgColor2) {
+                        document.documentElement.style.setProperty('--bg-2', configData.bgColor2);
+                    }
+                    if (configData.bgImageUrl && configData.bgImageUrl !== 'none' && configData.bgImageUrl !== 'Default') {
                         document.body.style.backgroundImage = `url('${configData.bgImageUrl}')`;
+                    } else {
+                        document.body.style.backgroundImage = 'radial-gradient(circle at center, var(--bg-1, #1a0f0a) 0%, var(--bg-2, #100a06) 100%)';
                     }
                     if (configData.accentColor) {
                         document.documentElement.style.setProperty('--accent', configData.accentColor);
