@@ -652,6 +652,18 @@
         <!-- SECTION: VISUALS -->
         <div id="section-visuals" class="view-section active">
             <h2>Screen Visual Theme</h2>
+
+            <div class="card">
+                <label>🎨 Quick Theme Color (Penerap Warna Global)</label>
+                <small style="color:var(--text-muted); display:block; margin-bottom:15px;">
+                    Select a color to automatically set all text, buttons, titles, and accent colors across all states in one click.
+                </small>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <input type="color" id="masterColorPicker" value="#000000" style="width: 50px; height: 40px; padding: 2px; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; cursor: pointer; background: transparent;">
+                    <button type="button" class="btn-primary" onclick="applyMasterColor()" style="padding: 10px 20px; font-size: 13px; border-radius: 6px; min-width: auto; height: 40px;">Apply to All Text Fields</button>
+                    <span id="masterApplyStatus" style="color: var(--accent); font-size: 12px; font-weight: 700; transition: opacity 0.5s;"></span>
+                </div>
+            </div>
             <!-- Pilihan Tema Cepat (Presets) - Deactivated/Hidden -->
             <div class="card" style="display: none;">
                 <label>Pilihan Tema Cepat</label>
@@ -1757,6 +1769,35 @@
             document.getElementById('bgStatus').innerText = p.bg || 'none';
             if (p.f) document.getElementById('frameStatus').innerText = p.f; // Keep frame if missing
             if (p.o) document.getElementById('overlayStatus').innerText = p.o; // Keep overlay if missing
+        }
+
+        function applyMasterColor() {
+            const masterColor = document.getElementById('masterColorPicker').value;
+            const fields = [
+                'accentColor', 'titleColor', 'readyTextColor', 'reviewTextColor', 'successTextColor',
+                'readyHeaderTitleColor', 'readyHeaderSubtitleColor', 'readyBackTextColor',
+                'reviewRetakeTextColor', 'reviewPhotoTextColor', 'photoHeaderTitleColor',
+                'photoHeaderSubtitleColor', 'photoInstructionTextColor', 'photoBackTextColor',
+                'finalHeaderTitleColor', 'finalRetakeAllTextColor', 'finalRetakePhotoTextColor',
+                'finalUploadTextColor', 'successFooterTextColor', 'successDoneTextColor',
+                'formLabelNameColor', 'formSubmitTextColor'
+            ];
+            fields.forEach(fieldId => {
+                const el = document.getElementById(fieldId);
+                if (el) {
+                    el.value = masterColor;
+                    el.dispatchEvent(new Event('input', { bubbles: true }));
+                    el.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            });
+            const status = document.getElementById('masterApplyStatus');
+            if (status) {
+                status.innerText = "Applied successfully! Press 'Save' to save.";
+                status.style.opacity = '1';
+                setTimeout(() => {
+                    status.style.opacity = '0';
+                }, 3000);
+            }
         }
 
         async function uploadHelper(file, fieldName) {
