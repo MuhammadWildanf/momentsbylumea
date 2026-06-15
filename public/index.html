@@ -288,7 +288,6 @@
 
         .btn-primary::after,
         .btn-start::after,
-        .btn-outline::after,
         .btn-record-circle::after {
             content: '';
             position: absolute;
@@ -302,12 +301,31 @@
             transition: all 0.3s ease;
         }
 
+        .btn-outline::after {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: -6px;
+            right: -6px;
+            bottom: -6px;
+            border: 1px solid currentColor !important;
+            border-radius: 60px;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            opacity: 0.6;
+        }
+
         .btn-primary:hover::after,
         .btn-start:hover::after,
-        .btn-outline:hover::after,
         .btn-record-circle:hover::after {
             transform: scale(1.02);
             border-color: #F0E5C7;
+        }
+
+        .btn-outline:hover::after {
+            transform: scale(1.02);
+            border-color: currentColor !important;
+            opacity: 1;
         }
 
         .btn-primary:hover,
