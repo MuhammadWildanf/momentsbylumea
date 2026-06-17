@@ -42,7 +42,7 @@ const ffmpeg = require('fluent-ffmpeg');
 // --- SETUP GCP STORAGE ---
 let gcpStorage = null;
 try {
-    const keyFile = process.env.GCP_KEY_FILE || 'moments-by-lumea.json';
+    const keyFile = process.env.GCP_KEY_FILE || 'gcp-key.json';
     gcpStorage = new Storage({
         projectId: process.env.GCP_PROJECT_ID,
         keyFilename: path.join(__dirname, keyFile)

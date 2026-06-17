@@ -2,7 +2,7 @@
 .env
 /uploads
 gcp-key.json
+gcp-key-lama.json
 /data/sessions/
 /public/uploads_assets/
 /public/uploads_logo/
-moments-by-lumea.json
