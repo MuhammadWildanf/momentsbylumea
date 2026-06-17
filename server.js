@@ -42,30 +42,31 @@ const ffmpeg = require('fluent-ffmpeg');
 // --- SETUP GCP STORAGE ---
 let gcpStorage = null;
 try {
+    const keyFile = process.env.GCP_KEY_FILE || 'moments-by-lumea.json';
     gcpStorage = new Storage({
         projectId: process.env.GCP_PROJECT_ID,
-        keyFilename: path.join(__dirname, 'gcp-key.json')
+        keyFilename: path.join(__dirname, keyFile)
     });
 } catch (err) {
-    console.error('[GCP] ❌ Error inisialisasi GCP Storage (pastikan gcp-key.json ada):', err.message);
+    console.error('[GCP] ❌ Error inisialisasi GCP Storage:', err.message);
 }
 
 const uploadToGCP = async (filePath, fileName, folderName = 'videobooth') => {
     const bucketName = process.env.GCP_BUCKET_NAME;
     if (!bucketName) throw new Error("GCP_BUCKET_NAME tidak diatur di .env");
     const bucket = gcpStorage.bucket(bucketName);
-    
+
     // Hapus karakter aneh dari nama folder agar URL lebih aman
     const safeFolderName = folderName.replace(/[^a-zA-Z0-9 ]/g, '_');
     const destination = `${safeFolderName}/${fileName}`;
-    
+
     await bucket.upload(filePath, {
         destination: destination,
         metadata: {
             cacheControl: 'public, max-age=31536000',
         },
     });
-    
+
     return `https://storage.googleapis.com/${bucketName}/${destination}`;
 };
 // ------------------------------
@@ -203,7 +204,7 @@ const worker = async (task) => {
                 photoLink = await uploadToGCP(outputPhotoPath, `Photo-${task.name}-${timestamp}.jpg`, gcpFolderName);
                 console.log(`[UPLOAD] ✅ Sukses! Link Photo: ${photoLink}`);
             }
-            
+
             // 4.5 Save Session Data locally for Result Preview Page
             const sessionData = {
                 id: sessionId,
@@ -220,7 +221,7 @@ const worker = async (task) => {
             }
             const sessionFilePath = path.join(sessionsDir, `${sessionId}.json`);
             fs.writeFileSync(sessionFilePath, JSON.stringify(sessionData, null, 2));
-            
+
             // This is the link we actually send to the user
             let domainStr = process.env.PUBLIC_DOMAIN || 'localhost:3000';
             let localResultLink = '';
@@ -262,7 +263,7 @@ const queue = fastq.promise(worker, 2);
 app.get('/api/result/:id', (req, res) => {
     const sessionId = req.params.id;
     const sessionFilePath = path.join(__dirname, 'data', 'sessions', `${sessionId}.json`);
-    
+
     if (fs.existsSync(sessionFilePath)) {
         const data = JSON.parse(fs.readFileSync(sessionFilePath, 'utf8'));
         res.json({ status: 'success', data });
@@ -292,10 +293,10 @@ app.get('/api/sessions', (req, res) => {
                 }
             }
         });
-        
+
         // Sort by createdAt descending (newest first)
         sessions.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        
+
         res.json({ status: 'success', sessions });
     } catch (err) {
         console.error('[API SESSIONS] Error:', err.message);
@@ -342,7 +343,7 @@ app.post('/api/videobooth/submit', (req, res, next) => {
 
         const timestamp = Date.now();
         const sessionId = `session-${timestamp}-${Math.random().toString(36).substring(2, 8)}`;
-        
+
         let domainStr = process.env.PUBLIC_DOMAIN || 'localhost:3000';
         let resultUrl = '';
         if (domainStr.startsWith('http')) {
@@ -603,16 +604,16 @@ const https = require('https');
 app.get('/api/download', (req, res) => {
     const fileUrl = req.query.url;
     const filename = req.query.name || `ScribbleBooth-${Date.now()}`;
-    
+
     if (!fileUrl || !fileUrl.startsWith('http')) {
         return res.status(400).send('Invalid URL');
     }
-    
+
     https.get(fileUrl, (response) => {
         // Set attachment header to force download dialog
         res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
         res.setHeader('Content-Type', response.headers['content-type'] || 'application/octet-stream');
-        
+
         // Pipe the cloud storage stream directly to the user
         response.pipe(res);
     }).on('error', (err) => {
