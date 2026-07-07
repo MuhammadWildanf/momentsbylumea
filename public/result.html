@@ -209,7 +209,7 @@
     <div id="content" class="container" style="display: none;">
         <!-- Centered Lumea Logo (Premium Branding like index.html) -->
         <div style="text-align: center; margin-bottom: 25px;">
-            <img src="/logo-lumea.png" alt="Lumea Logo"
+            <img id="logoElement" src="/logo-lumea.png" alt="Lumea Logo"
                 style="height: 50px; width: auto; object-fit: contain; pointer-events: none;">
         </div>
 
@@ -263,6 +263,10 @@
                     }
                     if (configData.accentColor) {
                         document.documentElement.style.setProperty('--accent', configData.accentColor);
+                    }
+                    if (configData.logoUrl) {
+                        const logoEl = document.getElementById('logoElement');
+                        if (logoEl) logoEl.src = configData.logoUrl;
                     }
 
                     // Apply custom fonts
@@ -346,6 +350,9 @@
                     const footerEl = document.querySelector('.footer-text');
                     if (footerEl) {
                         footerEl.innerHTML = `<strong>${resultFooterTextVal}</strong>`;
+                        if (configData.galleryFooterTextColor) {
+                            footerEl.style.color = configData.galleryFooterTextColor;
+                        }
                     }
                 }).catch(e => console.warn("Failed to load theme:", e));
 

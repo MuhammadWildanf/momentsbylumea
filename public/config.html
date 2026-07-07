@@ -639,7 +639,7 @@
         <div class="nav-item" onclick="showSection('content-review-final')">🏁 State Review Final</div>
         <div class="nav-item" onclick="showSection('content-success')">🎉 State Success (Frame 6)</div>
         <div class="nav-item" onclick="showSection('content-side-panel')">📐 Side Panel Overlays</div>
-        <div class="nav-item" onclick="showSection('content-result')">📱 Guest Result Page</div>
+        <div class="nav-item" onclick="showSection('content-guest-pages')">📱 Guest Result & Gallery</div>
         
         <div style="height: 1px; background: rgba(255,255,255,0.08); margin: 10px 30px;"></div>
         <div class="nav-item" onclick="showSection('media')">🎬 Media Assets</div>
@@ -1014,7 +1014,19 @@
                     <div class="input-group">
                         <label>Countdown Status Message</label>
                         <input type="text" id="readyCdText" placeholder="Recording Begins in...">
+                        <div class="input-group">
+                        <label>Start Recording Button BG Color</label>
+                        <div class="color-control">
+                            <input type="color" id="readyRecordBtnBgColor" class="input-with-color" value="#e7e5d8">
+                        </div>
                     </div>
+                    <div class="input-group">
+                        <label>Active Recording BG Color (Red)</label>
+                        <div class="color-control">
+                            <input type="color" id="recordingBtnBgColor" class="input-with-color" value="#e11d48">
+                        </div>
+                    </div>
+                </div>
                     <div class="input-group">
                         <label>Back Button & Color</label>
                         <div class="input-with-color">
@@ -1084,6 +1096,12 @@
                                     <input type="color" id="reviewPhotoTextColor">
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>TAKE A PHOTO Button BG Color</label>
+                        <div class="color-control">
+                            <input type="color" id="reviewPhotoBtnBgColor" class="input-with-color" value="#e7e5d8">
                         </div>
                     </div>
                 </div>
@@ -1256,7 +1274,22 @@
                         <div class="text-control">
                             <input type="text" id="successTextMain" placeholder="Your memories are ready! ✨" style="margin-bottom: 5px;">
                             <input type="text" id="successTextSub" placeholder="Scan this QR code to view and download your video and photo.">
+                            <div class="input-group">
+                        <label>BACK Button BG Color (Outline)</label>
+                        <div class="color-control">
+                            <input type="color" id="photoBackBtnBgColor" class="input-with-color" value="#000000">
                         </div>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Take Photo Button BG Color</label>
+                        <div class="color-control">
+                            <input type="color" id="photoRecordBtnBgColor" class="input-with-color" value="#e7e5d8">
+                        </div>
+                    </div>
+                </div>
                         <div class="color-control">
                             <div class="color-row" style="padding: 6px 10px;">
                                 <input type="color" id="successTextColor">
@@ -1325,9 +1358,9 @@
             </div>
         </div>
 
-        <!-- SECTION: CONTENT - GUEST RESULT PAGE -->
-        <div id="section-content-result" class="view-section content-section">
-            <h2>Guest Result Page</h2>
+        <!-- SECTION: CONTENT - GUEST PAGES -->
+        <div id="section-content-guest-pages" class="view-section content-section">
+            <h2>Guest Result & Gallery Pages</h2>
 
             <!-- 9. Halaman Unduh Hasil Tamu -->
             <div class="card">
@@ -1363,6 +1396,81 @@
                     <input type="text" id="resultFooterText" placeholder="Here’s to the moments you’ll always look back on - @momentsbylumea"></input>
                 </div>
             </div>
+            
+            <br>
+
+            <!-- 10. Halaman Galeri Tamu -->
+            <div class="card">
+                <h3 style="font-size: 15px; color: var(--accent); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 10px;">
+                    🖼️ Guest Gallery Page
+                </h3>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Gallery Title</label>
+                        <input type="text" id="galleryTitle" placeholder="Your Special Memories">
+                    </div>
+                    <div class="input-group">
+                        <label>Title Color</label>
+                        <div class="color-control">
+                            <input type="color" id="galleryTitleColor" class="input-with-color" value="#F0E5C7">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Search Box Label</label>
+                        <input type="text" id="gallerySearchLabel" placeholder="SEARCH GUEST NAME">
+                    </div>
+                    <div class="input-group">
+                        <label>Search Label Color</label>
+                        <div class="color-control">
+                            <input type="color" id="gallerySearchLabelColor" class="input-with-color" value="#94a3b8">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Search Box Placeholder</label>
+                        <input type="text" id="gallerySearchPlaceholder" placeholder="Type your name here...">
+                    </div>
+                    <div class="input-group">
+                        <label>Empty State Text</label>
+                        <input type="text" id="galleryEmptyText" placeholder="No memories found yet.">
+                    </div>
+                    <div class="input-group">
+                        <label>Reset Button Text</label>
+                        <input type="text" id="galleryResetBtnText" placeholder="Reset Filters">
+                    </div>
+                    <div class="input-group">
+                        <label>Reset Button BG & Text Color</label>
+                        <div class="color-control">
+                            <div class="color-row" style="padding: 6px 10px;">
+                                <input type="color" id="galleryResetBtnBgColor" value="#2a221b">
+                                <span class="color-divider"></span>
+                                <input type="color" id="galleryResetBtnTextColor" value="#F0E5C7">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group" style="grid-column: 1 / -1;">
+                        <label>Footer Text</label>
+                        <input type="text" id="galleryFooterText" placeholder="Here’s to the moments you’ll always look back on">
+                    </div>
+                    <div class="input-group">
+                        <label>Footer Text Color</label>
+                        <div class="color-control">
+                            <input type="color" id="galleryFooterTextColor" class="input-with-color" value="#CDCDCD">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Main Text Color</label>
+                        <div class="color-control">
+                            <input type="color" id="galleryTextColor" class="input-with-color" value="#ffffff">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Background Color</label>
+                        <div class="color-control">
+                            <input type="color" id="galleryBgColor" class="input-with-color" value="#0a0a0b">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- SECTION: MEDIA -->
@@ -1375,6 +1483,15 @@
                         <img id="logoPreview" class="preview-img" src="">
                         <input type="file" id="logoFile" accept="image/*">
                         <div class="btn-browse" onclick="openLibrary('logoUrl', 'logoPreview')">📁 Choose from Asset Library
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <label>Bottom Left Logo (Persistent)</label>
+                    <div class="upload-box">
+                        <img id="bottomLeftLogoPreview" class="preview-img" src="">
+                        <input type="file" id="bottomLeftLogoFile" accept="image/*">
+                        <div class="btn-browse" onclick="openLibrary('bottomLeftLogoUrl', 'bottomLeftLogoPreview')">📁 Choose from Asset Library
                         </div>
                     </div>
                 </div>
@@ -1605,6 +1722,7 @@
                 document.getElementById('reviewRetakeTextColor').value = data.reviewRetakeTextColor || '#e7e5d8';
                 document.getElementById('reviewPhotoText').value = data.reviewPhotoText || 'TAKE A PHOTO';
                 document.getElementById('reviewPhotoTextColor').value = data.reviewPhotoTextColor || '#1a0f0a';
+                document.getElementById('reviewPhotoBtnBgColor').value = data.reviewPhotoBtnBgColor || '#e7e5d8';
                 document.getElementById('photoHeaderTitle').value = data.photoHeaderTitle || 'Ready for Photo Session?';
                 document.getElementById('photoHeaderTitleColor').value = data.photoHeaderTitleColor || '#f0e5c7';
                 document.getElementById('photoHeaderSubtitle').value = data.photoHeaderSubtitle || 'Strike a beautiful pose for the camera';
@@ -1624,10 +1742,27 @@
                 document.getElementById('finalRetakePhotoTextColor').value = data.finalRetakePhotoTextColor || '#e7e5d8';
                 document.getElementById('finalUploadText').value = data.finalUploadText || 'UPLOAD BOTH';
                 document.getElementById('finalUploadTextColor').value = data.finalUploadTextColor || '#1a0f0a';
+                if(document.getElementById('finalUploadBtnBgColor')) document.getElementById('finalUploadBtnBgColor').value = data.finalUploadBtnBgColor || '#e7e5d8';
                 document.getElementById('successFooterText').value = data.successFooterText || 'Thank you for being part of this moment';
                 document.getElementById('successFooterTextColor').value = data.successFooterTextColor || '#cdcdcd';
                 document.getElementById('successDoneText').value = data.successDoneText || 'Done';
                 document.getElementById('successDoneTextColor').value = data.successDoneTextColor || '#1a0f0a';
+                if(document.getElementById('successDoneBtnBgColor')) document.getElementById('successDoneBtnBgColor').value = data.successDoneBtnBgColor || '#e7e5d8';
+                
+                // Other BG Colors
+                if(document.getElementById('startBtnBgColor')) document.getElementById('startBtnBgColor').value = data.startBtnBgColor || '#e7e5d8';
+                if(document.getElementById('formSubmitBtnBgColor')) document.getElementById('formSubmitBtnBgColor').value = data.formSubmitBtnBgColor || '#e7e5d8';
+                document.getElementById('readyRecordBtnBgColor').value = data.readyRecordBtnBgColor || '#e7e5d8';
+                document.getElementById('recordingBtnBgColor').value = data.recordingBtnBgColor || '#e11d48';
+                document.getElementById('photoRecordBtnBgColor').value = data.photoRecordBtnBgColor || '#e7e5d8';
+                document.getElementById('photoBackBtnBgColor').value = data.photoBackBtnBgColor || '#000000';
+                
+                // Extra Gallery Colors
+                document.getElementById('gallerySearchLabelColor').value = data.gallerySearchLabelColor || '#94a3b8';
+                document.getElementById('galleryResetBtnBgColor').value = data.galleryResetBtnBgColor || '#2a221b';
+                document.getElementById('galleryResetBtnTextColor').value = data.galleryResetBtnTextColor || '#F0E5C7';
+                document.getElementById('galleryFooterTextColor').value = data.galleryFooterTextColor || '#CDCDCD';
+
                 document.getElementById('fontUrl').value = data.fontUrl || '';
                 document.getElementById('fontFamily').value = data.fontFamily || '';
                 document.getElementById('titleFontFamily').value = data.titleFontFamily || '';
@@ -1671,6 +1806,18 @@
                 document.getElementById('resultSaveVideoText').value = data.resultSaveVideoText || '🎬 Save Your Video';
                 document.getElementById('resultSavePhotoText').value = data.resultSavePhotoText || '📸 Save Your Photo';
                 document.getElementById('resultFooterText').value = data.resultFooterText || 'Here’s to the moments you’ll always look back on - @momentsbylumea';
+                
+                // Gallery Settings
+                document.getElementById('galleryTitle').value = data.galleryTitle || 'Your Special Memories';
+                document.getElementById('gallerySearchLabel').value = data.gallerySearchLabel || 'SEARCH GUEST NAME';
+                document.getElementById('gallerySearchPlaceholder').value = data.gallerySearchPlaceholder || 'Search by name...';
+                document.getElementById('galleryResetBtnText').value = data.galleryResetBtnText || 'Reset Filters';
+                document.getElementById('galleryEmptyText').value = data.galleryEmptyText || 'No memories found yet.';
+                document.getElementById('galleryFooterText').value = data.galleryFooterText || 'Here’s to the moments you’ll always look back on - @momentsbylumea';
+                document.getElementById('galleryTextColor').value = data.galleryTextColor || '#ffffff';
+                document.getElementById('galleryTitleColor').value = data.galleryTitleColor || '#F0E5C7';
+                document.getElementById('galleryBgColor').value = data.galleryBgColor || '#0a0a0b';
+                
                 document.getElementById('recordingDuration').value = data.recordingDuration || 15;
                 document.getElementById('qrResetDuration').value = data.qrResetDuration || 45;
                 document.getElementById('eventDate').value = data.eventDate || '2026-05-23';
@@ -1689,6 +1836,7 @@
 
                 // Logos & Videos
                 if (data.logoUrl) document.getElementById('logoPreview').src = data.logoUrl;
+                if (data.bottomLeftLogoUrl) document.getElementById('bottomLeftLogoPreview').src = data.bottomLeftLogoUrl;
                 document.getElementById('tutorialPath').innerText = data.tutorialVideoUrl || 'No video';
                 document.getElementById('resultPath').innerText = data.resultVideoUrl || 'No video';
             });
@@ -1786,13 +1934,15 @@
         function applyMasterColor() {
             const masterColor = document.getElementById('masterColorPicker').value;
             const fields = [
-                'accentColor', 'titleColor', 'readyTextColor', 'reviewTextColor', 'successTextColor',
+                'accentColor', 'titleColor', 'subtitleColor', 'connectorColor', 'descColor', 'startTextColor',
+                'readyTextColor', 'reviewTextColor', 'successTextColor', 'formLabelNameColor', 'formSubmitTextColor',
                 'readyHeaderTitleColor', 'readyHeaderSubtitleColor', 'readyBackTextColor',
                 'reviewRetakeTextColor', 'reviewPhotoTextColor', 'photoHeaderTitleColor',
                 'photoHeaderSubtitleColor', 'photoInstructionTextColor', 'photoBackTextColor',
                 'finalHeaderTitleColor', 'finalRetakeAllTextColor', 'finalRetakePhotoTextColor',
                 'finalUploadTextColor', 'successFooterTextColor', 'successDoneTextColor',
-                'formLabelNameColor', 'formSubmitTextColor'
+                'gallerySearchLabelColor', 'galleryResetBtnTextColor', 'galleryFooterTextColor',
+                'galleryTextColor', 'galleryTitleColor'
             ];
             fields.forEach(fieldId => {
                 const el = document.getElementById(fieldId);
@@ -1835,6 +1985,16 @@
                 const res = await fetch('/api/config/logo', { method: 'POST', body: formData });
                 const d = await res.json();
                 if (d.status === 'success') finalLogoUrl = d.logoUrl;
+            }
+
+            const bottomLeftLogoFile = document.getElementById('bottomLeftLogoFile').files[0];
+            let finalBottomLeftLogoUrl = null;
+            if (bottomLeftLogoFile) {
+                const formData2 = new FormData();
+                formData2.append('logo', bottomLeftLogoFile);
+                const res2 = await fetch('/api/config/logo', { method: 'POST', body: formData2 });
+                const d2 = await res2.json();
+                if (d2.status === 'success') finalBottomLeftLogoUrl = d2.logoUrl;
             }
 
             // Same for videos...
@@ -1904,6 +2064,7 @@
                 reviewRetakeTextColor: document.getElementById('reviewRetakeTextColor').value,
                 reviewPhotoText: document.getElementById('reviewPhotoText').value,
                 reviewPhotoTextColor: document.getElementById('reviewPhotoTextColor').value,
+                reviewPhotoBtnBgColor: document.getElementById('reviewPhotoBtnBgColor').value,
                 photoHeaderTitle: document.getElementById('photoHeaderTitle').value,
                 photoHeaderTitleColor: document.getElementById('photoHeaderTitleColor').value,
                 photoHeaderSubtitle: document.getElementById('photoHeaderSubtitle').value,
@@ -1923,10 +2084,24 @@
                 finalRetakePhotoTextColor: document.getElementById('finalRetakePhotoTextColor').value,
                 finalUploadText: document.getElementById('finalUploadText').value,
                 finalUploadTextColor: document.getElementById('finalUploadTextColor').value,
+                finalUploadBtnBgColor: document.getElementById('finalUploadBtnBgColor')?.value || '#e7e5d8',
                 successFooterText: document.getElementById('successFooterText').value,
                 successFooterTextColor: document.getElementById('successFooterTextColor').value,
                 successDoneText: document.getElementById('successDoneText').value,
                 successDoneTextColor: document.getElementById('successDoneTextColor').value,
+                successDoneBtnBgColor: document.getElementById('successDoneBtnBgColor')?.value || '#e7e5d8',
+                startBtnBgColor: document.getElementById('startBtnBgColor')?.value || '#e7e5d8',
+                formSubmitBtnBgColor: document.getElementById('formSubmitBtnBgColor')?.value || '#e7e5d8',
+                readyRecordBtnBgColor: document.getElementById('readyRecordBtnBgColor').value,
+                recordingBtnBgColor: document.getElementById('recordingBtnBgColor').value,
+                photoRecordBtnBgColor: document.getElementById('photoRecordBtnBgColor').value,
+                photoBackBtnBgColor: document.getElementById('photoBackBtnBgColor').value,
+                
+                gallerySearchLabelColor: document.getElementById('gallerySearchLabelColor').value,
+                galleryResetBtnBgColor: document.getElementById('galleryResetBtnBgColor').value,
+                galleryResetBtnTextColor: document.getElementById('galleryResetBtnTextColor').value,
+                galleryFooterTextColor: document.getElementById('galleryFooterTextColor').value,
+                
                 fontSelector: document.getElementById('fontSelector').value,
                 fontSourceType: fontSourceType,
                 fontUrl: uploadedFontUrl || document.getElementById('fontUrl').value,
@@ -1954,6 +2129,16 @@
                 resultSaveVideoText: document.getElementById('resultSaveVideoText').value,
                 resultSavePhotoText: document.getElementById('resultSavePhotoText').value,
                 resultFooterText: document.getElementById('resultFooterText').value,
+
+                galleryTitle: document.getElementById('galleryTitle').value,
+                gallerySearchLabel: document.getElementById('gallerySearchLabel').value,
+                gallerySearchPlaceholder: document.getElementById('gallerySearchPlaceholder').value,
+                galleryResetBtnText: document.getElementById('galleryResetBtnText').value,
+                galleryEmptyText: document.getElementById('galleryEmptyText').value,
+                galleryFooterText: document.getElementById('galleryFooterText').value,
+                galleryTextColor: document.getElementById('galleryTextColor').value,
+                galleryTitleColor: document.getElementById('galleryTitleColor').value,
+                galleryBgColor: document.getElementById('galleryBgColor').value,
                 recordingDuration: parseInt(document.getElementById('recordingDuration').value),
                 qrResetDuration: parseInt(document.getElementById('qrResetDuration').value),
                 eventDate: document.getElementById('eventDate').value,
@@ -1965,11 +2150,15 @@
                 overlayImageUrl: overlayUrl || document.getElementById('overlayStatus').innerText,
                 tutorialVideoUrl: tutUrl || document.getElementById('tutorialPath').innerText,
                 resultVideoUrl: resUrl || document.getElementById('resultPath').innerText,
-                logoUrl: finalLogoUrl || (document.getElementById('logoPreview').src.includes('base64') ? '' : document.getElementById('logoPreview').src)
+                logoUrl: finalLogoUrl || (document.getElementById('logoPreview').src.includes('base64') ? '' : document.getElementById('logoPreview').src),
+                bottomLeftLogoUrl: finalBottomLeftLogoUrl || (document.getElementById('bottomLeftLogoPreview').src.includes('base64') ? '' : document.getElementById('bottomLeftLogoPreview').src)
             };
 
             if (!payload.logoUrl || payload.logoUrl === 'null') {
                 payload.logoUrl = dataBackup.logoUrl;
+            }
+            if (!payload.bottomLeftLogoUrl || payload.bottomLeftLogoUrl === 'null') {
+                payload.bottomLeftLogoUrl = dataBackup.bottomLeftLogoUrl;
             }
 
             fetch('/api/config', {

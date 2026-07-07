@@ -388,8 +388,9 @@ const DEFAULT_CONFIG = {
     startText: 'START HERE',
     messageTemplate: 'Halo {name}! ✨\n\nKenangan Anda di ScribbleBooth sudah siap! Silakan lihat dan download melalui link folder di bawah ini:\n\n🔗 {link}\n\nTerima kasih sudah mampir!',
     emailSubject: 'Kenangan ScribbleBooth Anda sudah siap! ✨',
-    bgColor1: '#2c3e50',
+    // === MEDIA ===
     logoUrl: "/uploads_logo/logo-placeholder.png",
+    bottomLeftLogoUrl: '/logo-lumea.png',
     tutorialVideoUrl: "",
     resultVideoUrl: "",
     frameColor: "#3d3d3d",
@@ -457,15 +458,13 @@ const DEFAULT_CONFIG = {
     loadingTutorialText: "Loading Tutorial...",
     readyCountdownText: "Start Recording",
     photoCountdownText: "Take a Photo",
+    // === GUEST RESULT PAGE ===
     resultLoadingText: "Loading your memories... ✨",
     resultErrorText: "Sorry, your session was not found or has expired.",
     resultProcessingText: "Processing your video & photo... please wait a moment. ✨<br><small style=\"font-size: 14px; opacity: 0.8; display: block; margin-top: 10px;\">Rendering process usually takes 10-15 seconds.</small>",
     resultSaveVideoText: "🎬 Save Your Video",
     resultSavePhotoText: "📸 Save Your Photo",
     resultFooterText: "Here’s to the moments you’ll always look back on - @momentsbylumea",
-    successAutoResetText: "Auto-reset in"
-};
-
 // Buat config.json jika baru pertama kali di-run
 if (!fs.existsSync(CONFIG_FILE)) {
     fs.writeFileSync(CONFIG_FILE, JSON.stringify(DEFAULT_CONFIG, null, 4));

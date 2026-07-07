@@ -4,9 +4,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kenangan Spesial Anda - Lumea Gallery</title>
+    <title>Guest Gallery - Lumea</title>
+    <!-- INSTANT THEME RESTORER (Prevents Style Flash / FOUC) -->
+    <script>
+        try {
+            const cached = localStorage.getItem('vb_config');
+            if (cached) {
+                const data = JSON.parse(cached);
+                const root = document.documentElement;
 
-    <!-- Google Fonts for modern serif/sans-serif backup -->
+                // Apply Colors
+                if (data.bgColor1) root.style.setProperty('--bg-1', data.bgColor1);
+                if (data.bgColor2) root.style.setProperty('--bg-2', data.bgColor2);
+                if (data.galleryTextColor) root.style.setProperty('--text-main', data.galleryTextColor);
+                if (data.galleryBgColor) root.style.setProperty('--bg-dark', data.galleryBgColor);
+                if (data.galleryTitleColor) {
+                    document.write('<style>#galleryTitle { color: ' + data.galleryTitleColor + ' !important; }</style>');
+                }
+                if (data.gallerySearchLabelColor) {
+                    document.write('<style>#search-label { color: ' + data.gallerySearchLabelColor + ' !important; }</style>');
+                }
+                if (data.galleryResetBtnBgColor) {
+                    document.write('<style>#reset-btn-text { background: ' + data.galleryResetBtnBgColor + ' !important; }</style>');
+                }
+                if (data.galleryResetBtnTextColor) {
+                    document.write('<style>#reset-btn-text { color: ' + data.galleryResetBtnTextColor + ' !important; }</style>');
+                }
+                if (data.galleryFooterTextColor) {
+                    document.write('<style>#gallery-footer { color: ' + data.galleryFooterTextColor + ' !important; }</style>');
+                }
+
+                // Apply Texts
+                document.write('<style>#galleryTitle::after { content: "' + (data.galleryTitle || 'Your Special Memories').replace(/"/g, '\\"') + '"; } #search-label::after { content: "' + (data.gallerySearchLabel || 'SEARCH GUEST NAME').replace(/"/g, '\\"') + '"; } #reset-btn-text::after { content: "' + (data.galleryResetBtnText || 'Reset Filters').replace(/"/g, '\\"') + '"; } #gallery-empty-text::after { content: "' + (data.galleryEmptyText || 'Sorry, no memories found for this search.').replace(/"/g, '\\"') + '"; } #gallery-footer::after { content: "' + (data.galleryFooterText || 'Here’s to the moments you’ll always look back on - @momentsbylumea').replace(/"/g, '\\"') + '"; }</style>');
+            }
+        } catch(e) { console.error('Error applying instant theme:', e); }
+    </script>
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
         rel="stylesheet">
@@ -111,31 +143,21 @@
         }
 
         .brand-logo {
-            height: 65px;
+            height: 85px;
             width: auto;
             object-fit: contain;
             pointer-events: none;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
         }
 
-        .title {
-            font-family: 'Luxurious Script', 'Playfair Display', cursive;
-            font-size: clamp(38px, 6vw, 65px);
-            color: #F0E5C7;
-            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
-            margin-bottom: 8px;
-            line-height: 1.2;
-        }
-
-        .subtitle {
+        .gallery-title {
             font-family: 'Aref Ruqaa', 'Playfair Display', serif;
-            font-size: 16px;
+            font-size: clamp(18px, 4vw, 22px);
             color: #F0E5C7;
-            max-width: 600px;
-            margin: 0 auto;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            margin-bottom: 25px;
             line-height: 1.5;
-            opacity: 0.85;
             letter-spacing: 0.5px;
         }
 
@@ -568,6 +590,16 @@
             }
         }
 
+        @media (max-width: 768px) {
+            .gallery-title {
+                font-size: 18px;
+            }
+
+            .branding-container {
+                margin-bottom: 25px;
+            }
+        }
+
         @media (max-width: 480px) {
             .navbar {
                 padding: 15px;
@@ -599,24 +631,22 @@
     <header class="navbar">
     </header>
 
-    <!-- Branding Title Area -->
     <div class="branding-container">
         <img id="logoElement" src="/logo-lumea.png" alt="Logo" class="brand-logo">
-        <h1 id="galleryTitle" class="title" style="display: none;">Your Special Memories</h1>
-        <p id="gallerySubtitle" class="subtitle">Gallery of happiness from ScribbleBooth guests</p>
+        <h1 id="galleryTitle" class="gallery-title"></h1>
     </div>
 
     <!-- Filter Control Panel -->
     <section class="filter-panel">
         <div class="input-group">
-            <label for="search-input">Search Guest Name</label>
+            <label for="search-input" id="search-label"></label>
             <div class="search-wrapper">
                 <span class="search-icon">🔍</span>
-                <input type="text" id="search-input" placeholder="Type your name here..." oninput="filterGallery()">
+                <input type="text" id="search-input" placeholder="" oninput="filterGallery()">
             </div>
         </div>
 
-        <button class="btn-reset" onclick="resetFilters()">Reset Filters</button>
+        <button class="btn-reset" id="reset-btn-text" onclick="resetFilters()"></button>
     </section>
 
     <!-- Gallery Grid -->
@@ -629,7 +659,7 @@
 
         <!-- Empty / No Results State -->
         <div class="status-message" id="empty-state" style="display: none;">
-            <p>Sorry, no memories found for this search.</p>
+            <p id="gallery-empty-text"></p>
         </div>
     </main>
 
@@ -657,7 +687,7 @@
 
     <!-- Footer branding -->
     <footer class="footer">
-        <p><strong>Here’s to the moments you’ll always look back on - @momentsbylumea</strong></p>
+        <p><strong id="gallery-footer"></strong></p>
     </footer>
 
     <!-- Frontend logic -->
@@ -691,63 +721,89 @@
             }
         }
 
-        function applyConfigToDOM(config) {
-            if (!config) return;
-            
+        function applyConfigToDOM(data) {
+            if (!data) return;
+
             // Update active event date if present
-            if (config.eventDate) {
-                activeEventDate = config.eventDate;
+            if (data.eventDate) {
+                activeEventDate = data.eventDate;
             }
 
-            // Title and subtitle syncing
-            if (config.title) {
-                document.getElementById('galleryTitle').innerHTML = config.title;
+            // Title                 // Formatter for date
+            const titleEl = document.getElementById('galleryTitle');
+            try {
+                const activeDate = data.eventDate || '2026-05-23';
+                // Parse date properly to avoid timezone shifts showing previous day
+                const dateParts = activeDate.split('-');
+                const dateObj = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                const formattedEventDate = dateObj.toLocaleDateString('en-US', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+
+                // Clear inline after styles because the head script handles ::after content now
+                // We just inject the date part dynamically into the h1
+                const titleText = data.galleryTitle || 'Your Special Memories';
+                titleEl.innerHTML = `${titleText} <span style="opacity: 0.8; margin-left: 8px; color: var(--accent); font-weight: normal;">&bull; ${formattedEventDate}</span>`;
+            } catch (e) {
+                console.error('Date format error:', e);
             }
 
-            if (config.subtitle) {
-                try {
-                    const dateObj = new Date(activeEventDate);
-                    const formattedEventDate = dateObj.toLocaleDateString('en-US', {
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric'
-                    });
-                    document.getElementById('gallerySubtitle').innerHTML = `${config.subtitle} &bull; <span style="color: var(--accent); font-weight: 700;">${formattedEventDate}</span>`;
-                } catch (e) {
-                    document.getElementById('gallerySubtitle').innerHTML = config.subtitle;
-                }
+            if (data.gallerySearchPlaceholder) {
+                document.getElementById('search-input').placeholder = data.gallerySearchPlaceholder;
             } else {
-                try {
-                    const dateObj = new Date(activeEventDate);
-                    const formattedEventDate = dateObj.toLocaleDateString('en-US', {
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric'
-                    });
-                    document.getElementById('gallerySubtitle').innerHTML = `Gallery of happiness from ScribbleBooth guests &bull; <span style="color: var(--accent); font-weight: 700;">${formattedEventDate}</span>`;
-                } catch (e) { }
+                document.getElementById('search-input').placeholder = 'Type your name here...';
+            }
+            
+            // Search label and reset btn texts are already handled by the ::after in head script
+            // But we can update them in JS too in case the config panel saves dynamically
+            document.getElementById('search-label').innerHTML = data.gallerySearchLabel || 'SEARCH GUEST NAME';
+            document.getElementById('reset-btn-text').innerHTML = data.galleryResetBtnText || 'Reset Filters';
+            document.getElementById('gallery-empty-text').innerHTML = data.galleryEmptyText || 'Sorry, no memories found for this search.';
+            document.getElementById('gallery-footer').innerHTML = data.galleryFooterText || 'Here’s to the moments you’ll always look back on - @momentsbylumea';
+            
+            // Remove the ::after styles injected by head script when updating via JS so they don't clash
+            const dynamicStyle = document.getElementById('dynamic-js-style');
+            if (!dynamicStyle) {
+                const s = document.createElement('style');
+                s.id = 'dynamic-js-style';
+                s.innerHTML = '#galleryTitle::after, #search-label::after, #reset-btn-text::after, #gallery-empty-text::after, #gallery-footer::after { content: none !important; }';
+                document.head.appendChild(s);
             }
 
-            // Logo syncing
-            if (config.logoUrl) {
-                const logo = document.getElementById('logoElement');
-                logo.src = config.logoUrl;
-                logo.style.display = 'inline-block';
+            if (data.galleryTextColor) {
+                document.documentElement.style.setProperty('--text-main', data.galleryTextColor);
             }
-            // Background & colors syncing
-            if (config.bgColor1) {
-                document.documentElement.style.setProperty('--bg-1', config.bgColor1);
+            if (data.galleryTitleColor) {
+                document.getElementById('galleryTitle').style.color = data.galleryTitleColor;
             }
-            if (config.bgColor2) {
-                document.documentElement.style.setProperty('--bg-2', config.bgColor2);
+            if (data.gallerySearchLabelColor) {
+                document.getElementById('search-label').style.color = data.gallerySearchLabelColor;
             }
-            if (config.bgImageUrl && config.bgImageUrl !== 'none' && config.bgImageUrl !== 'Default') {
-                document.body.style.backgroundImage = `url('${config.bgImageUrl}')`;
+            if (data.galleryResetBtnBgColor) {
+                document.getElementById('reset-btn-text').style.background = data.galleryResetBtnBgColor;
+            }
+            if (data.galleryResetBtnTextColor) {
+                document.getElementById('reset-btn-text').style.color = data.galleryResetBtnTextColor;
+            }
+            if (data.galleryFooterTextColor) {
+                document.getElementById('gallery-footer').style.color = data.galleryFooterTextColor;
+            }
+            if (data.galleryBgColor) {
+                document.documentElement.style.setProperty('--bg-dark', data.galleryBgColor);
+            }
+            if (data.bgImageUrl && data.bgImageUrl !== 'none' && data.bgImageUrl !== 'Default') {
+                document.body.style.backgroundImage = `url('${data.bgImageUrl}')`;
             } else {
                 document.body.style.backgroundImage = 'radial-gradient(circle at center, var(--bg-1, #1a0f0a) 0%, var(--bg-2, #100a06) 100%)';
             }
-            if (config.accentColor) {
-                document.documentElement.style.setProperty('--accent', config.accentColor);
+            if (data.accentColor) {
+                document.documentElement.style.setProperty('--accent', data.accentColor);
+            }
+            if (data.logoUrl) {
+                const logoEl = document.getElementById('logoElement');
+                if (logoEl) logoEl.src = data.logoUrl;
             }
         }
 
@@ -782,7 +838,7 @@
 
             const emptyState = document.getElementById('empty-state');
 
-            if (sessions.length === 0) {
+            if (sessions.length === 0) {    
                 emptyState.style.display = 'block';
                 return;
             }

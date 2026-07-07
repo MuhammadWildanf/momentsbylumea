@@ -48,7 +48,16 @@
                 finalRetakePhotoTextColor: '--final-retake-photo-color',
                 finalUploadTextColor: '--final-upload-color',
                 successFooterTextColor: '--success-footer-color',
-                successDoneTextColor: '--success-done-color'
+                successDoneTextColor: '--success-done-color',
+                startBtnBgColor: '--start-btn-bg',
+                formSubmitBtnBgColor: '--form-submit-btn-bg',
+                readyRecordBtnBgColor: '--ready-record-btn-bg',
+                reviewPhotoBtnBgColor: '--review-photo-btn-bg',
+                photoRecordBtnBgColor: '--photo-record-btn-bg',
+                photoBackBtnBgColor: '--photo-back-btn-bg',
+                finalUploadBtnBgColor: '--final-upload-btn-bg',
+                successDoneBtnBgColor: '--success-done-btn-bg',
+                recordingBtnBgColor: '--recording-btn-bg'
             };
             for (const key in mappings) {
                 if (data[key]) {
@@ -371,6 +380,16 @@
             transform: scale(1.05) !important;
             box-shadow: 0 0 15px rgba(231, 229, 216, 0.5) !important;
         }
+
+        /* DYNAMIC BUTTON BACKGROUNDS PER STATE */
+        #state-idle .btn-start { background: var(--start-btn-bg, #e7e5d8) !important; }
+        #state-form .btn-start { background: var(--form-submit-btn-bg, #e7e5d8) !important; }
+        #state-ready .btn-record-circle { background: var(--ready-record-btn-bg, #e7e5d8) !important; }
+        #state-review .btn-primary { background: var(--review-photo-btn-bg, #e7e5d8) !important; }
+        #state-ready-photo .btn-record-circle { background: var(--photo-record-btn-bg, #e7e5d8) !important; }
+        #state-ready-photo .btn-outline { background: var(--photo-back-btn-bg, transparent) !important; }
+        #state-final .btn-primary { background: var(--final-upload-btn-bg, #e7e5d8) !important; }
+        #state-success .btn-primary { background: var(--success-done-btn-bg, #e7e5d8) !important; }
 
         /* IOS KEYBOARD */
         .keyboard-wrapper {
@@ -965,26 +984,30 @@
         }
 
         /* RECORD BUTTON (FRAME 4) */
+        #state-ready .btn-record-circle.recording,
+        #state-ready-photo .btn-record-circle.recording,
         .btn-record-circle.recording {
             animation: pulse-ring 1.5s infinite;
-            background: #e11d48 !important;
+            background: var(--recording-btn-bg, #e11d48) !important;
         }
 
+        #state-ready .btn-record-circle.recording::after,
+        #state-ready-photo .btn-record-circle.recording::after,
         .btn-record-circle.recording::after {
-            border-color: #e11d48 !important;
+            border-color: var(--recording-btn-bg, #e11d48) !important;
         }
 
         @keyframes pulse-ring {
             0% {
-                box-shadow: 0 0 0 0px rgba(225, 29, 72, 0.5);
+                box-shadow: 0 0 0 0px color-mix(in srgb, var(--recording-btn-bg, #e11d48) 50%, transparent);
             }
 
             70% {
-                box-shadow: 0 0 0 15px rgba(225, 29, 72, 0);
+                box-shadow: 0 0 0 20px transparent;
             }
 
             100% {
-                box-shadow: 0 0 0 0px rgba(225, 29, 72, 0);
+                box-shadow: 0 0 0 0 transparent;
             }
         }
 
@@ -1995,6 +2018,18 @@
 
                     const startBtn = document.getElementById('start-btn-text');
                     if (startBtn && data.startText && startBtn.innerHTML !== data.startText) startBtn.innerHTML = data.startText;
+                }
+
+                // 2.5 Update Bottom Left Logo
+                const bottomLeftLogoEl = document.getElementById('bottom-left-logo');
+                if (bottomLeftLogoEl && data.bottomLeftLogoUrl) {
+                    const targetBottomLeftSrc = new URL(data.bottomLeftLogoUrl, window.location.origin).href;
+                    if (bottomLeftLogoEl.src !== targetBottomLeftSrc) bottomLeftLogoEl.src = data.bottomLeftLogoUrl;
+                    if (data.bottomLeftLogoUrl === 'none' || data.bottomLeftLogoUrl === '') {
+                        bottomLeftLogoEl.style.display = 'none';
+                    } else {
+                        bottomLeftLogoEl.style.display = 'block';
+                    }
                 }
 
                 window.updateConfigurableTexts(data);
