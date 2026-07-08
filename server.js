@@ -464,7 +464,9 @@ const DEFAULT_CONFIG = {
     resultProcessingText: "Processing your video & photo... please wait a moment. ✨<br><small style=\"font-size: 14px; opacity: 0.8; display: block; margin-top: 10px;\">Rendering process usually takes 10-15 seconds.</small>",
     resultSaveVideoText: "🎬 Save Your Video",
     resultSavePhotoText: "📸 Save Your Photo",
-    resultFooterText: "Here’s to the moments you’ll always look back on - @momentsbylumea",
+    resultFooterText: "Here’s to the moments you’ll always look back on - @momentsbylumea"
+};
+
 // Buat config.json jika baru pertama kali di-run
 if (!fs.existsSync(CONFIG_FILE)) {
     fs.writeFileSync(CONFIG_FILE, JSON.stringify(DEFAULT_CONFIG, null, 4));
