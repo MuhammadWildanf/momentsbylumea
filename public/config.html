@@ -156,6 +156,7 @@
 
         input[type="text"],
         input[type="number"],
+        input[type="date"],
         textarea,
         select {
             width: 100%;
@@ -898,14 +899,16 @@
                     </div>
                 </div>
                 <div class="input-group">
-                    <label>Start Button Text</label>
+                    <label>Start Button Text & BG Color</label>
                     <div class="input-with-color">
                         <div class="text-control">
                             <input type="text" id="startText" placeholder="Start Here">
                         </div>
                         <div class="color-control">
                             <div class="color-row" style="padding: 6px 10px;">
-                                <input type="color" id="startTextColor">
+                                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Text</span><input type="color" id="startTextColor" title="Text Color"></div>
+                                <span class="color-divider"></span>
+                                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">BG</span><input type="color" id="startBtnBgColor" value="#e7e5d8" title="Background Color"></div>
                             </div>
                         </div>
                     </div>
@@ -942,14 +945,16 @@
                     </div>
                 </div>
                 <div class="input-group" style="margin-top: 10px;">
-                    <label>Submit Button & Color</label>
+                    <label>Submit Button Text & BG Color</label>
                     <div class="input-with-color">
                         <div class="text-control">
                             <input type="text" id="formSubmitText" placeholder="SUBMIT">
                         </div>
                         <div class="color-control">
                             <div class="color-row" style="padding: 6px 10px;">
-                                <input type="color" id="formSubmitTextColor">
+                                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Text</span><input type="color" id="formSubmitTextColor" title="Text Color"></div>
+                                <span class="color-divider"></span>
+                                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">BG</span><input type="color" id="formSubmitBtnBgColor" value="#e7e5d8" title="Background Color"></div>
                             </div>
                         </div>
                     </div>
@@ -1008,34 +1013,36 @@
                 </div>
                 <div class="grid-3" style="margin-top: 10px;">
                     <div class="input-group">
-                        <label>Start Recording Button Label</label>
-                        <input type="text" id="readyCountdownText" placeholder="Start Recording">
-                    </div>
-                    <div class="input-group">
-                        <label>Countdown Status Message</label>
-                        <input type="text" id="readyCdText" placeholder="Recording Begins in...">
-                        <div class="input-group">
-                        <label>Start Recording Button BG Color</label>
-                        <div class="color-control">
-                            <input type="color" id="readyRecordBtnBgColor" class="input-with-color" value="#e7e5d8">
+                        <label>Start Recording Button Label & BG Color</label>
+                        <div class="input-with-color">
+                            <div class="text-control">
+                                <input type="text" id="readyCountdownText" placeholder="Start Recording">
+                            </div>
+                            <div class="color-control">
+                                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">BG</span><input type="color" id="readyRecordBtnBgColor" class="input-with-color" value="#e7e5d8" title="Background Color"></div>
+                            </div>
                         </div>
                     </div>
                     <div class="input-group">
-                        <label>Active Recording BG Color (Red)</label>
-                        <div class="color-control">
-                            <input type="color" id="recordingBtnBgColor" class="input-with-color" value="#e11d48">
+                        <label>Countdown Message & Active Rec BG Color (Red)</label>
+                        <div class="input-with-color">
+                            <div class="text-control">
+                                <input type="text" id="readyCdText" placeholder="Recording Begins in...">
+                            </div>
+                            <div class="color-control">
+                                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:#e11d48; text-transform:uppercase; letter-spacing:0.5px;">Rec BG</span><input type="color" id="recordingBtnBgColor" class="input-with-color" value="#e11d48" title="Active Recording Background Color"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
                     <div class="input-group">
-                        <label>Back Button & Color</label>
+                        <label>Back Button Text Color (Outline Button)</label>
                         <div class="input-with-color">
                             <div class="text-control">
                                 <input type="text" id="readyBackText" placeholder="BACK">
                             </div>
                             <div class="color-control">
                                 <div class="color-row" style="padding: 6px 10px;">
-                                    <input type="color" id="readyBackTextColor">
+                                    <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Text</span><input type="color" id="readyBackTextColor" title="Text Color"></div>
                                 </div>
                             </div>
                         </div>
@@ -1073,35 +1080,31 @@
                 </div>
                 <div class="grid-2" style="margin-top: 10px;">
                     <div class="input-group">
-                        <label>Retake Button & Color</label>
+                        <label>Retake Button Text Color (Outline Button)</label>
                         <div class="input-with-color">
                             <div class="text-control">
                                 <input type="text" id="reviewRetakeText" placeholder="RETAKE">
                             </div>
                             <div class="color-control">
                                 <div class="color-row" style="padding: 6px 10px;">
-                                    <input type="color" id="reviewRetakeTextColor">
+                                    <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Text</span><input type="color" id="reviewRetakeTextColor" title="Text Color"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="input-group">
-                        <label>Proceed to Photo Button & Color</label>
+                        <label>Proceed to Photo Button Text & BG Color</label>
                         <div class="input-with-color">
                             <div class="text-control">
                                 <input type="text" id="reviewPhotoText" placeholder="TAKE A PHOTO">
                             </div>
                             <div class="color-control">
                                 <div class="color-row" style="padding: 6px 10px;">
-                                    <input type="color" id="reviewPhotoTextColor">
+                                    <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Text</span><input type="color" id="reviewPhotoTextColor" title="Text Color"></div>
+                                    <span class="color-divider"></span>
+                                    <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">BG</span><input type="color" id="reviewPhotoBtnBgColor" value="#e7e5d8" title="Background Color"></div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="input-group">
-                        <label>TAKE A PHOTO Button BG Color</label>
-                        <div class="color-control">
-                            <input type="color" id="reviewPhotoBtnBgColor" class="input-with-color" value="#e7e5d8">
                         </div>
                     </div>
                 </div>
@@ -1159,22 +1162,31 @@
                 </div>
                 <div class="grid-3" style="margin-top: 10px;">
                     <div class="input-group">
-                        <label>Shutter Button Label</label>
-                        <input type="text" id="photoCountdownText" placeholder="Take a Photo">
+                        <label>Shutter Button Label & BG Color</label>
+                        <div class="input-with-color">
+                            <div class="text-control">
+                                <input type="text" id="photoCountdownText" placeholder="Take a Photo">
+                            </div>
+                            <div class="color-control">
+                                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">BG</span><input type="color" id="photoRecordBtnBgColor" class="input-with-color" value="#e7e5d8"></div>
+                            </div>
+                        </div>
                     </div>
                     <div class="input-group">
                         <label>Countdown Status Message</label>
                         <input type="text" id="photoCdText" placeholder="Taking Photo in...">
                     </div>
                     <div class="input-group">
-                        <label>Back Button & Color</label>
+                        <label>Back Button Text & BG Color</label>
                         <div class="input-with-color">
                             <div class="text-control">
                                 <input type="text" id="photoBackText" placeholder="BACK">
                             </div>
                             <div class="color-control">
                                 <div class="color-row" style="padding: 6px 10px;">
-                                    <input type="color" id="photoBackTextColor">
+                                    <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Text</span><input type="color" id="photoBackTextColor"></div>
+                                    <span class="color-divider"></span>
+                                    <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">BG</span><input type="color" id="photoBackBtnBgColor" value="#000000"></div>
                                 </div>
                             </div>
                         </div>
@@ -1217,40 +1229,42 @@
                 </div>
                 <div class="grid-3" style="margin-top: 10px;">
                     <div class="input-group">
-                        <label>Retake All Button & Color</label>
+                        <label>Retake All Button Text Color (Outline)</label>
                         <div class="input-with-color">
                             <div class="text-control">
                                 <input type="text" id="finalRetakeAllText" placeholder="RETAKE ALL">
                             </div>
                             <div class="color-control">
                                 <div class="color-row" style="padding: 6px 10px;">
-                                    <input type="color" id="finalRetakeAllTextColor">
+                                    <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Text</span><input type="color" id="finalRetakeAllTextColor" title="Text Color"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="input-group">
-                        <label>Retake Photo Button & Color</label>
+                        <label>Retake Photo Button Text Color (Outline)</label>
                         <div class="input-with-color">
                             <div class="text-control">
                                 <input type="text" id="finalRetakePhotoText" placeholder="RETAKE PHOTO">
                             </div>
                             <div class="color-control">
                                 <div class="color-row" style="padding: 6px 10px;">
-                                    <input type="color" id="finalRetakePhotoTextColor">
+                                    <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Text</span><input type="color" id="finalRetakePhotoTextColor" title="Text Color"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="input-group">
-                        <label>Upload Button & Color</label>
+                        <label>Upload Button Text & BG Color</label>
                         <div class="input-with-color">
                             <div class="text-control">
                                 <input type="text" id="finalUploadText" placeholder="UPLOAD BOTH">
                             </div>
                             <div class="color-control">
                                 <div class="color-row" style="padding: 6px 10px;">
-                                    <input type="color" id="finalUploadTextColor">
+                                    <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Text</span><input type="color" id="finalUploadTextColor" title="Text Color"></div>
+                                    <span class="color-divider"></span>
+                                    <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">BG</span><input type="color" id="finalUploadBtnBgColor" value="#e7e5d8" title="Background Color"></div>
                                 </div>
                             </div>
                         </div>
@@ -1274,22 +1288,7 @@
                         <div class="text-control">
                             <input type="text" id="successTextMain" placeholder="Your memories are ready! ✨" style="margin-bottom: 5px;">
                             <input type="text" id="successTextSub" placeholder="Scan this QR code to view and download your video and photo.">
-                            <div class="input-group">
-                        <label>BACK Button BG Color (Outline)</label>
-                        <div class="color-control">
-                            <input type="color" id="photoBackBtnBgColor" class="input-with-color" value="#000000">
                         </div>
-                    </div>
-                </div>
-
-                <div class="grid-2">
-                    <div class="input-group">
-                        <label>Take Photo Button BG Color</label>
-                        <div class="color-control">
-                            <input type="color" id="photoRecordBtnBgColor" class="input-with-color" value="#e7e5d8">
-                        </div>
-                    </div>
-                </div>
                         <div class="color-control">
                             <div class="color-row" style="padding: 6px 10px;">
                                 <input type="color" id="successTextColor">
@@ -1306,20 +1305,22 @@
                             </div>
                             <div class="color-control">
                                 <div class="color-row" style="padding: 6px 10px;">
-                                    <input type="color" id="successFooterTextColor">
+                                    <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Text</span><input type="color" id="successFooterTextColor" title="Text Color"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="input-group">
-                        <label>Done Button & Color</label>
+                        <label>Done Button Text & BG Color</label>
                         <div class="input-with-color">
                             <div class="text-control">
                                 <input type="text" id="successDoneText" placeholder="Done">
                             </div>
                             <div class="color-control">
                                 <div class="color-row" style="padding: 6px 10px;">
-                                    <input type="color" id="successDoneTextColor">
+                                    <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Text</span><input type="color" id="successDoneTextColor" title="Text Color"></div>
+                                    <span class="color-divider"></span>
+                                    <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">BG</span><input type="color" id="successDoneBtnBgColor" value="#e7e5d8" title="Background Color"></div>
                                 </div>
                             </div>
                         </div>
@@ -1441,9 +1442,9 @@
                         <label>Reset Button BG & Text Color</label>
                         <div class="color-control">
                             <div class="color-row" style="padding: 6px 10px;">
-                                <input type="color" id="galleryResetBtnBgColor" value="#2a221b">
+                                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">BG</span><input type="color" id="galleryResetBtnBgColor" value="#2a221b"></div>
                                 <span class="color-divider"></span>
-                                <input type="color" id="galleryResetBtnTextColor" value="#F0E5C7">
+                                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Text</span><input type="color" id="galleryResetBtnTextColor" value="#F0E5C7"></div>
                             </div>
                         </div>
                     </div>
