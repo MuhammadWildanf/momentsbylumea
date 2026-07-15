@@ -55,6 +55,13 @@
                 reviewPhotoBtnBgColor: '--review-photo-btn-bg',
                 photoRecordBtnBgColor: '--photo-record-btn-bg',
                 photoBackBtnBgColor: '--photo-back-btn-bg',
+                readyRecordBtnTextColor: '--ready-record-btn-text',
+                readyBackBtnBgColor: '--ready-back-btn-bg',
+                reviewRetakeBtnBgColor: '--review-retake-btn-bg',
+                photoRecordBtnTextColor: '--photo-record-btn-text',
+                finalRetakeAllBtnBgColor: '--final-retake-all-btn-bg',
+                finalRetakePhotoBtnBgColor: '--final-retake-photo-btn-bg',
+
                 finalUploadBtnBgColor: '--final-upload-btn-bg',
                 successDoneBtnBgColor: '--success-done-btn-bg',
                 recordingBtnBgColor: '--recording-btn-bg'
@@ -385,11 +392,17 @@
         #state-idle .btn-start { background: var(--start-btn-bg, #e7e5d8) !important; }
         #state-form .btn-start { background: var(--form-submit-btn-bg, #e7e5d8) !important; }
         #state-ready .btn-record-circle { background: var(--ready-record-btn-bg, #e7e5d8) !important; }
-        #state-review .btn-primary { background: var(--review-photo-btn-bg, #e7e5d8) !important; }
+        
+        #state-ready .btn-outline { background: var(--ready-back-btn-bg, transparent) !important; }
+        #state-review-video .btn-outline { background: var(--review-retake-btn-bg, transparent) !important; }
+        #state-review-final .btn-outline[onclick="retakeVideo()"] { background: var(--final-retake-all-btn-bg, transparent) !important; }
+        #state-review-final .btn-outline[onclick="retakePhotoOnly()"] { background: var(--final-retake-photo-btn-bg, transparent) !important; }
+
+        #state-review-video .btn-primary { background: var(--review-photo-btn-bg, #e7e5d8) !important; }
         #state-ready-photo .btn-record-circle { background: var(--photo-record-btn-bg, #e7e5d8) !important; }
         #state-ready-photo .btn-outline { background: var(--photo-back-btn-bg, transparent) !important; }
-        #state-final .btn-primary { background: var(--final-upload-btn-bg, #e7e5d8) !important; }
-        #state-success .btn-primary { background: var(--success-done-btn-bg, #e7e5d8) !important; }
+        #state-review-final .btn-primary { background: var(--final-upload-btn-bg, #e7e5d8) !important; }
+        #state-processing .btn-primary { background: var(--success-done-btn-bg, #e7e5d8) !important; }
 
         /* IOS KEYBOARD */
         .keyboard-wrapper {
@@ -658,6 +671,9 @@
         #ready-text, #ready-text-main, #ready-text-sub {
             color: var(--ready-text-color, #F0E5C7) !important;
         }
+
+        
+
 
         #review-video-text, #review-text-main {
             color: var(--review-text-color, #F0E5C7) !important;

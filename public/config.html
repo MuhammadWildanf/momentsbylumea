@@ -661,7 +661,10 @@
                 </small>
                 <div style="display: flex; align-items: center; gap: 15px;">
                     <input type="color" id="masterColorPicker" value="#000000" style="width: 50px; height: 40px; padding: 2px; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; cursor: pointer; background: transparent;">
-                    <button type="button" class="btn-primary" onclick="applyMasterColor()" style="padding: 10px 20px; font-size: 13px; border-radius: 6px; min-width: auto; height: 40px;">Apply to All Text Fields</button>
+                    
+                    <button type="button" class="btn-primary" onclick="applyMasterColor()" style="padding: 10px 20px; font-size: 13px; border-radius: 6px; min-width: auto; height: 40px;">Apply to All Text</button>
+                    <button type="button" class="btn-outline" onclick="applyMasterBgColor()" style="padding: 10px 20px; font-size: 13px; border-radius: 6px; min-width: auto; height: 40px;">Apply to All Button BGs</button>
+
                     <span id="masterApplyStatus" style="color: var(--accent); font-size: 12px; font-weight: 700; transition: opacity 0.5s;"></span>
                 </div>
             </div>
@@ -1019,6 +1022,7 @@
                                 <input type="text" id="readyCountdownText" placeholder="Start Recording">
                             </div>
                             <div class="color-control">
+                                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Text</span><input type="color" id="readyRecordBtnTextColor" value="#F0E5C7" title="Text Color"></div>
                                 <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">BG</span><input type="color" id="readyRecordBtnBgColor" class="input-with-color" value="#e7e5d8" title="Background Color"></div>
                             </div>
                         </div>
@@ -1043,6 +1047,7 @@
                             <div class="color-control">
                                 <div class="color-row" style="padding: 6px 10px;">
                                     <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Text</span><input type="color" id="readyBackTextColor" title="Text Color"></div>
+                                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">BG</span><input type="color" id="readyBackBtnBgColor" value="#e7e5d8" title="Background Color"></div>
                                 </div>
                             </div>
                         </div>
@@ -1088,6 +1093,7 @@
                             <div class="color-control">
                                 <div class="color-row" style="padding: 6px 10px;">
                                     <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Text</span><input type="color" id="reviewRetakeTextColor" title="Text Color"></div>
+                                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">BG</span><input type="color" id="reviewRetakeBtnBgColor" value="#e7e5d8" title="Background Color"></div>
                                 </div>
                             </div>
                         </div>
@@ -1168,6 +1174,7 @@
                                 <input type="text" id="photoCountdownText" placeholder="Take a Photo">
                             </div>
                             <div class="color-control">
+                                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Text</span><input type="color" id="photoRecordBtnTextColor" value="#F0E5C7" title="Text Color"></div>
                                 <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">BG</span><input type="color" id="photoRecordBtnBgColor" class="input-with-color" value="#e7e5d8"></div>
                             </div>
                         </div>
@@ -1237,6 +1244,7 @@
                             <div class="color-control">
                                 <div class="color-row" style="padding: 6px 10px;">
                                     <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Text</span><input type="color" id="finalRetakeAllTextColor" title="Text Color"></div>
+                                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">BG</span><input type="color" id="finalRetakeAllBtnBgColor" value="#e7e5d8" title="Background Color"></div>
                                 </div>
                             </div>
                         </div>
@@ -1250,6 +1258,7 @@
                             <div class="color-control">
                                 <div class="color-row" style="padding: 6px 10px;">
                                     <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Text</span><input type="color" id="finalRetakePhotoTextColor" title="Text Color"></div>
+                                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">BG</span><input type="color" id="finalRetakePhotoBtnBgColor" value="#e7e5d8" title="Background Color"></div>
                                 </div>
                             </div>
                         </div>
@@ -1754,6 +1763,10 @@
                 if(document.getElementById('startBtnBgColor')) document.getElementById('startBtnBgColor').value = data.startBtnBgColor || '#e7e5d8';
                 if(document.getElementById('formSubmitBtnBgColor')) document.getElementById('formSubmitBtnBgColor').value = data.formSubmitBtnBgColor || '#e7e5d8';
                 document.getElementById('readyRecordBtnBgColor').value = data.readyRecordBtnBgColor || '#e7e5d8';
+
+                document.getElementById('readyRecordBtnTextColor').value = data.readyRecordBtnTextColor || '#F0E5C7';
+                document.getElementById('photoRecordBtnTextColor').value = data.photoRecordBtnTextColor || '#F0E5C7';
+
                 document.getElementById('recordingBtnBgColor').value = data.recordingBtnBgColor || '#e11d48';
                 document.getElementById('photoRecordBtnBgColor').value = data.photoRecordBtnBgColor || '#e7e5d8';
                 document.getElementById('photoBackBtnBgColor').value = data.photoBackBtnBgColor || '#000000';
@@ -1942,6 +1955,7 @@
                 'photoHeaderSubtitleColor', 'photoInstructionTextColor', 'photoBackTextColor',
                 'finalHeaderTitleColor', 'finalRetakeAllTextColor', 'finalRetakePhotoTextColor',
                 'finalUploadTextColor', 'successFooterTextColor', 'successDoneTextColor',
+                'readyRecordBtnTextColor', 'photoRecordBtnTextColor',
                 'gallerySearchLabelColor', 'galleryResetBtnTextColor', 'galleryFooterTextColor',
                 'galleryTextColor', 'galleryTitleColor'
             ];
@@ -1962,6 +1976,33 @@
                 }, 3000);
             }
         }
+
+        function applyMasterBgColor() {
+            const masterColor = document.getElementById('masterColorPicker').value;
+            const bgFields = [
+                'startBtnBgColor', 'formSubmitBtnBgColor', 'readyRecordBtnBgColor', 
+                'readyBackBtnBgColor', 'reviewPhotoBtnBgColor', 'reviewRetakeBtnBgColor', 
+                'photoRecordBtnBgColor', 'photoBackBtnBgColor', 'finalRetakeAllBtnBgColor', 
+                'finalRetakePhotoBtnBgColor', 'finalUploadBtnBgColor', 'successDoneBtnBgColor', 
+                'galleryResetBtnBgColor'
+            ];
+            bgFields.forEach(fieldId => {
+                const el = document.getElementById(fieldId);
+                if (el) {
+                    el.value = masterColor;
+                    el.dispatchEvent(new Event('input', { bubbles: true }));
+                    el.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            });
+            
+            const status = document.getElementById('masterApplyStatus');
+            status.textContent = 'Applied to BGs!';
+            status.style.opacity = '1';
+            setTimeout(() => {
+                status.style.opacity = '0';
+            }, 3000);
+        }
+
 
         async function uploadHelper(file, fieldName) {
             if (!file) return null;
@@ -2094,6 +2135,14 @@
                 startBtnBgColor: document.getElementById('startBtnBgColor')?.value || '#e7e5d8',
                 formSubmitBtnBgColor: document.getElementById('formSubmitBtnBgColor')?.value || '#e7e5d8',
                 readyRecordBtnBgColor: document.getElementById('readyRecordBtnBgColor').value,
+
+                readyRecordBtnTextColor: document.getElementById('readyRecordBtnTextColor').value,
+                readyBackBtnBgColor: document.getElementById('readyBackBtnBgColor').value,
+                reviewRetakeBtnBgColor: document.getElementById('reviewRetakeBtnBgColor').value,
+                photoRecordBtnTextColor: document.getElementById('photoRecordBtnTextColor').value,
+                finalRetakeAllBtnBgColor: document.getElementById('finalRetakeAllBtnBgColor').value,
+                finalRetakePhotoBtnBgColor: document.getElementById('finalRetakePhotoBtnBgColor').value,
+
                 recordingBtnBgColor: document.getElementById('recordingBtnBgColor').value,
                 photoRecordBtnBgColor: document.getElementById('photoRecordBtnBgColor').value,
                 photoBackBtnBgColor: document.getElementById('photoBackBtnBgColor').value,
