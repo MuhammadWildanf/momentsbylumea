@@ -3,7 +3,7 @@ const path = require('path');
 const fastq = require('fastq');
 const ffmpeg = require('fluent-ffmpeg');
 const { uploadToGCP } = require('./gcp');
-const { CONFIG_FILE, SESSIONS_DIR, DEFAULT_CONFIG } = require('../config/constants');
+const { CONFIG_FILE, EVENTS_DIR, SESSIONS_DIR, DEFAULT_CONFIG } = require('../config/constants');
 
 const getMediaDimensions = (filePath) => {
     return new Promise((resolve) => {
@@ -28,7 +28,23 @@ const worker = async (task) => {
         try {
             const inputPath = task.videoPath;
             const photoInputPath = task.photoPath;
-            const config = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'));
+            let config = DEFAULT_CONFIG;
+            if (task.eventId) {
+                const eventFile = path.join(EVENTS_DIR, `${task.eventId}.json`);
+                if (fs.existsSync(eventFile)) {
+                    try {
+                        config = { ...DEFAULT_CONFIG, ...JSON.parse(fs.readFileSync(eventFile, 'utf8')) };
+                    } catch (e) {
+                        console.error(`[QUEUE ERROR] Gagal membaca config event: ${task.eventId}`, e);
+                    }
+                }
+            } else if (fs.existsSync(CONFIG_FILE)) {
+                try {
+                    config = { ...DEFAULT_CONFIG, ...JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8')) };
+                } catch (e) {
+                    console.error("[QUEUE ERROR] Gagal membaca base config.json", e);
+                }
+            }
             const overlayPath = path.join(__dirname, '..', 'public', config.overlayImageUrl || 'overlay.png');
 
             const timestamp = Date.now();

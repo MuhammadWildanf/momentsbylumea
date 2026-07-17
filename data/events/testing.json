@@ -106,9 +106,9 @@
     "galleryFooterTextColor": "#cdcdcd",
     "fontSelector": "luxury",
     "fontSourceType": "google",
-    "fontUrl": "",
-    "fontFamily": "",
-    "titleFontFamily": "",
+    "fontUrl": "https://fonts.googleapis.com/css2?family=Luxurious+Script&family=Kaisei+Opti&display=swap",
+    "fontFamily": "'Kaisei Opti', serif",
+    "titleFontFamily": "'Luxurious Script', cursive",
     "enableGesture": true,
     "successAutoResetText": "Auto-reset in",
     "galleryTitle": "Your Special Memories",
@@ -124,6 +124,8 @@
     "showRightPanel": false,
     "idleHeadMode": "logo",
     "bgImageUrl": "Default",
-    "frameImageUrl": "Default",
-    "overlayImageUrl": "Default"
+    "frameImageUrl": "/uploads_assets/asset-1784286894870.PNG",
+    "overlayImageUrl": "/uploads_assets/asset-1784286894893.PNG",
+    "resultBtnBgColor": "#721c24",
+    "resultBtnTextColor": "#ffffff"
 }
