@@ -123,9 +123,9 @@
     "showLeftPanel": false,
     "showRightPanel": false,
     "idleHeadMode": "logo",
-    "bgImageUrl": "Default",
-    "frameImageUrl": "/uploads_assets/asset-1784286894870.PNG",
-    "overlayImageUrl": "/uploads_assets/asset-1784286894893.PNG",
+    "bgImageUrl": "none",
+    "frameImageUrl": "/uploads_assets/asset-1784286791858.PNG",
+    "overlayImageUrl": "/uploads_assets/asset-1784286791858.PNG",
     "resultBtnBgColor": "#721c24",
     "resultBtnTextColor": "#ffffff"
 }

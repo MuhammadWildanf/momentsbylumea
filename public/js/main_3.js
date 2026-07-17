@@ -282,7 +282,8 @@
                 const eventId = urlParams.get('event') || '';
                 const res = await fetch('/api/config' + (eventId ? '?eventId=' + eventId : ''), { cache: 'no-store' });
                 const data = await res.json();
-                localStorage.setItem('vb_config', JSON.stringify(data));
+                const cacheKey = eventId ? 'vb_config_' + eventId : 'vb_config';
+                localStorage.setItem(cacheKey, JSON.stringify(data));
 
                 // 1. Preload Critical Images in Parallel
                 const criticalAssets = [];
