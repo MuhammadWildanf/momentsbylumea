@@ -531,6 +531,7 @@
             padding: 2px 8px;
             border-radius: 5px;
             font-size: 10px;
+            z-index: 10;
         }
 
         /* Dynamic colors for outline buttons border & color */

@@ -342,6 +342,17 @@
                     }
                 }
 
+                // Update Review Frame Overlays
+                const reviewOverlays = document.querySelectorAll('.review-frame-overlay');
+                reviewOverlays.forEach(overlay => {
+                    if (data.overlayImageUrl && data.overlayImageUrl !== 'none' && data.overlayImageUrl !== 'Default') {
+                        overlay.src = data.overlayImageUrl;
+                        overlay.style.display = 'block';
+                    } else {
+                        overlay.style.display = 'none';
+                    }
+                });
+
                 window.updateConfigurableTexts(data);
 
                 // 3. Smart Video Asset Updates (Prevent infinite reload cycle)
