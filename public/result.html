@@ -120,8 +120,8 @@
             justify-content: center;
             gap: 10px;
             padding: 14px 30px;
-            background: linear-gradient(135deg, #721c24 0%, #3a060b 100%);
-            color: white;
+            background: var(--btn-bg, #721c24);
+            color: var(--btn-text-color, #ffffff);
             border: 1px solid rgba(197, 160, 89, 0.4);
             /* Elegant subtle gold border */
             border-radius: 50px;
@@ -133,13 +133,13 @@
             transition: all 0.3s;
             margin-top: 15px;
             margin-bottom: 15px;
-            box-shadow: 0 10px 20px rgba(114, 28, 36, 0.3);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
 
         .btn:hover {
             transform: translateY(-3px);
-            background: linear-gradient(135deg, #8a252f 0%, #4a090e 100%);
-            box-shadow: 0 15px 30px rgba(114, 28, 36, 0.5);
+            opacity: 0.9;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
         }
 
         .loading {
@@ -241,13 +241,14 @@
         document.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
             const sessionId = urlParams.get('id');
+            const eventId = urlParams.get('event') || '';
 
             // Default fallbacks in English
             window.resultErrorTextVal = "Sorry, your session was not found or has expired.";
             window.resultProcessingTextVal = `Processing your video & photo... please wait a moment. ✨<br><small style="font-size: 14px; opacity: 0.8; display: block; margin-top: 10px;">Rendering process usually takes 10-15 seconds.</small>`;
 
             // Load theme & text configuration immediately in parallel
-            let themePromise = fetch('/api/config', { cache: 'no-store' })
+            let themePromise = fetch('/api/config' + (eventId ? `?eventId=${eventId}` : ''), { cache: 'no-store' })
                 .then(res => res.json())
                 .then(configData => {
                     if (configData.bgColor1) {
@@ -263,6 +264,12 @@
                     }
                     if (configData.accentColor) {
                         document.documentElement.style.setProperty('--accent', configData.accentColor);
+                    }
+                    if (configData.resultBtnBgColor) {
+                        document.documentElement.style.setProperty('--btn-bg', configData.resultBtnBgColor);
+                    }
+                    if (configData.resultBtnTextColor) {
+                        document.documentElement.style.setProperty('--btn-text-color', configData.resultBtnTextColor);
                     }
                     if (configData.logoUrl) {
                         const logoEl = document.getElementById('logoElement');

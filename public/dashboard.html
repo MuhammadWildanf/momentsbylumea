@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumea - Central Event Dashboard</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,400&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --accent: #c5a059;
+            --accent-hover: #d4af37;
+            --accent-glow: rgba(197, 160, 89, 0.25);
+            --gold-gradient: linear-gradient(135deg, #c5a059 0%, #d4af37 50%, #b38b4d 100%);
+            --bg-dark: #0f0a06;
+            --bg-card: rgba(22, 16, 12, 0.7);
+            --border: rgba(197, 160, 89, 0.15);
+            --text-main: #f8fafc;
+            --text-muted: #a39c96;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(197, 160, 89, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(197, 160, 89, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, #120c08 0%, #080503 100%);
+            background-size: cover;
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            padding-bottom: 25px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .logo-img {
+            height: 55px;
+            width: auto;
+            filter: drop-shadow(0 0 10px rgba(197,160,89,0.2));
+        }
+
+        .title-area h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 600;
+            background: linear-gradient(120deg, #ffffff, #dfd0b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 0.5px;
+        }
+
+        .title-area p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 3px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .btn-create {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 26px;
+            background: var(--gold-gradient);
+            color: #120c08;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 4px 20px rgba(197, 160, 89, 0.25);
+        }
+
+        .btn-create:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(197, 160, 89, 0.5);
+            letter-spacing: 0.3px;
+        }
+
+        main {
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            width: 100%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 15px 25px;
+            margin-bottom: 40px;
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            font-size: 13px;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stat-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #10b981;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+        }
+
+        .stat-val {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
+            gap: 30px;
+        }
+
+        .event-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 30px;
+            backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            position: relative;
+            outline: 1px solid transparent;
+        }
+
+        .event-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(197, 160, 89, 0.4);
+            outline: 1px solid rgba(197, 160, 89, 0.1);
+            box-shadow: 0 25px 45px rgba(197, 160, 89, 0.08);
+        }
+
+        .event-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 22px;
+            gap: 15px;
+        }
+
+        .event-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 8px;
+            line-height: 1.25;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .event-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .meta-item.slug {
+            color: var(--accent);
+            background: rgba(197, 160, 89, 0.08);
+            border: 1px solid rgba(197, 160, 89, 0.15);
+            padding: 2px 8px;
+            border-radius: 50px;
+            font-family: monospace;
+        }
+
+        .btn-delete-icon {
+            background: rgba(255, 68, 68, 0.05);
+            border: 1px solid rgba(255, 68, 68, 0.15);
+            color: #ff5555;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .btn-delete-icon:hover {
+            background: #ff4444;
+            color: #fff;
+            border-color: transparent;
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        /* Links Copy Section */
+        .links-section {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .link-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .link-label {
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+        }
+
+        .link-input-wrapper {
+            display: flex;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .link-input-wrapper input {
+            flex-grow: 1;
+            border: none;
+            background: transparent;
+            padding: 8px 12px;
+            color: #e2e8f0;
+            font-size: 11px;
+            outline: none;
+            text-overflow: ellipsis;
+        }
+
+        .btn-copy {
+            background: rgba(197, 160, 89, 0.12);
+            border: none;
+            border-left: 1px solid rgba(197, 160, 89, 0.15);
+            color: var(--accent);
+            padding: 0 12px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-copy:hover {
+            background: var(--gold-gradient);
+            color: #120c08;
+        }
+
+        /* Footer Actions */
+        .event-actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 11px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .btn-action.primary {
+            background: var(--gold-gradient);
+            color: #120c08;
+            border: none;
+            box-shadow: 0 4px 10px rgba(197,160,89,0.15);
+        }
+
+        .btn-action.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(197,160,89,0.35);
+        }
+
+        .btn-action.secondary {
+            background: rgba(255, 255, 255, 0.02);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .btn-action.secondary:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        /* Modal styling */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal {
+            background: #150f0b;
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            width: 100%;
+            max-width: 460px;
+            padding: 35px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+            animation: modalFadeIn 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.93);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-header {
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 26px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .modal-close:hover {
+            color: #fff;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 15px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.07);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .btn-modal {
+            padding: 13px 26px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-modal.cancel {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-modal.cancel:hover {
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-modal.confirm {
+            background: var(--gold-gradient);
+            color: #120c08;
+            border: none;
+            box-shadow: 0 4px 12px rgba(197,160,89,0.2);
+        }
+
+        .btn-modal.confirm:hover {
+            box-shadow: 0 6px 18px rgba(197,160,89,0.4);
+            transform: translateY(-1px);
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 70px 20px;
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px dashed rgba(197, 160, 89, 0.15);
+            border-radius: 24px;
+        }
+
+        .empty-state h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Admin Login Lockscreen Overlay -->
+    <div id="admin-lockscreen"
+        style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at center, #1b120c 0%, #0d0805 100%); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Outfit', sans-serif; padding: 20px;">
+        <div
+            style="background: rgba(30, 22, 16, 0.7); border: 1px solid rgba(197, 160, 89, 0.2); border-radius: 24px; padding: 40px 30px; max-width: 400px; width: 100%; text-align: center; backdrop-filter: blur(15px); box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+            <img src="logo-lumea.png" alt="Lumea Logo" style="height: 60px; width: auto; margin-bottom: 20px;">
+            <h2 style="font-family: 'Playfair Display', serif; font-size: 24px; color: #fff; margin-bottom: 10px;">Admin
+                Portal</h2>
+            <p style="font-size: 14px; color: #a09890; margin-bottom: 30px;">Masukkan password administrator untuk masuk
+            </p>
+
+            <div style="margin-bottom: 25px; text-align: left;">
+                <label
+                    style="display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; color: #c5a059; margin-bottom: 8px;">Password</label>
+                <input type="password" id="adminPasswordInput" placeholder="••••••••"
+                    style="width: 100%; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 14px; color: #fff; font-size: 16px; outline: none; transition: all 0.2s; box-sizing: border-box;"
+                    onkeydown="if(event.key==='Enter') attemptAdminLogin()">
+                <p id="loginErrorMsg" style="color: #ff4444; font-size: 13px; margin-top: 8px; display: none;">Password
+                    salah!</p>
+            </div>
+
+            <button onclick="attemptAdminLogin()"
+                style="width: 100%; padding: 14px; background: linear-gradient(135deg, #c5a059 0%, #d4af37 100%); color: #120c08; border: none; border-radius: 50px; font-weight: 600; font-size: 15px; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(197, 160, 89, 0.2);">Masuk
+                ke Portal</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="logo-area">
+            <img src="logo-lumea.png" alt="Lumea Logo" class="logo-img">
+            <div class="title-area">
+                <h1>Moments by Lumea</h1>
+                <p>Central Admin Control Room</p>
+            </div>
+        </div>
+        <button class="btn-create" onclick="openCreateModal()">
+            <span>➕ Create New Event</span>
+        </button>
+    </header>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-dot"></div>
+            <span class="stat-label">System Status:</span>
+            <span class="stat-val">All Services Operational</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Total Campaign Events:</span>
+            <span id="stat-total-events" class="stat-val">0</span>
+        </div>
+    </div>
+
+    <main>
+        <div class="events-grid" id="eventsGrid">
+            <!-- Loading -->
+            <div class="empty-state">
+                <h3>Loading events...</h3>
+                <p>Connecting to backend system.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Create Event Modal -->
+    <div class="modal-overlay" id="createModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Create New Event</h2>
+                <button class="modal-close" onclick="closeCreateModal()">&times;</button>
+            </div>
+            <div class="form-group">
+                <label for="eventName">Event Name</label>
+                <input type="text" id="eventName" placeholder="e.g. Wedding of Budi & Ani"
+                    oninput="autoGenerateSlug(this.value)">
+            </div>
+            <div class="form-group">
+                <label for="eventSlug">Event ID / URL Slug</label>
+                <input type="text" id="eventSlug" placeholder="e.g. budi-ani">
+            </div>
+            <div class="form-group">
+                <label for="eventDate">Event Date</label>
+                <input type="date" id="eventDate">
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal cancel" onclick="closeCreateModal()">Cancel</button>
+                <button class="btn-modal confirm" onclick="handleCreateEvent()">Create Event</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global Fetch Interceptor for authentication
+        const originalFetch = window.fetch;
+        window.fetch = function (url, options = {}) {
+            const token = localStorage.getItem('lumea_admin_token');
+            if (token) {
+                options.headers = options.headers || {};
+                if (options.headers instanceof Headers) {
+                    options.headers.set('X-Admin-Token', token);
+                } else if (Array.isArray(options.headers)) {
+                    options.headers.push(['X-Admin-Token', token]);
+                } else {
+                    options.headers['X-Admin-Token'] = token;
+                }
+            }
+            return originalFetch(url, options).then(response => {
+                if (response.status === 401) {
+                    showLockscreen();
+                }
+                return response;
+            });
+        };
+
+        document.addEventListener('DOMContentLoaded', checkAdminAuth);
+
+        function showLockscreen() {
+            document.getElementById('admin-lockscreen').style.display = 'flex';
+        }
+
+        function hideLockscreen() {
+            document.getElementById('admin-lockscreen').style.display = 'none';
+        }
+
+        async function checkAdminAuth() {
+            const token = localStorage.getItem('lumea_admin_token');
+            if (!token) {
+                showLockscreen();
+                return;
+            }
+            try {
+                const res = await originalFetch('/api/admin/verify', {
+                    headers: { 'X-Admin-Token': token }
+                });
+                const data = await res.json();
+                if (data.status === 'success' && data.valid) {
+                    hideLockscreen();
+                    fetchEvents();
+                } else {
+                    showLockscreen();
+                }
+            } catch (e) {
+                showLockscreen();
+            }
+        }
+
+        async function attemptAdminLogin() {
+            const password = document.getElementById('adminPasswordInput').value;
+            const errorEl = document.getElementById('loginErrorMsg');
+            errorEl.style.display = 'none';
+
+            try {
+                const res = await originalFetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password })
+                });
+                const data = await res.json();
+                if (res.ok && data.status === 'success' && data.token) {
+                    localStorage.setItem('lumea_admin_token', data.token);
+                    hideLockscreen();
+                    fetchEvents();
+                } else {
+                    errorEl.style.display = 'block';
+                }
+            } catch (e) {
+                errorEl.innerText = 'Gagal menyambung ke server.';
+                errorEl.style.display = 'block';
+            }
+        }
+
+        async function fetchEvents() {
+            const grid = document.getElementById('eventsGrid');
+            try {
+                const token = localStorage.getItem('lumea_admin_token');
+                const res = await fetch('/api/events', {
+                    headers: { 'X-Admin-Token': token }
+                });
+                const data = await res.json();
+
+                if (data.status === 'success' && data.events) {
+                    renderEvents(data.events);
+                } else {
+                    grid.innerHTML = `<div class="empty-state"><h3>Failed to load</h3><p>${data.message}</p></div>`;
+                }
+            } catch (e) {
+                grid.innerHTML = `<div class="empty-state"><h3>Connection Error</h3><p>Could not reach the server.</p></div>`;
+            }
+        }
+
+        function renderEvents(events) {
+            const grid = document.getElementById('eventsGrid');
+            if (events.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No events found</h3>
+                        <p>Click "Create New Event" at the top to start your first campaign.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const host = window.location.origin;
+
+            // Update total events counter
+            document.getElementById('stat-total-events').innerText = events.length;
+
+            grid.innerHTML = events.map(evt => {
+                const eventLink = `${host}/?event=${evt.id}`;
+                const galleryLink = `${host}/gallery.html?event=${evt.id}`;
+                const configLink = `${host}/config.html?eventId=${evt.id}`;
+
+                const formattedDate = evt.eventDate ? new Date(evt.eventDate).toLocaleDateString('id-ID', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                }) : 'No date set';
+
+                return `
+                    <div class="event-card" id="card-${evt.id}">
+                        <div class="event-card-header">
+                            <div>
+                                <h2 class="event-name">${escapeHtml(evt.name)}</h2>
+                                <div class="event-meta">
+                                    <span class="meta-item">📅 ${formattedDate}</span>
+                                    <span class="meta-item">📸 ${evt.totalSessions || 0} Sessions</span>
+                                    <span class="meta-item slug">${evt.id}</span>
+                                </div>
+                            </div>
+                            <button class="btn-delete-icon" onclick="deleteEvent('${evt.id}')" title="Delete Event">✕</button>
+                        </div>
+                        
+                        <div class="links-section">
+                            <div class="link-item">
+                                <span class="link-label">🎥 Video Booth Camera Link</span>
+                                <div class="link-input-wrapper">
+                                    <input type="text" readonly value="${eventLink}">
+                                    <button class="btn-copy" onclick="copyLink('${eventLink}', this)">Copy</button>
+                                </div>
+                            </div>
+                            <div class="link-item">
+                                <span class="link-label">🖼️ Guest Gallery Link</span>
+                                <div class="link-input-wrapper">
+                                    <input type="text" readonly value="${galleryLink}">
+                                    <button class="btn-copy" onclick="copyLink('${galleryLink}', this)">Copy</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="event-actions">
+                            <a href="${configLink}" class="btn-action primary">🎨 Config Theme</a>
+                            <a href="${eventLink}" class="btn-action secondary" target="_blank">🎥 Start Booth</a>
+                            <a href="${galleryLink}" class="btn-action secondary" target="_blank">🖼️ Gallery</a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function autoGenerateSlug(name) {
+            const slug = name.toLowerCase()
+                .replace(/[^a-z0-9\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-');
+            document.getElementById('eventSlug').value = slug;
+        }
+
+        function openCreateModal() {
+            document.getElementById('eventName').value = '';
+            document.getElementById('eventSlug').value = '';
+            document.getElementById('eventDate').value = '';
+            document.getElementById('createModal').style.display = 'flex';
+        }
+
+        function closeCreateModal() {
+            document.getElementById('createModal').style.display = 'none';
+        }
+
+        async function handleCreateEvent() {
+            const name = document.getElementById('eventName').value.trim();
+            const id = document.getElementById('eventSlug').value.trim();
+            const eventDate = document.getElementById('eventDate').value;
+            if (!name || !id) {
+                alert('Nama dan Slug ID Event wajib diisi!');
+                return;
+            }
+
+            try {
+                const token = localStorage.getItem('lumea_admin_token');
+                const res = await fetch('/api/events', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Admin-Token': token
+                    },
+                    body: JSON.stringify({ id, name, eventDate })
+                });
+                const data = await res.json();
+                if (data.status === 'success') {
+                    closeCreateModal();
+                    fetchEvents();
+                } else {
+                    alert(data.message);
+                }
+            } catch (e) {
+                alert('Gagal membuat event.');
+            }
+        }
+
+        async function deleteEvent(id) {
+            if (!confirm(`Apakah Anda yakin ingin menghapus Event "${id}"? \nSemua konfigurasi tema event ini akan hilang selamanya.`)) {
+                return;
+            }
+
+            try {
+                const token = localStorage.getItem('lumea_admin_token');
+                const res = await fetch(`/api/events/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'X-Admin-Token': token }
+                });
+                const data = await res.json();
+                if (data.status === 'success') {
+                    fetchEvents();
+                } else {
+                    alert(data.message);
+                }
+            } catch (e) {
+                alert('Gagal menghapus event.');
+            }
+        }
+
+        function copyLink(text, btn) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = btn.innerText;
+                btn.innerText = 'Copied!';
+                btn.style.color = '#fff';
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.color = 'var(--accent)';
+                }, 2000);
+            }).catch(err => {
+                alert('Gagal mengcopy link.');
+            });
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+
+</html>

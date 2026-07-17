@@ -8,7 +8,10 @@
     <!-- INSTANT THEME RESTORER (Prevents Style Flash / FOUC) -->
     <script>
         try {
-            const cached = localStorage.getItem('vb_config');
+            const urlParams = new URLSearchParams(window.location.search);
+            const eventId = urlParams.get('event') || '';
+            const cacheKey = eventId ? 'vb_config_' + eventId : 'vb_config';
+            const cached = localStorage.getItem(cacheKey);
             if (cached) {
                 const data = JSON.parse(cached);
                 const root = document.documentElement;
@@ -655,7 +658,7 @@
         <div class="status-message" id="loading-state">
             <div class="spinner"></div>
             <p>Preparing all the beautiful memories... ✨</p>
-        </div>wwww
+        </div>
 
         <!-- Empty / No Results State -->
         <div class="status-message" id="empty-state" style="display: none;">
@@ -705,16 +708,20 @@
 
         async function loadThemeConfig() {
             try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const eventId = urlParams.get('event') || '';
+                const cacheKey = eventId ? 'vb_config_' + eventId : 'vb_config';
+
                 // Try from local storage first to prevent flash
-                const cached = localStorage.getItem('vb_config');
+                const cached = localStorage.getItem(cacheKey);
                 if (cached) {
                     applyConfigToDOM(JSON.parse(cached));
                 }
 
                 // Fetch latest live config and update
-                const res = await fetch('/api/config', { cache: 'no-store' });
+                const res = await fetch('/api/config' + (eventId ? '?eventId=' + eventId : ''), { cache: 'no-store' });
                 const config = await res.json();
-                localStorage.setItem('vb_config', JSON.stringify(config));
+                localStorage.setItem(cacheKey, JSON.stringify(config));
                 applyConfigToDOM(config);
             } catch (e) {
                 console.error("Config fetch error:", e);
@@ -812,7 +819,9 @@
             const loading = document.getElementById('loading-state');
 
             try {
-                const res = await fetch('/api/sessions');
+                const urlParams = new URLSearchParams(window.location.search);
+                const eventId = urlParams.get('event') || '';
+                const res = await fetch('/api/sessions' + (eventId ? '?eventId=' + eventId : ''));
                 const result = await res.json();
 
                 loading.style.display = 'none';
