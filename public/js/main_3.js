@@ -688,7 +688,7 @@
             const cs = rc.captureStream(30);
             mediaRecorder = new MediaRecorder(cs, {
                 mimeType: 'video/webm;codecs=h264',
-                videoBitsPerSecond: 8000000 // 8 Mbps untuk kualitas jernih kristal
+                videoBitsPerSecond: 3000000 // 3 Mbps untuk kualitas sangat tajam tapi file 2.6x lebih ringan
             });
             mediaRecorder.ondataavailable = (e) => recordedChunks.push(e.data);
             mediaRecorder.onstop = () => {
