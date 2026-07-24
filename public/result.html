@@ -200,7 +200,7 @@
 </head>
 
 <body>
-    <div id="loading" class="loading">Loading your memories... ✨</div>
+    <div id="loading" class="loading" style="display: none;"></div>
 
     <div id="error" class="error-state">
         Sorry, your session was not found or has expired.
@@ -455,6 +455,9 @@
 
             // Start polling only after theme configuration has loaded (prevents flash of default texts)
             themePromise.finally(() => {
+                if (sessionId) {
+                    loadingEl.style.display = 'block';
+                }
                 checkResult();
             });
         });
