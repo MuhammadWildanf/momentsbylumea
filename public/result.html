@@ -453,7 +453,10 @@
                 }
             }
 
-            checkResult();
+            // Start polling only after theme configuration has loaded (prevents flash of default texts)
+            themePromise.finally(() => {
+                checkResult();
+            });
         });
     </script>
 </body>
