@@ -811,17 +811,17 @@
             }
             // Check idleHeadMode (Title vs Logo)
             const logoEl = document.getElementById('logoElement');
-            const titleEl = document.getElementById('titleElement');
+            const titleElementEl = document.getElementById('titleElement');
 
             if (data.idleHeadMode === 'logo' && data.logoUrl) {
                 if (logoEl) {
                     logoEl.src = data.logoUrl;
                     logoEl.style.display = 'block';
                 }
-                if (titleEl) titleEl.style.display = 'none';
+                if (titleElementEl) titleElementEl.style.display = 'none';
             } else {
                 if (logoEl) logoEl.style.display = 'none';
-                if (titleEl && data.title) {
+                if (titleElementEl && data.title) {
                     const formatTitleText = (title) => {
                         if (!title) return '';
                         const match = title.match(/(?:<[^>]+>)*\s+(and|dan|bersama)\s+(?:<[^>]+>)*/i) || 
@@ -833,9 +833,9 @@
                         }
                         return '<span>' + title + '</span>';
                     };
-                    titleEl.innerHTML = formatTitleText(data.title);
-                    titleEl.style.display = 'block';
-                    if (data.titleColor) titleEl.style.color = data.titleColor;
+                    titleElementEl.innerHTML = formatTitleText(data.title);
+                    titleElementEl.style.display = 'block';
+                    if (data.titleColor) titleElementEl.style.color = data.titleColor;
                 }
             }
         }
