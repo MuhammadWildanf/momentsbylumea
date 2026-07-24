@@ -672,14 +672,16 @@
             }, 50);
 
             const rc = document.createElement('canvas'); const rctx = rc.getContext('2d');
+            rc.width = 720;
+            rc.height = Math.round(720 * (webcam.videoHeight / webcam.videoWidth)) || 1280;
+
             let isRec = true;
             const rloop = () => {
                 if (!isRec) return;
-                rc.width = webcam.videoWidth; rc.height = webcam.videoHeight;
                 rctx.save();
                 // Removed mirror logic for 'Normal' recording
-                rctx.drawImage(webcam, 0, 0);
-                if (window.enableGesture) rctx.drawImage(drawing, 0, 0);
+                rctx.drawImage(webcam, 0, 0, rc.width, rc.height);
+                if (window.enableGesture) rctx.drawImage(drawing, 0, 0, rc.width, rc.height);
                 rctx.restore();
                 requestAnimationFrame(rloop);
             };
@@ -688,7 +690,7 @@
             const cs = rc.captureStream(30);
             mediaRecorder = new MediaRecorder(cs, {
                 mimeType: 'video/webm;codecs=h264',
-                videoBitsPerSecond: 3000000 // 3 Mbps untuk kualitas sangat tajam tapi file 2.6x lebih ringan
+                videoBitsPerSecond: 2500000 // 2.5 Mbps untuk kualitas 720p sangat tajam & file jauh lebih ringan
             });
             mediaRecorder.ondataavailable = (e) => recordedChunks.push(e.data);
             mediaRecorder.onstop = () => {

@@ -86,9 +86,9 @@ const worker = async (task) => {
                     console.log(`[FFMPEG] Mendeteksi overlay.png, sedang merender bingkai...`);
                     cmd = cmd.input(overlayPath)
                         .complexFilter([`[1:v]scale=${videoWidth}:${videoHeight}[over];[0:v][over]overlay=0:0`])
-                        .addOptions(['-preset ultrafast', '-crf 18']);
+                        .addOptions(['-preset ultrafast', '-crf 22']);
                 } else {
-                    cmd = cmd.addOptions(['-preset ultrafast', '-crf 18']);
+                    cmd = cmd.addOptions(['-preset ultrafast', '-crf 22']);
                 }
 
                 cmd.output(outputVideoPath)
