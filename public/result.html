@@ -207,10 +207,11 @@
     </div>
 
     <div id="content" class="container" style="display: none;">
-        <!-- Centered Lumea Logo (Premium Branding like index.html) -->
+        <!-- Centered Lumea Logo or Title -->
         <div style="text-align: center; margin-bottom: 25px;">
             <img id="logoElement" src="/logo-lumea.png" alt="Lumea Logo"
                 style="height: 50px; width: auto; object-fit: contain; pointer-events: none;">
+            <div id="titleElement" class="scribble-title" style="display: none; font-size: min(8vh, 80px); font-family: var(--title-font-dyn, 'Luxurious Script', cursive); color: var(--title-color, white); text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); font-weight: 400; margin-bottom: 20px; line-height: 1.1; margin-top: 10px;"></div>
         </div>
 
 
@@ -271,9 +272,34 @@
                     if (configData.resultBtnTextColor) {
                         document.documentElement.style.setProperty('--btn-text-color', configData.resultBtnTextColor);
                     }
-                    if (configData.logoUrl) {
-                        const logoEl = document.getElementById('logoElement');
-                        if (logoEl) logoEl.src = configData.logoUrl;
+                    // Check idleHeadMode (Title vs Logo)
+                    const logoEl = document.getElementById('logoElement');
+                    const titleEl = document.getElementById('titleElement');
+
+                    if (configData.idleHeadMode === 'logo' && configData.logoUrl) {
+                        if (logoEl) {
+                            logoEl.src = configData.logoUrl;
+                            logoEl.style.display = 'inline-block';
+                        }
+                        if (titleEl) titleEl.style.display = 'none';
+                    } else {
+                        if (logoEl) logoEl.style.display = 'none';
+                        if (titleEl && configData.title) {
+                            const formatTitleText = (title) => {
+                                if (!title) return '';
+                                const match = title.match(/(?:<[^>]+>)*\s+(and|dan|bersama)\s+(?:<[^>]+>)*/i) || 
+                                              title.match(/(?:<[^>]+>)*\s*(&|\+)\s*(?:<[^>]+>)*/);
+                                if (match) {
+                                    const connectorHtml = match[0];
+                                    const parts = title.split(connectorHtml);
+                                    return '<span>' + parts[0].trim() + '</span> <span class="title-amp" style="font-family: \'Aref Ruqaa\', serif; font-size: 0.5em; vertical-align: middle; margin: 0 10px; opacity: 0.8;">' + connectorHtml.trim() + '</span> <span>' + parts.slice(1).join(connectorHtml).trim() + '</span>';
+                                }
+                                return '<span>' + title + '</span>';
+                            };
+                            titleEl.innerHTML = formatTitleText(configData.title);
+                            titleEl.style.display = 'block';
+                            if (configData.titleColor) titleEl.style.color = configData.titleColor;
+                        }
                     }
 
                     // Apply custom fonts

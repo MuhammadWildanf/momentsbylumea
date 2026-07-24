@@ -1,7 +1,10 @@
 
                     (function () {
                         try {
-                            const cached = localStorage.getItem('vb_config');
+                            const urlParams = new URLSearchParams(window.location.search);
+                            const eventId = urlParams.get('event') || '';
+                            const cacheKey = eventId ? 'vb_config_' + eventId : 'vb_config';
+                            const cached = localStorage.getItem(cacheKey);
                             if (cached) {
                                 const data = JSON.parse(cached);
                                 if (data.title) {

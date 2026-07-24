@@ -180,7 +180,10 @@
 
         function applyCachedTheme() {
             try {
-                const cached = localStorage.getItem('vb_config');
+                const urlParams = new URLSearchParams(window.location.search);
+                const eventId = urlParams.get('event') || '';
+                const cacheKey = eventId ? 'vb_config_' + eventId : 'vb_config';
+                const cached = localStorage.getItem(cacheKey);
                 if (!cached) return;
                 const data = JSON.parse(cached);
 
@@ -235,6 +238,15 @@
                 const brandingLogoEl = document.getElementById('branding-logo');
                 if (brandingLogoEl && data.logoUrl) {
                     brandingLogoEl.src = data.logoUrl;
+                }
+
+                const mainTitleEl = document.getElementById('main-title');
+                if (data.idleHeadMode === 'logo' && data.logoUrl) {
+                    if (mainTitleEl && !mainTitleEl.classList.contains('hidden')) mainTitleEl.classList.add('hidden');
+                    if (brandingLogoEl && brandingLogoEl.style.display !== 'block') brandingLogoEl.style.display = 'block';
+                } else {
+                    if (mainTitleEl && mainTitleEl.classList.contains('hidden')) mainTitleEl.classList.remove('hidden');
+                    if (brandingLogoEl && brandingLogoEl.style.display !== 'none') brandingLogoEl.style.display = 'none';
                 }
 
                 // Immediately apply cached background, frame and colors to prevent style flashing

@@ -542,8 +542,8 @@ async function saveConfig() {
         overlayImageUrl: overlayUrl || document.getElementById('overlayStatus').innerText,
         tutorialVideoUrl: tutUrl || document.getElementById('tutorialPath').innerText,
         resultVideoUrl: resUrl || document.getElementById('resultPath').innerText,
-        logoUrl: finalLogoUrl || (document.getElementById('logoPreview').src.includes('base64') ? '' : document.getElementById('logoPreview').src),
-        bottomLeftLogoUrl: finalBottomLeftLogoUrl || (document.getElementById('bottomLeftLogoPreview').src.includes('base64') ? '' : document.getElementById('bottomLeftLogoPreview').src)
+        logoUrl: finalLogoUrl || (document.getElementById('logoPreview').src.includes('base64') ? '' : new URL(document.getElementById('logoPreview').src, window.location.origin).pathname),
+        bottomLeftLogoUrl: finalBottomLeftLogoUrl || (document.getElementById('bottomLeftLogoPreview').src.includes('base64') ? '' : new URL(document.getElementById('bottomLeftLogoPreview').src, window.location.origin).pathname)
     };
 
     if (!payload.logoUrl || payload.logoUrl === 'null') {
@@ -560,7 +560,8 @@ async function saveConfig() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
     }).then(() => {
-        localStorage.setItem('vb_config', JSON.stringify(payload));
+        const cacheKey = eventId ? 'vb_config_' + eventId : 'vb_config';
+        localStorage.setItem(cacheKey, JSON.stringify(payload));
         btn.disabled = false;
         btn.innerHTML = "<span>💾</span> SAVE ALL SETTINGS";
         const msg = document.getElementById('successMsg');
