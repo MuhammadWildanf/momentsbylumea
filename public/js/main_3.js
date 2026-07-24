@@ -522,7 +522,6 @@
         // --- BOOTH LOGIC ---
         let stream, mediaRecorder, recordedChunks = [], videoBlob, photoBlob, isProcessing = false;
         const webcam = document.getElementById('webcam'), preview = document.getElementById('preview');
-        const drawing = document.getElementById('drawing_canvas'), dCtx = drawing.getContext('2d');
 
         async function startCameraFlow() {
             const n = document.getElementById('name').value;
@@ -557,71 +556,8 @@
                 };
 
                 changeState('ready');
-                if (window.enableGesture) initHandTracking();
             } catch (e) { alert("Camera Error: Check permissions."); console.error(e); }
         }
-
-        let hands = null;
-        function initHandTracking() {
-            hands = new Hands({ locateFile: (f) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${f}` });
-            hands.setOptions({ maxNumHands: 1, modelComplexity: 1, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
-            hands.onResults(onRes);
-            isProcessing = true;
-            webcam.onloadedmetadata = () => {
-                drawing.width = webcam.videoWidth; drawing.height = webcam.videoHeight;
-                loop();
-            };
-        }
-
-        let px = null, py = null;
-        function onRes(res) {
-            if (!isProcessing) return;
-            if (res.multiHandLandmarks?.length > 0) {
-                const lm = res.multiHandLandmarks[0];
-                const tip = lm[8], mcp = lm[5], mid = lm[12];
-
-                // Gesture logic: Index finger up, middle finger down
-                const isDraw = tip.y < mcp.y - 0.04 && mid.y > lm[10].y;
-
-                // Coordinate Smoothing
-                const rawX = tip.x * drawing.width;
-                const rawY = tip.y * drawing.height;
-
-                const cx = px ? px * 0.4 + rawX * 0.6 : rawX;
-                const cy = py ? py * 0.4 + rawY * 0.6 : rawY;
-
-                if (isDraw) {
-                    if (px) {
-                        dCtx.beginPath();
-                        dCtx.moveTo(px, py);
-                        dCtx.lineTo(cx, cy);
-
-                        // Premium Glow Effect
-                        const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
-                        dCtx.strokeStyle = accent || "#c5a059";
-                        dCtx.lineWidth = 14;
-                        dCtx.lineCap = "round";
-                        dCtx.lineJoin = "round";
-
-                        dCtx.shadowBlur = 10;
-                        dCtx.shadowColor = accent || "#c5a059";
-
-                        dCtx.stroke();
-
-                        // Add an extra inner white line for a "light pen" effect
-                        dCtx.beginPath();
-                        dCtx.moveTo(px, py);
-                        dCtx.lineTo(cx, cy);
-                        dCtx.strokeStyle = "#ffffff";
-                        dCtx.lineWidth = 4;
-                        dCtx.shadowBlur = 0;
-                        dCtx.stroke();
-                    }
-                    px = cx; py = cy;
-                } else { px = null; py = null; }
-            }
-        }
-        async function loop() { if (isProcessing) await hands.send({ image: webcam }); requestAnimationFrame(loop); }
 
         function startRecording() {
             // Fase 1: Persiapan 3, 2, 1
@@ -681,7 +617,6 @@
                 rctx.save();
                 // Removed mirror logic for 'Normal' recording
                 rctx.drawImage(webcam, 0, 0, rc.width, rc.height);
-                if (window.enableGesture) rctx.drawImage(drawing, 0, 0, rc.width, rc.height);
                 rctx.restore();
                 requestAnimationFrame(rloop);
             };
@@ -768,7 +703,6 @@
             rc.height = webcam.videoHeight;
             const rctx = rc.getContext('2d');
             rctx.drawImage(webcam, 0, 0);
-            if (window.enableGesture) rctx.drawImage(drawing, 0, 0);
 
             rc.toBlob((blob) => {
                 photoBlob = blob;
@@ -793,10 +727,7 @@
             const nameEl = document.getElementById('name');
             if (nameEl) nameEl.value = '';
 
-            // Clear drawing canvas
-            if (typeof dCtx !== 'undefined' && dCtx) {
-                dCtx.clearRect(0, 0, 10000, 10000);
-            }
+
 
             // Clear recorded blobs and preview source
             videoBlob = null;
