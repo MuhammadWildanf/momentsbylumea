@@ -35,6 +35,7 @@
             --result-panel-border: rgba(197, 160, 89, 0.3);
             --loading-color: #c5a059;
             --error-color: #ef4444;
+            --processing-color: #c5a059;
         }
 
         * {
@@ -292,6 +293,9 @@
                     if (configData.resultErrorTextColor) {
                         document.documentElement.style.setProperty('--error-color', configData.resultErrorTextColor);
                     }
+                    if (configData.resultProcessingTextColor) {
+                        document.documentElement.style.setProperty('--processing-color', configData.resultProcessingTextColor);
+                    }
                     // Check idleHeadMode (Title vs Logo)
                     const logoEl = document.getElementById('logoElement');
                     const titleEl = document.getElementById('titleElement');
@@ -437,6 +441,7 @@
                             errorEl.innerHTML = window.resultErrorTextVal;
                             errorEl.style.display = 'block';
                         } else {
+                            loadingEl.style.color = 'var(--processing-color, var(--loading-color))';
                             loadingEl.innerHTML = window.resultProcessingTextVal;
                             setTimeout(checkResult, 3000);
                         }

@@ -105,6 +105,7 @@ const DEFAULT_CONFIG = {
     resultTitleColor: "#F0E5C7",
     resultLoadingTextColor: "#c5a059",
     resultErrorTextColor: "#ef4444",
+    resultProcessingTextColor: "#c5a059",
     gallerySearchLabelColor: "#f0e5c7",
     galleryResetBtnBgColor: "#2a221b",
     galleryResetBtnTextColor: "#f0e5c7",

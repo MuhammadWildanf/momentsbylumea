@@ -166,6 +166,7 @@ fetch('/api/config' + (eventId ? '?eventId=' + eventId : ''), { cache: 'no-store
         document.getElementById('resultTitleColor').value = data.resultTitleColor || '#F0E5C7';
         document.getElementById('resultLoadingTextColor').value = data.resultLoadingTextColor || '#c5a059';
         document.getElementById('resultErrorTextColor').value = data.resultErrorTextColor || '#ef4444';
+        document.getElementById('resultProcessingTextColor').value = data.resultProcessingTextColor || '#c5a059';
 
         // Gallery Settings
         document.getElementById('galleryTitle').value = data.galleryTitle || 'Your Special Memories';
@@ -312,7 +313,8 @@ function applyMasterColor() {
         'gallerySearchLabelColor', 'galleryResetBtnTextColor', 'galleryFooterTextColor',
         'galleryTextColor', 'galleryTitleColor', 'galleryFilterBorderColor', 'resultTextColor',
         'resultTitleColor', 'resultLoadingTextColor', 'resultErrorTextColor', 'galleryCardNameColor',
-        'galleryCardDateColor', 'galleryCardBorderColor', 'resultPanelBorderColor', 'galleryDateColor'
+        'galleryCardDateColor', 'galleryCardBorderColor', 'resultPanelBorderColor', 'galleryDateColor',
+        'resultProcessingTextColor'
     ];
     fields.forEach(fieldId => {
         const el = document.getElementById(fieldId);
@@ -542,6 +544,7 @@ async function saveConfig() {
         resultTitleColor: document.getElementById('resultTitleColor').value,
         resultLoadingTextColor: document.getElementById('resultLoadingTextColor').value,
         resultErrorTextColor: document.getElementById('resultErrorTextColor').value,
+        resultProcessingTextColor: document.getElementById('resultProcessingTextColor').value,
 
         galleryTitle: document.getElementById('galleryTitle').value,
         gallerySearchLabel: document.getElementById('gallerySearchLabel').value,
