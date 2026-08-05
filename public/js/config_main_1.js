@@ -113,6 +113,8 @@ fetch('/api/config' + (eventId ? '?eventId=' + eventId : ''), { cache: 'no-store
         document.getElementById('gallerySearchLabelColor').value = data.gallerySearchLabelColor || '#94a3b8';
         document.getElementById('galleryResetBtnBgColor').value = data.galleryResetBtnBgColor || '#2a221b';
         document.getElementById('galleryResetBtnTextColor').value = data.galleryResetBtnTextColor || '#F0E5C7';
+        document.getElementById('galleryBtnBgColor').value = data.galleryBtnBgColor || '#2a221b';
+        document.getElementById('galleryBtnTextColor').value = data.galleryBtnTextColor || '#c5a059';
         document.getElementById('galleryFooterTextColor').value = data.galleryFooterTextColor || '#CDCDCD';
 
         document.getElementById('fontUrl').value = data.fontUrl || '';
@@ -341,7 +343,7 @@ function applyMasterBgColor() {
         'readyBackBtnBgColor', 'reviewPhotoBtnBgColor', 'reviewRetakeBtnBgColor',
         'photoRecordBtnBgColor', 'photoBackBtnBgColor', 'finalRetakeAllBtnBgColor',
         'finalRetakePhotoBtnBgColor', 'finalUploadBtnBgColor', 'successDoneBtnBgColor',
-        'galleryResetBtnBgColor', 'galleryFilterBgColor', 'resultPanelBgColor', 'galleryCardBgColor'
+        'galleryResetBtnBgColor', 'galleryFilterBgColor', 'resultPanelBgColor', 'galleryCardBgColor', 'galleryBtnBgColor'
     ];
     bgFields.forEach(fieldId => {
         const el = document.getElementById(fieldId);
@@ -507,6 +509,8 @@ async function saveConfig() {
         gallerySearchLabelColor: document.getElementById('gallerySearchLabelColor').value,
         galleryResetBtnBgColor: document.getElementById('galleryResetBtnBgColor').value,
         galleryResetBtnTextColor: document.getElementById('galleryResetBtnTextColor').value,
+        galleryBtnBgColor: document.getElementById('galleryBtnBgColor').value,
+        galleryBtnTextColor: document.getElementById('galleryBtnTextColor').value,
         galleryFooterTextColor: document.getElementById('galleryFooterTextColor').value,
 
         fontSelector: document.getElementById('fontSelector').value,

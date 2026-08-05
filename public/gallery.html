@@ -416,10 +416,10 @@
             justify-content: center;
             gap: 6px;
             padding: 10px 5px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--accent);
+            background: var(--gallery-btn-bg, rgba(255, 255, 255, 0.02));
+            border: 1px solid var(--gallery-btn-text, var(--border));
+            border-radius: 50px;
+            color: var(--gallery-btn-text, var(--accent));
             font-family: 'Aref Ruqaa', serif;
             font-size: 12px;
             font-weight: 700;
@@ -751,6 +751,7 @@
 
         function applyConfigToDOM(data) {
             if (!data) return;
+            window.eventConfig = data;
 
             // Update active event date if present
             if (data.eventDate) {
@@ -834,6 +835,12 @@
             document.documentElement.style.setProperty('--card-name-color', data.galleryCardNameColor || '#c5a059');
             document.documentElement.style.setProperty('--card-date-color', data.galleryCardDateColor || '#a0a0a0');
             document.documentElement.style.setProperty('--gallery-date-color', data.galleryDateColor || '#c5a059');
+            if (data.galleryBtnBgColor) {
+                document.documentElement.style.setProperty('--gallery-btn-bg', data.galleryBtnBgColor);
+            }
+            if (data.galleryBtnTextColor) {
+                document.documentElement.style.setProperty('--gallery-btn-text', data.galleryBtnTextColor);
+            }
             // Check idleHeadMode (Title vs Logo)
             const logoEl = document.getElementById('logoElement');
             const titleElementEl = document.getElementById('titleElement');
@@ -957,11 +964,14 @@
 
                 // Action download row
                 let actionRowHtml = '<div class="card-actions">';
+                const saveVideoText = (window.eventConfig && window.eventConfig.resultSaveVideoText) || '🎬 Save Your Video';
+                const savePhotoText = (window.eventConfig && window.eventConfig.resultSavePhotoText) || '📸 Save Your Photo';
+
                 if (s.videoLink) {
-                    actionRowHtml += `<a href="/api/download?url=${encodeURIComponent(s.videoLink)}&name=Video-${s.name.replace(/\s+/g, '-')}.mp4" class="btn-download">🎬 Video</a>`;
+                    actionRowHtml += `<a href="/api/download?url=${encodeURIComponent(s.videoLink)}&name=Video-${s.name.replace(/\s+/g, '-')}.mp4" class="btn-download">${saveVideoText}</a>`;
                 }
                 if (s.photoLink) {
-                    actionRowHtml += `<a href="/api/download?url=${encodeURIComponent(s.photoLink)}&name=Photo-${s.name.replace(/\s+/g, '-')}.jpg" class="btn-download">📸 Photo</a>`;
+                    actionRowHtml += `<a href="/api/download?url=${encodeURIComponent(s.photoLink)}&name=Photo-${s.name.replace(/\s+/g, '-')}.jpg" class="btn-download">${savePhotoText}</a>`;
                 }
                 actionRowHtml += '</div>';
 
