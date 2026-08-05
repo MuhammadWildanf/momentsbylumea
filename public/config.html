@@ -869,12 +869,30 @@
                 </h3>
                 <div class="grid-2">
                     <div class="input-group">
-                        <label>Initial Loading Text</label>
-                        <input type="text" id="resultLoadingText" placeholder="Loading your memories... ✨">
+                        <label>Initial Loading Text & Color</label>
+                        <div class="input-with-color">
+                            <div class="text-control">
+                                <input type="text" id="resultLoadingText" placeholder="Loading your memories... ✨">
+                            </div>
+                            <div class="color-control">
+                                <div class="color-row" style="padding: 6px 10px;">
+                                    <input type="color" id="resultLoadingTextColor" title="Pick Loading Color">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="input-group">
-                        <label>Session Not Found Text</label>
-                        <input type="text" id="resultErrorText" placeholder="Sorry, your session was not found or has expired.">
+                        <label>Session Not Found Text & Color</label>
+                        <div class="input-with-color">
+                            <div class="text-control">
+                                <input type="text" id="resultErrorText" placeholder="Sorry, your session was not found or has expired.">
+                            </div>
+                            <div class="color-control">
+                                <div class="color-row" style="padding: 6px 10px;">
+                                    <input type="color" id="resultErrorTextColor" title="Pick Error Color">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="input-group" style="margin-top: 10px;">
@@ -891,12 +909,12 @@
                         <input type="text" id="resultSavePhotoText" placeholder="📸 Save Your Photo">
                     </div>
                 </div>
-                <div class="grid-2" style="margin-top: 10px; background: rgba(255,255,255,0.02); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                <div class="grid-2" style="margin-top: 10px; background: rgba(255,255,255,0.02); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04); gap: 15px;">
                     <div class="input-group">
                         <label style="color: var(--accent);">Save Buttons Background Color</label>
                         <div style="display: flex; gap: 8px; align-items: center; margin-top: 5px;">
                             <input type="color" id="resultBtnBgColor" value="#721c24" style="width: 50px; height: 40px; padding: 2px; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; cursor: pointer; background: transparent;">
-                            <span style="font-size: 11px; color: var(--text-muted);">Pick Background Color</span>
+                            <span style="font-size: 11px; color: var(--text-muted);">Pick BG Color</span>
                         </div>
                     </div>
                     <div class="input-group">
@@ -906,10 +924,40 @@
                             <span style="font-size: 11px; color: var(--text-muted);">Pick Text Color</span>
                         </div>
                     </div>
+                    <div class="input-group">
+                        <label style="color: var(--accent);">Panel Background Color</label>
+                        <div style="display: flex; gap: 8px; align-items: center; margin-top: 5px;">
+                            <input type="color" id="resultPanelBgColor" value="#140f0a" style="width: 50px; height: 40px; padding: 2px; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; cursor: pointer; background: transparent;">
+                            <span style="font-size: 11px; color: var(--text-muted);">Pick Panel BG</span>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label style="color: var(--accent);">Panel Border Color</label>
+                        <div style="display: flex; gap: 8px; align-items: center; margin-top: 5px;">
+                            <input type="color" id="resultPanelBorderColor" value="#c5a059" style="width: 50px; height: 40px; padding: 2px; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; cursor: pointer; background: transparent;">
+                            <span style="font-size: 11px; color: var(--text-muted);">Pick Border Color</span>
+                        </div>
+                    </div>
+                    <div class="input-group" style="grid-column: span 2;">
+                        <label style="color: var(--accent);">Title Text Color</label>
+                        <div style="display: flex; gap: 8px; align-items: center; margin-top: 5px;">
+                            <input type="color" id="resultTitleColor" value="#F0E5C7" style="width: 50px; height: 40px; padding: 2px; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; cursor: pointer; background: transparent;">
+                            <span style="font-size: 11px; color: var(--text-muted);">Pick Title Color</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="input-group" style="margin-top: 15px;">
-                    <label>Result Page Footer Text</label>
-                    <input type="text" id="resultFooterText" placeholder="Here’s to the moments you’ll always look back on - @momentsbylumea"></input>
+                    <label>Result Page Footer Text & Color</label>
+                    <div class="input-with-color">
+                        <div class="text-control">
+                            <input type="text" id="resultFooterText" placeholder="Here’s to the moments you’ll always look back on - @momentsbylumea">
+                        </div>
+                        <div class="color-control">
+                            <div class="color-row" style="padding: 6px 10px;">
+                                <input type="color" id="resultTextColor" title="Pick General Text Color">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -922,67 +970,126 @@
                 </h3>
                 <div class="grid-2">
                     <div class="input-group">
-                        <label>Gallery Title</label>
-                        <input type="text" id="galleryTitle" placeholder="Your Special Memories">
-                    </div>
-                    <div class="input-group">
-                        <label>Title Color</label>
-                        <div class="color-control">
-                            <input type="color" id="galleryTitleColor" class="input-with-color" value="#F0E5C7">
+                        <label>Gallery Title & Color</label>
+                        <div class="input-with-color">
+                            <div class="text-control">
+                                <input type="text" id="galleryTitle" placeholder="Your Special Memories">
+                            </div>
+                            <div class="color-control">
+                                <div class="color-row" style="padding: 6px 10px;">
+                                    <input type="color" id="galleryTitleColor" value="#F0E5C7" title="Title Color">
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="input-group">
-                        <label>Search Box Label</label>
-                        <input type="text" id="gallerySearchLabel" placeholder="SEARCH GUEST NAME">
-                    </div>
-                    <div class="input-group">
-                        <label>Search Label Color</label>
-                        <div class="color-control">
-                            <input type="color" id="gallerySearchLabelColor" class="input-with-color" value="#94a3b8">
+                        <label>Search Box Label & Color</label>
+                        <div class="input-with-color">
+                            <div class="text-control">
+                                <input type="text" id="gallerySearchLabel" placeholder="SEARCH GUEST NAME">
+                            </div>
+                            <div class="color-control">
+                                <div class="color-row" style="padding: 6px 10px;">
+                                    <input type="color" id="gallerySearchLabelColor" value="#94a3b8" title="Label Color">
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="input-group">
-                        <label>Search Box Placeholder</label>
-                        <input type="text" id="gallerySearchPlaceholder" placeholder="Type your name here...">
+                        <label>Search Box Placeholder & Main Text Color</label>
+                        <div class="input-with-color">
+                            <div class="text-control">
+                                <input type="text" id="gallerySearchPlaceholder" placeholder="Type your name here...">
+                            </div>
+                            <div class="color-control">
+                                <div class="color-row" style="padding: 6px 10px;">
+                                    <input type="color" id="galleryTextColor" value="#ffffff" title="Main Text Color">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="input-group">
                         <label>Empty State Text</label>
                         <input type="text" id="galleryEmptyText" placeholder="No memories found yet.">
                     </div>
                     <div class="input-group">
-                        <label>Reset Button Text</label>
-                        <input type="text" id="galleryResetBtnText" placeholder="Reset Filters">
-                    </div>
-                    <div class="input-group">
-                        <label>Reset Button BG & Text Color</label>
-                        <div class="color-control">
-                            <div class="color-row" style="padding: 6px 10px;">
-                                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">BG</span><input type="color" id="galleryResetBtnBgColor" value="#2a221b"></div>
-                                <span class="color-divider"></span>
-                                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Text</span><input type="color" id="galleryResetBtnTextColor" value="#F0E5C7"></div>
+                        <label>Reset Button Text & Colors</label>
+                        <div class="input-with-color">
+                            <div class="text-control">
+                                <input type="text" id="galleryResetBtnText" placeholder="Reset Filters">
                             </div>
-                        </div>
-                    </div>
-                    <div class="input-group" style="grid-column: 1 / -1;">
-                        <label>Footer Text</label>
-                        <input type="text" id="galleryFooterText" placeholder="Here’s to the moments you’ll always look back on">
-                    </div>
-                    <div class="input-group">
-                        <label>Footer Text Color</label>
-                        <div class="color-control">
-                            <input type="color" id="galleryFooterTextColor" class="input-with-color" value="#CDCDCD">
-                        </div>
-                    </div>
-                    <div class="input-group">
-                        <label>Main Text Color</label>
-                        <div class="color-control">
-                            <input type="color" id="galleryTextColor" class="input-with-color" value="#ffffff">
+                            <div class="color-control">
+                                <div class="color-row" style="padding: 6px 10px;">
+                                    <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">BG</span><input type="color" id="galleryResetBtnBgColor" value="#2a221b"></div>
+                                    <span class="color-divider"></span>
+                                    <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><span style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Text</span><input type="color" id="galleryResetBtnTextColor" value="#F0E5C7"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="input-group">
                         <label>Background Color</label>
-                        <div class="color-control">
-                            <input type="color" id="galleryBgColor" class="input-with-color" value="#0a0a0b">
+                        <div class="color-control" style="width: 100%;">
+                            <div class="color-row" style="padding: 6px 10px;">
+                                <input type="color" id="galleryBgColor" value="#0a0a0b" style="width: 100%;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group" style="grid-column: 1 / -1;">
+                        <label>Footer Text & Color</label>
+                        <div class="input-with-color">
+                            <div class="text-control">
+                                <input type="text" id="galleryFooterText" placeholder="Here’s to the moments you’ll always look back on">
+                            </div>
+                            <div class="color-control">
+                                <div class="color-row" style="padding: 6px 10px;">
+                                    <input type="color" id="galleryFooterTextColor" value="#CDCDCD" title="Footer Color">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid-2" style="margin-top: 10px; background: rgba(255,255,255,0.02); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04); gap: 15px;">
+                    <div class="input-group">
+                        <label style="color: var(--accent);">Filter Panel Background Color</label>
+                        <div style="display: flex; gap: 8px; align-items: center; margin-top: 5px;">
+                            <input type="color" id="galleryFilterBgColor" value="#140f0a" style="width: 50px; height: 40px; padding: 2px; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; cursor: pointer; background: transparent;">
+                            <span style="font-size: 11px; color: var(--text-muted);">Pick BG Color</span>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label style="color: var(--accent);">Filter Panel Border Color</label>
+                        <div style="display: flex; gap: 8px; align-items: center; margin-top: 5px;">
+                            <input type="color" id="galleryFilterBorderColor" value="#c5a059" style="width: 50px; height: 40px; padding: 2px; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; cursor: pointer; background: transparent;">
+                            <span style="font-size: 11px; color: var(--text-muted);">Pick Border Color</span>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label style="color: var(--accent);">Card Background Color</label>
+                        <div style="display: flex; gap: 8px; align-items: center; margin-top: 5px;">
+                            <input type="color" id="galleryCardBgColor" value="#140f0a" style="width: 50px; height: 40px; padding: 2px; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; cursor: pointer; background: transparent;">
+                            <span style="font-size: 11px; color: var(--text-muted);">Pick BG Color</span>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label style="color: var(--accent);">Card Border Color</label>
+                        <div style="display: flex; gap: 8px; align-items: center; margin-top: 5px;">
+                            <input type="color" id="galleryCardBorderColor" value="#c5a059" style="width: 50px; height: 40px; padding: 2px; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; cursor: pointer; background: transparent;">
+                            <span style="font-size: 11px; color: var(--text-muted);">Pick Border Color</span>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label style="color: var(--accent);">Card Guest Name Color</label>
+                        <div style="display: flex; gap: 8px; align-items: center; margin-top: 5px;">
+                            <input type="color" id="galleryCardNameColor" value="#c5a059" style="width: 50px; height: 40px; padding: 2px; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; cursor: pointer; background: transparent;">
+                            <span style="font-size: 11px; color: var(--text-muted);">Pick Name Color</span>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label style="color: var(--accent);">Card Date Color</label>
+                        <div style="display: flex; gap: 8px; align-items: center; margin-top: 5px;">
+                            <input type="color" id="galleryCardDateColor" value="#a0a0a0" style="width: 50px; height: 40px; padding: 2px; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; cursor: pointer; background: transparent;">
+                            <span style="font-size: 11px; color: var(--text-muted);">Pick Date Color</span>
                         </div>
                     </div>
                 </div>
@@ -1047,8 +1154,17 @@
                         <input type="number" id="qrResetDuration">
                     </div>
                     <div class="input-group">
-                        <label>Guest Gallery Event Date (YYYY-MM-DD)</label>
-                        <input type="date" id="eventDate" style="color-scheme: dark;">
+                        <label>Guest Gallery Event Date & Color</label>
+                        <div class="input-with-color">
+                            <div class="text-control">
+                                <input type="date" id="eventDate" style="color-scheme: dark;">
+                            </div>
+                            <div class="color-control">
+                                <div class="color-row" style="padding: 6px 10px;">
+                                    <input type="color" id="galleryDateColor" title="Pick Date Color">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="grid-2">

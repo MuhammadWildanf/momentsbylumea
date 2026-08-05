@@ -19,8 +19,16 @@
                 // Apply Colors
                 if (data.bgColor1) root.style.setProperty('--bg-1', data.bgColor1);
                 if (data.bgColor2) root.style.setProperty('--bg-2', data.bgColor2);
-                if (data.galleryTextColor) root.style.setProperty('--text-main', data.galleryTextColor);
-                if (data.galleryBgColor) root.style.setProperty('--bg-dark', data.galleryBgColor);
+                root.style.setProperty('--accent', data.accentColor || '#c5a059');
+                root.style.setProperty('--text-main', data.galleryTextColor || '#f8fafc');
+                root.style.setProperty('--bg-dark', data.galleryBgColor || '#0a0a0b');
+                root.style.setProperty('--filter-panel-bg', data.galleryFilterBgColor || 'rgba(20, 15, 10, 0.75)');
+                root.style.setProperty('--filter-panel-border', data.galleryFilterBorderColor || 'rgba(197, 160, 89, 0.2)');
+                root.style.setProperty('--card-bg', data.galleryCardBgColor || 'rgba(20, 15, 10, 0.7)');
+                root.style.setProperty('--card-border', data.galleryCardBorderColor || 'rgba(197, 160, 89, 0.2)');
+                root.style.setProperty('--card-name-color', data.galleryCardNameColor || '#c5a059');
+                root.style.setProperty('--card-date-color', data.galleryCardDateColor || '#a0a0a0');
+                root.style.setProperty('--gallery-date-color', data.galleryDateColor || '#c5a059');
                 if (data.galleryTitleColor) {
                     document.write('<style>#galleryTitle { color: ' + data.galleryTitleColor + ' !important; }</style>');
                 }
@@ -76,6 +84,12 @@
             --text-muted: #a0a0a0;
             --border: rgba(197, 160, 89, 0.2);
             --card-bg: rgba(20, 15, 10, 0.7);
+            --card-border: rgba(197, 160, 89, 0.2);
+            --card-name-color: #c5a059;
+            --card-date-color: #a0a0a0;
+            --gallery-date-color: #c5a059;
+            --filter-panel-bg: rgba(20, 15, 10, 0.75);
+            --filter-panel-border: rgba(197, 160, 89, 0.2);
         }
 
         * {
@@ -168,9 +182,9 @@
         .filter-panel {
             width: 90%;
             max-width: 700px;
-            background: rgba(20, 15, 10, 0.75);
+            background: var(--filter-panel-bg, rgba(20, 15, 10, 0.75));
             backdrop-filter: blur(25px);
-            border: 1px solid var(--border);
+            border: 1px solid var(--filter-panel-border, var(--border));
             border-radius: 24px;
             padding: 25px 30px;
             margin-bottom: 40px;
@@ -216,11 +230,16 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             padding: 14px 15px 14px 42px;
-            color: #fff;
+            color: var(--text-main, #fff);
             font-family: 'Playfair Display', serif;
             font-size: 14px;
             outline: none;
             transition: all 0.3s;
+        }
+
+        input[type="text"]::placeholder {
+            color: var(--text-main, #fff);
+            opacity: 0.5;
         }
 
         input[type="date"] {
@@ -277,7 +296,7 @@
         /* Guest Cards */
         .guest-card {
             background: var(--card-bg);
-            border: 1px solid var(--border);
+            border: 1px solid var(--card-border, var(--border));
             border-radius: 20px;
             padding: 20px;
             backdrop-filter: blur(15px);
@@ -289,7 +308,7 @@
 
         .guest-card:hover {
             transform: translateY(-5px);
-            border-color: rgba(197, 160, 89, 0.5);
+            border-color: var(--card-name-color, var(--accent));
             box-shadow: 0 20px 40px rgba(197, 160, 89, 0.12);
         }
 
@@ -305,14 +324,14 @@
         .guest-name {
             font-family: 'Aref Ruqaa', serif;
             font-size: 17px;
-            color: var(--accent);
+            color: var(--card-name-color, var(--accent));
             font-weight: 700;
             word-break: break-word;
         }
 
         .guest-date {
             font-size: 11px;
-            color: var(--text-muted);
+            color: var(--card-date-color, var(--text-muted));
             white-space: nowrap;
         }
 
@@ -421,7 +440,8 @@
             grid-column: 1 / -1;
             text-align: center;
             padding: 80px 0;
-            color: var(--text-muted);
+            color: var(--text-main, var(--text-muted));
+            opacity: 0.7;
             font-size: 16px;
         }
 
@@ -753,7 +773,7 @@
                 // Clear inline after styles because the head script handles ::after content now
                 // We just inject the date part dynamically into the h1
                 const titleText = data.galleryTitle || 'Your Special Memories';
-                titleEl.innerHTML = `${titleText} <span style="opacity: 0.8; margin-left: 8px; color: var(--accent); font-weight: normal;">&bull; ${formattedEventDate}</span>`;
+                titleEl.innerHTML = `${titleText} <span style="opacity: 0.8; margin-left: 8px; color: var(--gallery-date-color, var(--accent)); font-weight: normal;">&bull; ${formattedEventDate}</span>`;
             } catch (e) {
                 console.error('Date format error:', e);
             }
@@ -806,9 +826,14 @@
             } else {
                 document.body.style.backgroundImage = 'radial-gradient(circle at center, var(--bg-1, #1a0f0a) 0%, var(--bg-2, #100a06) 100%)';
             }
-            if (data.accentColor) {
-                document.documentElement.style.setProperty('--accent', data.accentColor);
-            }
+            document.documentElement.style.setProperty('--accent', data.accentColor || '#c5a059');
+            document.documentElement.style.setProperty('--filter-panel-bg', data.galleryFilterBgColor || 'rgba(20, 15, 10, 0.75)');
+            document.documentElement.style.setProperty('--filter-panel-border', data.galleryFilterBorderColor || 'rgba(197, 160, 89, 0.2)');
+            document.documentElement.style.setProperty('--card-bg', data.galleryCardBgColor || 'rgba(20, 15, 10, 0.7)');
+            document.documentElement.style.setProperty('--card-border', data.galleryCardBorderColor || 'rgba(197, 160, 89, 0.2)');
+            document.documentElement.style.setProperty('--card-name-color', data.galleryCardNameColor || '#c5a059');
+            document.documentElement.style.setProperty('--card-date-color', data.galleryCardDateColor || '#a0a0a0');
+            document.documentElement.style.setProperty('--gallery-date-color', data.galleryDateColor || '#c5a059');
             // Check idleHeadMode (Title vs Logo)
             const logoEl = document.getElementById('logoElement');
             const titleElementEl = document.getElementById('titleElement');

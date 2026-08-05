@@ -160,6 +160,12 @@ fetch('/api/config' + (eventId ? '?eventId=' + eventId : ''), { cache: 'no-store
         document.getElementById('resultFooterText').value = data.resultFooterText || 'Here’s to the moments you’ll always look back on - @momentsbylumea';
         document.getElementById('resultBtnBgColor').value = data.resultBtnBgColor || '#721c24';
         document.getElementById('resultBtnTextColor').value = data.resultBtnTextColor || '#ffffff';
+        document.getElementById('resultTextColor').value = data.resultTextColor || '#f8fafc';
+        document.getElementById('resultPanelBgColor').value = data.resultPanelBgColor || 'rgba(20, 15, 10, 0.85)';
+        document.getElementById('resultPanelBorderColor').value = data.resultPanelBorderColor || 'rgba(197, 160, 89, 0.3)';
+        document.getElementById('resultTitleColor').value = data.resultTitleColor || '#F0E5C7';
+        document.getElementById('resultLoadingTextColor').value = data.resultLoadingTextColor || '#c5a059';
+        document.getElementById('resultErrorTextColor').value = data.resultErrorTextColor || '#ef4444';
 
         // Gallery Settings
         document.getElementById('galleryTitle').value = data.galleryTitle || 'Your Special Memories';
@@ -171,10 +177,17 @@ fetch('/api/config' + (eventId ? '?eventId=' + eventId : ''), { cache: 'no-store
         document.getElementById('galleryTextColor').value = data.galleryTextColor || '#ffffff';
         document.getElementById('galleryTitleColor').value = data.galleryTitleColor || '#F0E5C7';
         document.getElementById('galleryBgColor').value = data.galleryBgColor || '#0a0a0b';
+        document.getElementById('galleryFilterBgColor').value = data.galleryFilterBgColor || '#140f0a';
+        document.getElementById('galleryFilterBorderColor').value = data.galleryFilterBorderColor || '#c5a059';
+        document.getElementById('galleryCardBgColor').value = data.galleryCardBgColor || 'rgba(20, 15, 10, 0.7)';
+        document.getElementById('galleryCardBorderColor').value = data.galleryCardBorderColor || 'rgba(197, 160, 89, 0.2)';
+        document.getElementById('galleryCardNameColor').value = data.galleryCardNameColor || '#c5a059';
+        document.getElementById('galleryCardDateColor').value = data.galleryCardDateColor || '#a0a0a0';
 
         document.getElementById('recordingDuration').value = data.recordingDuration || 15;
         document.getElementById('qrResetDuration').value = data.qrResetDuration || 45;
         document.getElementById('eventDate').value = data.eventDate || '2026-05-23';
+        document.getElementById('galleryDateColor').value = data.galleryDateColor || '#c5a059';
         document.getElementById('showLeftPanel').checked = data.showLeftPanel !== false;
         document.getElementById('showRightPanel').checked = data.showRightPanel !== false;
 
@@ -297,7 +310,9 @@ function applyMasterColor() {
         'finalUploadTextColor', 'successFooterTextColor', 'successDoneTextColor',
         'readyRecordBtnTextColor', 'photoRecordBtnTextColor',
         'gallerySearchLabelColor', 'galleryResetBtnTextColor', 'galleryFooterTextColor',
-        'galleryTextColor', 'galleryTitleColor'
+        'galleryTextColor', 'galleryTitleColor', 'galleryFilterBorderColor', 'resultTextColor',
+        'resultTitleColor', 'resultLoadingTextColor', 'resultErrorTextColor', 'galleryCardNameColor',
+        'galleryCardDateColor', 'galleryCardBorderColor', 'resultPanelBorderColor', 'galleryDateColor'
     ];
     fields.forEach(fieldId => {
         const el = document.getElementById(fieldId);
@@ -324,7 +339,7 @@ function applyMasterBgColor() {
         'readyBackBtnBgColor', 'reviewPhotoBtnBgColor', 'reviewRetakeBtnBgColor',
         'photoRecordBtnBgColor', 'photoBackBtnBgColor', 'finalRetakeAllBtnBgColor',
         'finalRetakePhotoBtnBgColor', 'finalUploadBtnBgColor', 'successDoneBtnBgColor',
-        'galleryResetBtnBgColor'
+        'galleryResetBtnBgColor', 'galleryFilterBgColor', 'resultPanelBgColor', 'galleryCardBgColor'
     ];
     bgFields.forEach(fieldId => {
         const el = document.getElementById(fieldId);
@@ -521,6 +536,12 @@ async function saveConfig() {
         resultFooterText: document.getElementById('resultFooterText').value,
         resultBtnBgColor: document.getElementById('resultBtnBgColor').value,
         resultBtnTextColor: document.getElementById('resultBtnTextColor').value,
+        resultTextColor: document.getElementById('resultTextColor').value,
+        resultPanelBgColor: document.getElementById('resultPanelBgColor').value,
+        resultPanelBorderColor: document.getElementById('resultPanelBorderColor').value,
+        resultTitleColor: document.getElementById('resultTitleColor').value,
+        resultLoadingTextColor: document.getElementById('resultLoadingTextColor').value,
+        resultErrorTextColor: document.getElementById('resultErrorTextColor').value,
 
         galleryTitle: document.getElementById('galleryTitle').value,
         gallerySearchLabel: document.getElementById('gallerySearchLabel').value,
@@ -531,6 +552,13 @@ async function saveConfig() {
         galleryTextColor: document.getElementById('galleryTextColor').value,
         galleryTitleColor: document.getElementById('galleryTitleColor').value,
         galleryBgColor: document.getElementById('galleryBgColor').value,
+        galleryFilterBgColor: document.getElementById('galleryFilterBgColor').value,
+        galleryFilterBorderColor: document.getElementById('galleryFilterBorderColor').value,
+        galleryCardBgColor: document.getElementById('galleryCardBgColor').value,
+        galleryCardBorderColor: document.getElementById('galleryCardBorderColor').value,
+        galleryCardNameColor: document.getElementById('galleryCardNameColor').value,
+        galleryCardDateColor: document.getElementById('galleryCardDateColor').value,
+        galleryDateColor: document.getElementById('galleryDateColor').value,
         recordingDuration: parseInt(document.getElementById('recordingDuration').value),
         qrResetDuration: parseInt(document.getElementById('qrResetDuration').value),
         eventDate: document.getElementById('eventDate').value,

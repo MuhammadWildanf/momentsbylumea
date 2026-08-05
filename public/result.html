@@ -31,6 +31,10 @@
             --bg-1: #1a0f0a;
             --bg-2: #100a06;
             --text-main: #f8fafc;
+            --result-panel-bg: rgba(20, 15, 10, 0.85);
+            --result-panel-border: rgba(197, 160, 89, 0.3);
+            --loading-color: #c5a059;
+            --error-color: #ef4444;
         }
 
         * {
@@ -57,9 +61,9 @@
         .container {
             max-width: 900px;
             width: 100%;
-            background: rgba(20, 15, 10, 0.85);
+            background: var(--result-panel-bg);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(197, 160, 89, 0.3);
+            border: 1px solid var(--result-panel-border);
             border-radius: 20px;
             padding: 50px 30px;
             text-align: center;
@@ -144,12 +148,12 @@
 
         .loading {
             font-size: 24px;
-            color: var(--accent);
+            color: var(--loading-color);
             margin-top: 50px;
         }
 
         .error-state {
-            color: #ef4444;
+            color: var(--error-color);
             font-size: 20px;
             margin-top: 50px;
             display: none;
@@ -158,7 +162,8 @@
         .footer-text {
             margin-top: 50px;
             font-size: 14px;
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--text-main);
+            opacity: 0.8;
         }
 
         /* Responsive Design untuk Mobile */
@@ -272,6 +277,21 @@
                     if (configData.resultBtnTextColor) {
                         document.documentElement.style.setProperty('--btn-text-color', configData.resultBtnTextColor);
                     }
+                    if (configData.resultTextColor) {
+                        document.documentElement.style.setProperty('--text-main', configData.resultTextColor);
+                    }
+                    if (configData.resultPanelBgColor) {
+                        document.documentElement.style.setProperty('--result-panel-bg', configData.resultPanelBgColor);
+                    }
+                    if (configData.resultPanelBorderColor) {
+                        document.documentElement.style.setProperty('--result-panel-border', configData.resultPanelBorderColor);
+                    }
+                    if (configData.resultLoadingTextColor) {
+                        document.documentElement.style.setProperty('--loading-color', configData.resultLoadingTextColor);
+                    }
+                    if (configData.resultErrorTextColor) {
+                        document.documentElement.style.setProperty('--error-color', configData.resultErrorTextColor);
+                    }
                     // Check idleHeadMode (Title vs Logo)
                     const logoEl = document.getElementById('logoElement');
                     const titleEl = document.getElementById('titleElement');
@@ -298,7 +318,11 @@
                             };
                             titleEl.innerHTML = formatTitleText(configData.title);
                             titleEl.style.display = 'block';
-                            if (configData.titleColor) titleEl.style.color = configData.titleColor;
+                            if (configData.resultTitleColor) {
+                                titleEl.style.color = configData.resultTitleColor;
+                            } else if (configData.titleColor) {
+                                titleEl.style.color = configData.titleColor;
+                            }
                         }
                     }
 
