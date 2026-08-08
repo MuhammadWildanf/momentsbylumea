@@ -652,7 +652,6 @@
         }
 
         function retakeVideo() {
-            dCtx.clearRect(0, 0, 10000, 10000);
             videoBlob = null;
             photoBlob = null;
             changeState('ready');
