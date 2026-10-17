@@ -4,26 +4,34 @@
         let caps = true;
         let num = false;
         const row1 = "QWERTYUIOP".split(''), row2 = "ASDFGHJKL".split(''), row3 = "ZXCVBNM".split('');
-        const nums = "1234567890-/@:();\"+!?. ,*#&".split('');
+        const sym1 = "1234567890".split('');
+        const sym2 = '-/:;()&@"?'.split('');
+        const sym3 = ".,'!*#+=%$".split('');
         let deliveryMethod = 'whatsapp'; // Default, but we collect both now
 
         function drawKbd() {
-            const draw = (id, keys) => {
-                const el = document.getElementById(id); el.innerHTML = '';
-                if (id === 'kbd-3') el.innerHTML += `<div class="key wide" onclick="kCaps()">⬆️</div>`;
-                keys.forEach(k => { el.innerHTML += `<div class="key" onclick="kPress('${k}')">${caps ? k : k.toLowerCase()}</div>`; });
-                if (id === 'kbd-3') el.innerHTML += `<div class="key wide" onclick="kBks()">⌫</div>`;
+            const build = (id, keys, withControls) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                el.innerHTML = '';
+                const addKey = (label, cls, onClick) => {
+                    const div = document.createElement('div');
+                    div.className = cls ? 'key ' + cls : 'key';
+                    div.textContent = label;
+                    div.addEventListener('click', onClick);
+                    el.appendChild(div);
+                };
+                if (withControls) addKey('⬆️', 'wide', kCaps);
+                keys.forEach(k => addKey(caps ? k : k.toLowerCase(), null, () => kPress(k)));
+                if (withControls) addKey('⌫', 'wide', kBks);
             };
 
-            let r1 = num ? nums.slice(0, 10) : row1;
-            let r2 = num ? nums.slice(10, 19) : row2;
-            let r3 = num ? nums.slice(19, 26) : row3;
+            build('kbd-1', num ? sym1 : row1, false);
+            build('kbd-2', num ? sym2 : row2, false);
+            build('kbd-3', num ? sym3 : row3, true);
 
-
-
-            draw('kbd-1', r1);
-            draw('kbd-2', r2);
-            draw('kbd-3', r3);
+            const modeKey = document.getElementById('kbd-mode');
+            if (modeKey) modeKey.textContent = num ? 'ABC' : '123';
         }
         drawKbd();
 
