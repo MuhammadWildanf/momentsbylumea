@@ -258,14 +258,29 @@
             let themePromise = fetch('/api/config' + (eventId ? `?eventId=${eventId}` : ''), { cache: 'no-store' })
                 .then(res => res.json())
                 .then(configData => {
-                    if (configData.bgColor1) {
-                        document.documentElement.style.setProperty('--bg-1', configData.bgColor1);
+                    // Page-specific background: inherit / color / image
+                    const validBgUrl = u => u && u !== 'none' && u !== 'Default';
+                    const bgMode = (configData.resultBgMode === 'color' || configData.resultBgMode === 'image') ? configData.resultBgMode : 'inherit';
+                    if (bgMode === 'color' || bgMode === 'image') {
+                        document.documentElement.style.setProperty('--bg-1', configData.resultBgColor1 || configData.bgColor1 || '#1a0f0a');
+                        document.documentElement.style.setProperty('--bg-2', configData.resultBgColor2 || configData.bgColor2 || '#100a06');
+                    } else {
+                        document.documentElement.style.setProperty('--bg-1', configData.bgColor1 || '#1a0f0a');
+                        document.documentElement.style.setProperty('--bg-2', configData.bgColor2 || '#100a06');
                     }
-                    if (configData.bgColor2) {
-                        document.documentElement.style.setProperty('--bg-2', configData.bgColor2);
-                    }
-                    if (configData.bgImageUrl && configData.bgImageUrl !== 'none' && configData.bgImageUrl !== 'Default') {
+                    if (bgMode === 'image' && validBgUrl(configData.resultBgImageUrl)) {
+                        document.body.style.backgroundImage = `url('${configData.resultBgImageUrl}')`;
+                        document.body.style.backgroundSize = 'cover';
+                        document.body.style.backgroundPosition = 'center';
+                        document.body.style.backgroundRepeat = 'no-repeat';
+                    } else if (bgMode === 'color') {
+                        document.body.style.backgroundColor = configData.resultBgColor1 || configData.bgColor1 || '#1a0f0a';
+                        document.body.style.backgroundImage = 'none';
+                    } else if (validBgUrl(configData.bgImageUrl)) {
                         document.body.style.backgroundImage = `url('${configData.bgImageUrl}')`;
+                        document.body.style.backgroundSize = 'cover';
+                        document.body.style.backgroundPosition = 'center';
+                        document.body.style.backgroundRepeat = 'no-repeat';
                     } else {
                         document.body.style.backgroundImage = 'radial-gradient(circle at center, var(--bg-1, #1a0f0a) 0%, var(--bg-2, #100a06) 100%)';
                     }

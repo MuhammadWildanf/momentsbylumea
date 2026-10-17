@@ -17,8 +17,22 @@
                 const root = document.documentElement;
 
                 // Apply Colors
-                if (data.bgColor1) root.style.setProperty('--bg-1', data.bgColor1);
-                if (data.bgColor2) root.style.setProperty('--bg-2', data.bgColor2);
+                const validBgUrl = u => u && u !== 'none' && u !== 'Default';
+                const bgMode = (data.galleryBgMode === 'color' || data.galleryBgMode === 'image') ? data.galleryBgMode : 'inherit';
+                if (bgMode === 'color' || bgMode === 'image') {
+                    root.style.setProperty('--bg-1', data.galleryBgColor1 || data.bgColor1 || '#1a0f0a');
+                    root.style.setProperty('--bg-2', data.galleryBgColor2 || data.bgColor2 || '#100a06');
+                } else {
+                    root.style.setProperty('--bg-1', data.bgColor1 || '#1a0f0a');
+                    root.style.setProperty('--bg-2', data.bgColor2 || '#100a06');
+                }
+                if (bgMode === 'image' && validBgUrl(data.galleryBgImageUrl)) {
+                    document.write('<style>body { background-image: url("' + data.galleryBgImageUrl + '") !important; background-size: cover !important; background-position: center !important; background-repeat: no-repeat !important; }</style>');
+                } else if (bgMode === 'color') {
+                    document.write('<style>body { background-color: ' + (data.galleryBgColor1 || data.bgColor1 || '#1a0f0a') + ' !important; background-image: none !important; }</style>');
+                } else if (validBgUrl(data.bgImageUrl)) {
+                    document.write('<style>body { background-image: url("' + data.bgImageUrl + '") !important; background-size: cover !important; background-position: center !important; background-repeat: no-repeat !important; }</style>');
+                }
                 root.style.setProperty('--accent', data.accentColor || '#c5a059');
                 root.style.setProperty('--text-main', data.galleryTextColor || '#f8fafc');
                 root.style.setProperty('--bg-dark', data.galleryBgColor || '#0a0a0b');
@@ -822,8 +836,37 @@
             if (data.galleryBgColor) {
                 document.documentElement.style.setProperty('--bg-dark', data.galleryBgColor);
             }
-            if (data.bgImageUrl && data.bgImageUrl !== 'none' && data.bgImageUrl !== 'Default') {
-                document.body.style.backgroundImage = `url('${data.bgImageUrl}')`;
+            // Page-specific background: default (ikut index) / color / image
+            const validBgUrl = u => u && u !== 'none' && u !== 'Default';
+            const bgMode = (data.galleryBgMode === 'color' || data.galleryBgMode === 'image') ? data.galleryBgMode : 'inherit';
+            const bgC1 = data.galleryBgColor1 || data.bgColor1 || '#1a0f0a';
+            const bgC2 = data.galleryBgColor2 || data.bgColor2 || '#100a06';
+            document.documentElement.style.setProperty('--bg-1', bgC1);
+            document.documentElement.style.setProperty('--bg-2', bgC2);
+            let pageBgImage = null;
+            if (bgMode === 'image' && validBgUrl(data.galleryBgImageUrl)) {
+                pageBgImage = data.galleryBgImageUrl;
+            } else if (bgMode === 'inherit' && validBgUrl(data.bgImageUrl)) {
+                pageBgImage = data.bgImageUrl;
+            }
+            if (pageBgImage) {
+                document.body.style.backgroundImage = `url('${pageBgImage}')`;
+                document.body.style.backgroundSize = 'cover';
+                document.body.style.backgroundPosition = 'center';
+                document.body.style.backgroundRepeat = 'no-repeat';
+            } else if (bgMode === 'color') {
+                document.body.style.backgroundColor = bgC1;
+                document.body.style.backgroundImage = 'none';
+            } else if (bgMode === 'inherit') {
+                if (validBgUrl(data.bgImageUrl)) {
+                    document.body.style.backgroundImage = `url('${data.bgImageUrl}')`;
+                    document.body.style.backgroundSize = 'cover';
+                    document.body.style.backgroundPosition = 'center';
+                    document.body.style.backgroundRepeat = 'no-repeat';
+                } else {
+                    document.body.style.backgroundColor = data.bgColor1 || '#1a0f0a';
+                    document.body.style.backgroundImage = 'none';
+                }
             } else {
                 document.body.style.backgroundImage = 'radial-gradient(circle at center, var(--bg-1, #1a0f0a) 0%, var(--bg-2, #100a06) 100%)';
             }

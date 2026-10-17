@@ -170,6 +170,12 @@ fetch('/api/config' + (eventId ? '?eventId=' + eventId : ''), { cache: 'no-store
         document.getElementById('resultErrorTextColor').value = data.resultErrorTextColor || '#ef4444';
         document.getElementById('resultProcessingTextColor').value = data.resultProcessingTextColor || '#c5a059';
 
+        // Result Page Background (sendiri / ikut global)
+        document.getElementById('resultBgMode').value = (data.resultBgMode === 'color' || data.resultBgMode === 'image') ? data.resultBgMode : 'inherit';
+        document.getElementById('resultBgColor1').value = data.resultBgColor1 || data.bgColor1 || '#1a0f0a';
+        document.getElementById('resultBgStatus').innerText = (data.resultBgImageUrl && data.resultBgImageUrl !== 'none') ? data.resultBgImageUrl : 'none';
+        togglePageBgFields('result');
+
         // Gallery Settings
         document.getElementById('galleryTitle').value = data.galleryTitle || 'Your Special Memories';
         document.getElementById('gallerySearchLabel').value = data.gallerySearchLabel || 'SEARCH GUEST NAME';
@@ -180,6 +186,11 @@ fetch('/api/config' + (eventId ? '?eventId=' + eventId : ''), { cache: 'no-store
         document.getElementById('galleryTextColor').value = data.galleryTextColor || '#ffffff';
         document.getElementById('galleryTitleColor').value = data.galleryTitleColor || '#F0E5C7';
         document.getElementById('galleryBgColor').value = data.galleryBgColor || '#0a0a0b';
+        // Gallery Page Background (sendiri / ikut global)
+        document.getElementById('galleryBgMode').value = (data.galleryBgMode === 'color' || data.galleryBgMode === 'image') ? data.galleryBgMode : 'inherit';
+        document.getElementById('galleryBgColor1').value = data.galleryBgColor1 || data.bgColor1 || '#1a0f0a';
+        document.getElementById('galleryBgStatus').innerText = (data.galleryBgImageUrl && data.galleryBgImageUrl !== 'none') ? data.galleryBgImageUrl : 'none';
+        togglePageBgFields('gallery');
         document.getElementById('galleryFilterBgColor').value = data.galleryFilterBgColor || '#140f0a';
         document.getElementById('galleryFilterBorderColor').value = data.galleryFilterBorderColor || '#c5a059';
         document.getElementById('galleryCardBgColor').value = data.galleryCardBgColor || 'rgba(20, 15, 10, 0.7)';
@@ -374,6 +385,16 @@ async function uploadHelper(file, fieldName) {
     return d.fileUrl;
 }
 
+function togglePageBgFields(prefix) {
+    const modeEl = document.getElementById(prefix + 'BgMode');
+    if (!modeEl) return;
+    const mode = modeEl.value;
+    const colors = document.getElementById(prefix + '-bg-colors');
+    const image = document.getElementById(prefix + '-bg-image');
+    if (colors) colors.style.display = (mode === 'color' || mode === 'image') ? '' : 'none';
+    if (image) image.style.display = (mode === 'image') ? '' : 'none';
+}
+
 async function saveConfig() {
     const btn = document.querySelector('.btn-primary');
     btn.disabled = true;
@@ -412,6 +433,8 @@ async function saveConfig() {
 
     const bgUrl = await uploadHelper(document.getElementById('bgFile').files[0], 'bg');
     const bg2Url = await uploadHelper(document.getElementById('bg2File').files[0], 'bg2');
+    const resultBgUrl = await uploadHelper(document.getElementById('resultBgFile').files[0], 'resultbg');
+    const galleryBgUrl = await uploadHelper(document.getElementById('galleryBgFile').files[0], 'gallerybg');
     const frameUrl = await uploadHelper(document.getElementById('frameFile').files[0], 'frame');
     const overlayUrl = await uploadHelper(document.getElementById('overlayFile').files[0], 'overlay');
 
@@ -551,6 +574,9 @@ async function saveConfig() {
         resultLoadingTextColor: document.getElementById('resultLoadingTextColor').value,
         resultErrorTextColor: document.getElementById('resultErrorTextColor').value,
         resultProcessingTextColor: document.getElementById('resultProcessingTextColor').value,
+        resultBgMode: document.getElementById('resultBgMode').value,
+        resultBgColor1: document.getElementById('resultBgColor1').value,
+        resultBgImageUrl: resultBgUrl || document.getElementById('resultBgStatus').innerText,
 
         galleryTitle: document.getElementById('galleryTitle').value,
         gallerySearchLabel: document.getElementById('gallerySearchLabel').value,
@@ -561,6 +587,9 @@ async function saveConfig() {
         galleryTextColor: document.getElementById('galleryTextColor').value,
         galleryTitleColor: document.getElementById('galleryTitleColor').value,
         galleryBgColor: document.getElementById('galleryBgColor').value,
+        galleryBgMode: document.getElementById('galleryBgMode').value,
+        galleryBgColor1: document.getElementById('galleryBgColor1').value,
+        galleryBgImageUrl: galleryBgUrl || document.getElementById('galleryBgStatus').innerText,
         galleryFilterBgColor: document.getElementById('galleryFilterBgColor').value,
         galleryFilterBorderColor: document.getElementById('galleryFilterBorderColor').value,
         galleryCardBgColor: document.getElementById('galleryCardBgColor').value,
@@ -608,6 +637,10 @@ async function saveConfig() {
 
         if (bgUrl) document.getElementById('bgStatus').innerText = bgUrl;
         if (bg2Url) document.getElementById('bg2Status').innerText = bg2Url;
+        if (resultBgUrl) document.getElementById('resultBgStatus').innerText = resultBgUrl;
+        else if (document.getElementById('resultBgStatus') && document.getElementById('resultBgStatus').innerText === '') document.getElementById('resultBgStatus').innerText = 'none';
+        if (galleryBgUrl) document.getElementById('galleryBgStatus').innerText = galleryBgUrl;
+        else if (document.getElementById('galleryBgStatus') && document.getElementById('galleryBgStatus').innerText === '') document.getElementById('galleryBgStatus').innerText = 'none';
         if (frameUrl) document.getElementById('frameStatus').innerText = frameUrl;
         if (overlayUrl) document.getElementById('overlayStatus').innerText = overlayUrl;
         if (tutUrl) document.getElementById('tutorialPath').innerText = tutUrl;
@@ -619,6 +652,8 @@ async function saveConfig() {
 
         document.getElementById('bgFile').value = '';
         document.getElementById('bg2File').value = '';
+        document.getElementById('resultBgFile').value = '';
+        document.getElementById('galleryBgFile').value = '';
         document.getElementById('frameFile').value = '';
         document.getElementById('overlayFile').value = '';
         document.getElementById('logoFile').value = '';
