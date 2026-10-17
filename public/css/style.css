@@ -1633,3 +1633,24 @@ html.show-landing #landing-page {
 .landing-footer .copyright {
     opacity: 0.75;
 }
+
+/* Background crossfade layer (non-idle states).
+   Sits above the page canvas (body background) but below all content. */
+#bg-layer-2 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+}
+
+#bg-layer-2.show {
+    opacity: 1;
+}

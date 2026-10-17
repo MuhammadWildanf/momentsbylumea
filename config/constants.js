@@ -17,6 +17,7 @@ const DEFAULT_CONFIG = {
     bottomLeftLogoUrl: '/logo-lumea.png',
     tutorialVideoUrl: "",
     resultVideoUrl: "",
+    bgImageUrl2: "",
     frameColor: "#3d3d3d",
     recordingDuration: 15,
     qrResetDuration: 45,

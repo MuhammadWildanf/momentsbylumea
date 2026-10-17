@@ -61,6 +61,14 @@
             document.body.classList.remove('state-idle', 'state-form', 'state-ready', 'state-ready-photo', 'state-recording', 'state-review-video', 'state-review-final', 'state-processing');
             document.body.classList.add('state-' + state);
 
+            // Background crossfade: idle = bg A (body), active states fade in bg B layer.
+            // bg2Mode 'none' = no second background -> keep bg A (backward compatible).
+            const bgLayer2 = document.getElementById('bg-layer-2');
+            if (bgLayer2) {
+                if (state === 'idle' || !window.bg2Mode || window.bg2Mode === 'none') bgLayer2.classList.remove('show');
+                else bgLayer2.classList.add('show');
+            }
+
             document.querySelectorAll('.ui-state').forEach(el => el.classList.remove('active'));
             document.getElementById('state-' + state).classList.add('active');
 
@@ -178,6 +186,26 @@
             });
         }
 
+        // Active-state background (layer B).
+        // image            -> use bgImageUrl2
+        // 'none'           -> use gradient (bgColor1/bgColor2)
+        // empty / 'Default' -> no second background (keep background A) => backward compatible
+        function applyActiveBackground(data) {
+            const el = document.getElementById('bg-layer-2');
+            if (!el) return;
+            if (data.bgImageUrl2 && data.bgImageUrl2 !== 'none' && data.bgImageUrl2 !== 'Default') {
+                el.style.backgroundImage = `url("${data.bgImageUrl2}")`;
+                window.bg2Mode = 'image';
+            } else if (data.bgImageUrl2 === 'none') {
+                el.style.backgroundImage = `radial-gradient(circle at center, var(--bg-1) 0%, var(--bg-2) 100%)`;
+                window.bg2Mode = 'gradient';
+            } else {
+                window.bg2Mode = 'none';
+                el.classList.remove('show');
+                el.style.backgroundImage = '';
+            }
+        }
+
         function applyCachedTheme() {
             try {
                 const urlParams = new URLSearchParams(window.location.search);
@@ -264,6 +292,9 @@
                     }
                 }
 
+                // Cached active-state background (layer B)
+                applyActiveBackground(data);
+
                 if (data.frameImageUrl) {
                     const targetFrame = `url("${data.frameImageUrl}")`;
                     if (rootStyle.getPropertyValue('--frame-image') !== targetFrame) {
@@ -300,6 +331,7 @@
                 // 1. Preload Critical Images in Parallel
                 const criticalAssets = [];
                 if (data.bgImageUrl && data.bgImageUrl !== 'none' && data.bgImageUrl !== 'Default') criticalAssets.push(preloadImage(data.bgImageUrl));
+                if (data.bgImageUrl2 && data.bgImageUrl2 !== 'none' && data.bgImageUrl2 !== 'Default') criticalAssets.push(preloadImage(data.bgImageUrl2));
                 if (data.frameImageUrl) criticalAssets.push(preloadImage(data.frameImageUrl));
                 if (data.logoUrl) criticalAssets.push(preloadImage(data.logoUrl));
                 try {
@@ -408,6 +440,9 @@
                         document.body.style.backgroundImage = targetGrad;
                     }
                 }
+
+                // Active-state background (layer B)
+                applyActiveBackground(data);
 
                 if (data.frameImageUrl) {
                     const targetFrame = `url("${data.frameImageUrl}")`;

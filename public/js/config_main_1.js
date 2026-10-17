@@ -201,6 +201,7 @@ fetch('/api/config' + (eventId ? '?eventId=' + eventId : ''), { cache: 'no-store
         }
 
         document.getElementById('bgStatus').innerText = data.bgImageUrl || 'Default';
+        document.getElementById('bg2Status').innerText = data.bgImageUrl2 || 'Default';
         document.getElementById('frameStatus').innerText = data.frameImageUrl || 'Default';
         document.getElementById('overlayStatus').innerText = data.overlayImageUrl || 'Default';
 
@@ -410,6 +411,7 @@ async function saveConfig() {
     const resUrl = await uploadHelper(document.getElementById('resultFile').files[0], 'result');
 
     const bgUrl = await uploadHelper(document.getElementById('bgFile').files[0], 'bg');
+    const bg2Url = await uploadHelper(document.getElementById('bg2File').files[0], 'bg2');
     const frameUrl = await uploadHelper(document.getElementById('frameFile').files[0], 'frame');
     const overlayUrl = await uploadHelper(document.getElementById('overlayFile').files[0], 'overlay');
 
@@ -573,6 +575,7 @@ async function saveConfig() {
         showRightPanel: document.getElementById('showRightPanel').checked,
         idleHeadMode: document.querySelector('input[name="idleHeadMode"]:checked').value,
         bgImageUrl: bgUrl || document.getElementById('bgStatus').innerText,
+        bgImageUrl2: bg2Url || document.getElementById('bg2Status').innerText,
         frameImageUrl: frameUrl || document.getElementById('frameStatus').innerText,
         overlayImageUrl: overlayUrl || document.getElementById('overlayStatus').innerText,
         tutorialVideoUrl: tutUrl || document.getElementById('tutorialPath').innerText,
@@ -604,6 +607,7 @@ async function saveConfig() {
         setTimeout(() => msg.style.display = 'none', 3000);
 
         if (bgUrl) document.getElementById('bgStatus').innerText = bgUrl;
+        if (bg2Url) document.getElementById('bg2Status').innerText = bg2Url;
         if (frameUrl) document.getElementById('frameStatus').innerText = frameUrl;
         if (overlayUrl) document.getElementById('overlayStatus').innerText = overlayUrl;
         if (tutUrl) document.getElementById('tutorialPath').innerText = tutUrl;
@@ -614,6 +618,7 @@ async function saveConfig() {
         }
 
         document.getElementById('bgFile').value = '';
+        document.getElementById('bg2File').value = '';
         document.getElementById('frameFile').value = '';
         document.getElementById('overlayFile').value = '';
         document.getElementById('logoFile').value = '';
